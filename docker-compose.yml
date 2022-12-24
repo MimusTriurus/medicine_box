@@ -1,0 +1,8 @@
+version: '3.7'
+
+services:
+  bot:
+    container_name: tg_bot
+    build: .
+    volumes:
+      - ./bot/logs/:/app/bot/logs

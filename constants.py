@@ -1,0 +1,32 @@
+DATE_FORMAT = '%d.%m.%y'
+
+RU = 'ru'
+EN = 'en'
+
+ICON_SPACER = '  '
+
+# region icons
+ICON_CHECK_MARK = u'\U00002705'
+ICON_CROSS_MARK = u'\U0000274c'
+ICON_PILL = u'\U0001f48a'
+ICON_EXPIRED = u'\U000026a0'
+ICON_EXCLAMATION = u'\U00002757'
+ICON_CALENDAR = u'\U0001F4C5'
+
+ICON_CHARS = u'\U0001f18e'
+ICON_NUMS = u'\U0001F522'
+# endregion
+
+KEY_ID = 'id'
+KEY_USER_ID = 'user_id'
+KEY_NAME = 'name'
+KEY_DATE = 'date'
+
+KEY_TABLE_USERS = 'users'
+KEY_TABLE_AID_KIT = 'aid_kit'
+KEY_TABLE_AID_KIT_EXPIRED = 'aid_kit_expired'
+
+IDX_ID = 0
+IDX_USR_ID = 1
+IDX_NAME = 2
+IDX_DATE = 3
