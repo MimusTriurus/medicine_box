@@ -5,7 +5,7 @@ print(TOKEN)
 HEROKU_APP_NAME = os.getenv('HEROKU_APP_NAME', default='medicine_box')
 
 # region webhook settings
-WEBHOOK_HOST = f'https://{HEROKU_APP_NAME}.herokuapp.com'
+WEBHOOK_HOST = f'https://medicine-box-bot.onrender.com'
 WEBHOOK_PATH = f'/webhook/{TOKEN}'
 WEBHOOK_URL = f'{WEBHOOK_HOST}{WEBHOOK_PATH}'
 # endregion
@@ -16,4 +16,4 @@ WEBAPP_PORT = os.getenv('PORT', default=8000)
 DB_URL = os.getenv('DATABASE_URL', default='sqlite:///drugs.db')
 # endregion
 
-IS_LOCAL_MODE = os.getenv('IS_LOCAL_MODE', default=True)
+IS_LOCAL_MODE = os.getenv('IS_LOCAL_MODE', default=False)
