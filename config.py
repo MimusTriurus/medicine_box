@@ -6,7 +6,7 @@ HEROKU_APP_NAME = os.getenv('HEROKU_APP_NAME', default='medicine_box')
 
 # region webhook settings
 WEBHOOK_HOST = f'https://medicine-box-bot.onrender.com'
-WEBHOOK_PATH = f'/webhook/{TOKEN}'
+WEBHOOK_PATH = f''
 WEBHOOK_URL = f'{WEBHOOK_HOST}{WEBHOOK_PATH}'
 # endregion
 

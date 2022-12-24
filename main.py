@@ -4,27 +4,31 @@ import logging
 from aiogram.utils.executor import start_webhook
 
 from components import bot
-from config import WEBHOOK_URL, IS_LOCAL_MODE, WEBHOOK_PATH, WEBAPP_HOST, WEBAPP_PORT
+from config import WEBHOOK_URL, IS_LOCAL_MODE, WEBHOOK_PATH, WEBAPP_HOST, WEBAPP_PORT, TOKEN
 from db_management import sql_start, sql_stop
 from expired_drugs_checker import scheduler, check_every_day
 from handlers import *
 
+log = logging.getLogger()
+
 
 async def on_startup(dispatcher):
+    log.info('on startup')
     await sql_start()
     await bot.set_webhook(WEBHOOK_URL, drop_pending_updates=True)
 
 
 async def on_shutdown(dispatcher):
+    log.info('on shutdown')
     await sql_stop()
     await bot.delete_webhook()
-
 
 if IS_LOCAL_MODE:
     async def main():
         try:
             await sql_start()
-            print('Local mode')
+            log.info('Local mode')
+            log.info(f'{IS_LOCAL_MODE} {TOKEN}')
             scheduler.add_job(check_every_day, 'interval', hours=24, args=(bot,))
             scheduler.start()
 
@@ -48,7 +52,8 @@ if IS_LOCAL_MODE:
     asyncio.run(main())
 else:
     if __name__ == '__main__':
-        print('Hook mode')
+        log.info('Hook mode')
+        log.info(f'{IS_LOCAL_MODE} {TOKEN}')
         logging.basicConfig(level=logging.INFO)
         start_webhook(
             dispatcher=dp,
