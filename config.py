@@ -1,6 +1,7 @@
 import os
 
-TOKEN = os.getenv('BOT_TOKEN', default='5672940238:AAGZdIiqJ2s7pSM7t6qzLR4g0Lj50VBRWsg')
+TOKEN = os.getenv('BOT_TOKEN')
+print(TOKEN)
 HEROKU_APP_NAME = os.getenv('HEROKU_APP_NAME', default='medicine_box')
 
 # region webhook settings
