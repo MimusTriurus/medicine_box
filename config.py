@@ -1,10 +1,10 @@
 import os
 
-TOKEN = os.getenv('BOT_TOKEN')
+TOKEN = os.getenv('BOT_TOKEN', default='5533694427:AAFO6SvorZxHT88dQI2TVETdZ1wZjDH4BxU')
 
 # region webhook settings
 WEBHOOK_HOST = os.getenv('WEBHOOK_HOST', default='https://medicine-box-bot.onrender.com')
-WEBHOOK_PATH = os.getenv('WEBHOOK_PATH', default='')
+WEBHOOK_PATH = os.getenv('WEBHOOK_PATH', default='/')
 WEBHOOK_URL = f'{WEBHOOK_HOST}{WEBHOOK_PATH}'
 # endregion
 
