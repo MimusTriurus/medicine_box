@@ -25,9 +25,12 @@ async def on_shutdown(dispatcher):
     await bot.delete_webhook()
 
 if __name__ == '__main__':
+    logging.basicConfig(level=logging.INFO)
+    log.info(f'***********')
     log.info(f'{TOKEN}')
     log.info(f'{WEBAPP_PORT}')
-    logging.basicConfig(level=logging.INFO)
+    log.info(f'{WEBHOOK_PATH}')
+    log.info(f'***********')
     start_webhook(
         dispatcher=dp,
         webhook_path=WEBHOOK_PATH,
