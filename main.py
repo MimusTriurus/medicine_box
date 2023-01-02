@@ -30,6 +30,7 @@ if __name__ == '__main__':
     start_webhook(
         dispatcher=dp,
         webhook_path=WEBHOOK_PATH,
+        loop=True,
         skip_updates=True,
         on_startup=on_startup,
         on_shutdown=on_shutdown,
