@@ -1,6 +1,7 @@
 FROM python:3.10.4-slim
 
 EXPOSE 80
+EXPOSE 8443
 
 WORKDIR /app
 

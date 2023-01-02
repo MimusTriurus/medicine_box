@@ -26,11 +26,11 @@ async def on_shutdown(dispatcher):
 
 if __name__ == '__main__':
     log.info(f'{TOKEN}')
+    log.info(f'{WEBAPP_PORT}')
     logging.basicConfig(level=logging.INFO)
     start_webhook(
         dispatcher=dp,
         webhook_path=WEBHOOK_PATH,
-        loop=True,
         skip_updates=True,
         on_startup=on_startup,
         on_shutdown=on_shutdown,

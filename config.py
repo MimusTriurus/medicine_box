@@ -10,6 +10,6 @@ WEBHOOK_URL = f'{WEBHOOK_HOST}{WEBHOOK_PATH}'
 
 # region webserver settings
 WEBAPP_HOST = '0.0.0.0'
-WEBAPP_PORT = os.getenv('PORT', default=3001)
+WEBAPP_PORT = os.getenv('PORT', default=8443)
 DB_URL = os.getenv('DATABASE_URL', default='sqlite:///drugs.db')
 # endregion
