@@ -6,3 +6,5 @@ services:
     build: .
     volumes:
       - ./bot/logs/:/app/bot/logs
+    environment:
+      BOT_PUBLIC_PORT: 80

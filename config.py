@@ -1,19 +1,15 @@
 import os
 
 TOKEN = os.getenv('BOT_TOKEN')
-print(TOKEN)
-HEROKU_APP_NAME = os.getenv('HEROKU_APP_NAME', default='medicine_box')
 
 # region webhook settings
-WEBHOOK_HOST = f'https://medicine-box-bot.onrender.com'
-WEBHOOK_PATH = f''
+WEBHOOK_HOST = os.getenv('WEBHOOK_HOST', default='https://medicine-box-bot.onrender.com')
+WEBHOOK_PATH = os.getenv('WEBHOOK_PATH', default='')
 WEBHOOK_URL = f'{WEBHOOK_HOST}{WEBHOOK_PATH}'
 # endregion
 
 # region webserver settings
 WEBAPP_HOST = '0.0.0.0'
-WEBAPP_PORT = os.getenv('PORT', default=8000)
+WEBAPP_PORT = os.getenv('PORT', default=80)
 DB_URL = os.getenv('DATABASE_URL', default='sqlite:///drugs.db')
 # endregion
-
-IS_LOCAL_MODE = os.getenv('IS_LOCAL_MODE', default=False)
