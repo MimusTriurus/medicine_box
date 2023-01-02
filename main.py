@@ -20,7 +20,7 @@ async def on_startup(dispatcher: Dispatcher):
     # scheduler.start()
     try:
         log.info(f'try to set webhook: {WEBHOOK_URL}')
-        await dispatcher.bot.set_webhook(WEBHOOK_URL, drop_pending_updates=True)
+        # await dispatcher.bot.set_webhook(WEBHOOK_URL, drop_pending_updates=True)
         log.info(f'end set of webhook: {WEBHOOK_URL}')
     except Exception as e:
         log.error(e)
