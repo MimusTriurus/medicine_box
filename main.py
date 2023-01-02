@@ -17,7 +17,11 @@ async def on_startup(dispatcher):
     # log.info('sql started')
     # scheduler.add_job(check_every_day, 'interval', hours=24, args=(bot,))
     # scheduler.start()
-    await bot.set_webhook(WEBHOOK_URL, drop_pending_updates=True)
+    try:
+        log.info(f'try to set webhook: {WEBHOOK_URL}')
+        await bot.set_webhook(WEBHOOK_URL, drop_pending_updates=True)
+    except Exception as e:
+        log.error(e);
 
 
 async def on_shutdown(dispatcher):
