@@ -14,8 +14,8 @@ log = logging.getLogger()
 async def on_startup(dispatcher):
     log.info('on startup')
     await sql_start()
-    scheduler.add_job(check_every_day, 'interval', hours=24, args=(bot,))
-    scheduler.start()
+    # scheduler.add_job(check_every_day, 'interval', hours=24, args=(bot,))
+    # scheduler.start()
     await bot.set_webhook(WEBHOOK_URL, drop_pending_updates=True)
 
 
