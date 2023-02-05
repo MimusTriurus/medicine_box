@@ -1,7 +1,10 @@
-DATE_FORMAT = '%d.%m.%y'
+DATE_FORMAT = '%Y-%m-%d'
 
+LANG = 'lang'
 RU = 'ru'
 EN = 'en'
+
+START_DATA = 'start_data'
 
 ICON_SPACER = '  '
 
@@ -15,6 +18,11 @@ ICON_CALENDAR = u'\U0001F4C5'
 
 ICON_CHARS = u'\U0001f18e'
 ICON_NUMS = u'\U0001F522'
+
+ICON_INFO = u'\U00002139'
+
+ICON_TO_LEFT = u'\U000025C0'
+ICON_TO_RIGHT = u'\U000025B6'
 # endregion
 
 KEY_ID = 'id'
@@ -30,3 +38,5 @@ IDX_ID = 0
 IDX_USR_ID = 1
 IDX_NAME = 2
 IDX_DATE = 3
+
+TABLE_HEIGHT = 6

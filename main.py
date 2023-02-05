@@ -1,49 +1,48 @@
 import logging
 
 from aiogram import Dispatcher
-from aiogram.utils.executor import start_webhook
+from aiogram.utils.executor import start_polling
+from aiogram_dialog import DialogRegistry
 
-from components import bot
-from config import WEBHOOK_URL, WEBHOOK_PATH, WEBAPP_HOST, WEBAPP_PORT, TOKEN
 from db_management import sql_start, sql_stop
+from dialogs.add_drug_dialog import add_drug_dialog
+from dialogs.view_drugs_dialog import view_actual_drugs_dialog, del_actual_drugs_dialog, view_expired_drugs_dialog
 from expired_drugs_checker import scheduler, check_every_day
 from handlers import *
+
 
 log = logging.getLogger()
 
 
 async def on_startup(dispatcher: Dispatcher):
-    log.info('on startup')
-    # await sql_start()
-    # log.info('sql started')
-    # scheduler.add_job(check_every_day, 'interval', hours=24, args=(bot,))
-    # scheduler.start()
-    try:
-        log.info(f'try to set webhook: {WEBHOOK_URL}')
-        # await dispatcher.bot.set_webhook(WEBHOOK_URL, drop_pending_updates=True)
-        log.info(f'end set of webhook: {WEBHOOK_URL}')
-    except Exception as e:
-        log.error(e)
+    log.info('bot started...')
+    await sql_start()
+
+    scheduler.add_job(check_every_day, 'interval', minutes=1, args=(dispatcher,))
+    scheduler.start()
+
+    dispatcher.register_message_handler(request_start_handler)
+    dispatcher.register_message_handler(request_add_drug_handler)
+
+    dispatcher.register_message_handler(request_del_drug_handler)
+    dispatcher.register_message_handler(request_set_drug_id_4_del_handler, state=FSMDelDrug.id)
+
+    dispatcher.register_message_handler(request_view_first_aid_kit)
+    dispatcher.register_message_handler(request_view_first_aid_kit_expired)
 
 
 async def on_shutdown(dispatcher: Dispatcher):
-    log.info('on shutdown')
+    log.info('bot stopped...')
     await sql_stop()
-    await dispatcher.bot.delete_webhook()
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO)
-    log.info(f'***********')
-    log.info(f'{TOKEN}')
-    log.info(f'{WEBAPP_PORT}')
-    log.info(f'{WEBHOOK_PATH}')
-    log.info(f'***********')
-    start_webhook(
-        dispatcher=dp,
-        webhook_path=WEBHOOK_PATH,
-        skip_updates=True,
-        on_startup=on_startup,
-        on_shutdown=on_shutdown,
-        host=WEBAPP_HOST,
-        port=WEBAPP_PORT,
-    )
+
+    registry = DialogRegistry(dp)
+    registry.register(add_drug_dialog)
+
+    registry.register(view_actual_drugs_dialog)
+    registry.register(del_actual_drugs_dialog)
+    registry.register(view_expired_drugs_dialog)
+
+    start_polling(dp, on_startup=on_startup, on_shutdown=on_shutdown)

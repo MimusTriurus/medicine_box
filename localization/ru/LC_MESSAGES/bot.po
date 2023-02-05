@@ -1,0 +1,186 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-02-05 21:10+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../localization_keys.py:21
+msgid "START"
+msgstr "Бот предназначен для <b>ведения учета лекарств</b> в аптечке, <b>уведомления об истечении срока годности лекарств</b>, отображения списка лекарств с истекшим сроком годности"
+
+#: ../../localization_keys.py:22
+msgid "PRESS_ADD_BTN"
+msgstr "Нажмите кнопку "
+
+#: ../../localization_keys.py:23
+msgid "TO_ADD_DRUG"
+msgstr " для того, чтобы добавить лекарство в аптечку"
+
+#: ../../localization_keys.py:24
+msgid "ADD"
+msgstr "Добавить лекарство"
+
+#: ../../localization_keys.py:25
+msgid "DEL"
+msgstr "Удалить лекарства"
+
+#: ../../localization_keys.py:26
+msgid "ADDED"
+msgstr "Лекарство добавлено"
+
+#: ../../localization_keys.py:27
+msgid "DELETED"
+msgstr "Лекарство удалено"
+
+#: ../../localization_keys.py:28
+msgid "VIEW_ACTUAL"
+msgstr "Непросроченные лекарства"
+
+#: ../../localization_keys.py:29
+msgid "VIEW_EXPIRED"
+msgstr "Просроченные лекарства"
+
+#: ../../localization_keys.py:30
+msgid "CLEAR_EXPIRED"
+msgstr "Очистить список просроченных лекарств"
+
+#: ../../localization_keys.py:31
+msgid "CANCEL"
+msgstr "Отмена"
+
+#: ../../localization_keys.py:32
+msgid "CANCELLED"
+msgstr "Действие отменено"
+
+#: ../../localization_keys.py:33
+msgid "CLEAN"
+msgstr "Очистить"
+
+#: ../../localization_keys.py:34
+msgid "DONE"
+msgstr "Выполнено"
+
+#: ../../localization_keys.py:35
+msgid "NOT_FOUND"
+msgstr "Не найдено"
+
+#: ../../localization_keys.py:37
+msgid "TITLE_ACTUAL_DRUGS"
+msgstr "Непросроченные лекарства"
+
+#: ../../localization_keys.py:38
+msgid "TITLE_EXPIRED_DRUGS"
+msgstr "Просроченные лекарства"
+
+#: ../../localization_keys.py:39
+msgid "TITLE_INPUT_DRUGS_4_DELETE"
+msgstr "Введите название лекарства для удаления"
+
+#: ../../localization_keys.py:41
+msgid "TXT_DRUG_NAME_INPUT"
+msgstr "Введите название лекарства"
+
+#: ../../localization_keys.py:43
+msgid "TXT_DRUG_DATE_INPUT"
+msgstr "Введите дату окончания срока годности лекарства"
+
+#: ../../localization_keys.py:45
+msgid "TXT_ERROR_DATE"
+msgstr "Некорректный формат даты"
+
+#: ../../localization_keys.py:46
+msgid "TXT_TIME_IS_OVER"
+msgstr "Срок годности лекарства вышел"
+
+#: ../../localization_keys.py:48
+msgid "TXT_FIRST_AID_KIT_IS_EMPTY"
+msgstr "В аптечке нет лекарств, либо все лекарства в аптечке просрочены"
+
+#: ../../localization_keys.py:49
+msgid "TXT_EXPIRED_DRUGS_NOT_FOUND"
+msgstr "Нет просроченных лекарств"
+
+#: ../../localization_keys.py:51
+msgid "Removed: "
+msgstr "Удалено"
+
+#: ../../localization_keys.py:52
+msgid "Actual drugs"
+msgstr "Непросроченные лекарства"
+
+#: ../../localization_keys.py:53
+msgid "Delete actual drugs"
+msgstr "Удалить непросроченные лекарства"
+
+#: ../../localization_keys.py:54
+msgid "Expired drugs"
+msgstr "Просроченные лекарства"
+
+#: ../../localization_keys.py:56
+msgid "Select year"
+msgstr "Выберите год"
+
+#: ../../localization_keys.py:57
+msgid "Year"
+msgstr "Год"
+
+#: ../../localization_keys.py:59
+msgid "January"
+msgstr "Январь"
+
+#: ../../localization_keys.py:60
+msgid "February"
+msgstr "Февраль"
+
+#: ../../localization_keys.py:61
+msgid "March"
+msgstr "Март"
+
+#: ../../localization_keys.py:62
+msgid "April"
+msgstr "Апрель"
+
+#: ../../localization_keys.py:63
+msgid "May"
+msgstr "Май"
+
+#: ../../localization_keys.py:64
+msgid "June"
+msgstr "Июнь"
+
+#: ../../localization_keys.py:65
+msgid "July"
+msgstr "Июль"
+
+#: ../../localization_keys.py:66
+msgid "August"
+msgstr "Август"
+
+#: ../../localization_keys.py:67
+msgid "September"
+msgstr "Сентябрь"
+
+#: ../../localization_keys.py:68
+msgid "October"
+msgstr "Октябрь"
+
+#: ../../localization_keys.py:69
+msgid "November"
+msgstr "Ноябрь"
+
+#: ../../localization_keys.py:70
+msgid "December"
+msgstr "Декабрь"

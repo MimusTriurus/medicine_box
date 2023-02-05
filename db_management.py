@@ -1,12 +1,10 @@
 from typing import Optional, Tuple
 
-from aiogram.dispatcher import FSMContext
+from databases import Database
 
+from config import DB_URL
 from constants import *
 from helpers import time_is_over
-
-from databases import Database
-from config import DB_URL
 
 database = Database(DB_URL)
 
@@ -18,7 +16,7 @@ async def sql_start():
 
     await database.execute(f'''
         CREATE TABLE IF NOT EXISTS {KEY_TABLE_AID_KIT}(
-            {KEY_ID} SERIAL PRIMARY KEY,
+            {KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,
             {KEY_USER_ID} INTEGER NOT NULL,
             {KEY_NAME} TEXT NOT NULL, 
             {KEY_DATE} TIMESTAMP NOT NULL
@@ -27,7 +25,7 @@ async def sql_start():
 
     await database.execute(f'''
         CREATE TABLE IF NOT EXISTS {KEY_TABLE_AID_KIT_EXPIRED}(
-            {KEY_ID} SERIAL PRIMARY KEY,
+            {KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,
             {KEY_USER_ID} INTEGER NOT NULL,
             {KEY_NAME} TEXT NOT NULL, 
             {KEY_DATE} TIMESTAMP NOT NULL
@@ -73,23 +71,23 @@ async def sql_check_expired_drugs():
     return result
 
 
-async def sql_add_drug(user_id: int, state: FSMContext, table: str = KEY_TABLE_AID_KIT):
-    async with state.proxy() as data:
-        record = {
-            KEY_ID: None,
-            KEY_USER_ID: user_id,
-            KEY_NAME: data[KEY_NAME],
-            KEY_DATE: data[KEY_DATE]
-        }
-        await database.execute(
-            f'''INSERT INTO {table} VALUES (
-                :{KEY_ID},
-                :{KEY_USER_ID},
-                :{KEY_NAME},
-                :{KEY_DATE}
-            )''',
-            record
-        )
+async def sql_add_drug(user_id: int, data: dict, table: str = KEY_TABLE_AID_KIT):
+    # async with state.proxy() as data:
+    record = {
+        KEY_ID: None,
+        KEY_USER_ID: user_id,
+        KEY_NAME: data[KEY_NAME],
+        KEY_DATE: data[KEY_DATE]
+    }
+    await database.execute(
+        f'''INSERT INTO {table} VALUES (
+            :{KEY_ID},
+            :{KEY_USER_ID},
+            :{KEY_NAME},
+            :{KEY_DATE}
+        )''',
+        record
+    )
 
 
 async def sql_get_drugs(user_id: int, table: str = KEY_TABLE_AID_KIT) -> list:
