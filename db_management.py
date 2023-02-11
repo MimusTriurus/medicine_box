@@ -12,13 +12,18 @@ database = Database(DB_URL)
 async def sql_start():
     await database.connect()
     # id serial primary key,
-    await database.execute(f'CREATE TABLE IF NOT EXISTS {KEY_TABLE_USERS}({KEY_ID} SERIAL PRIMARY KEY)')
+    await database.execute(f'''
+        CREATE TABLE IF NOT EXISTS {KEY_TABLE_USERS}(
+            {KEY_ID} INTEGER SERIAL PRIMARY KEY,
+            {KEY_LANG} TEXT NOT NULL
+        )
+    ''')
 
     await database.execute(f'''
         CREATE TABLE IF NOT EXISTS {KEY_TABLE_AID_KIT}(
             {KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,
             {KEY_USER_ID} INTEGER NOT NULL,
-            {KEY_NAME} TEXT NOT NULL, 
+            {KEY_NAME} TEXT NOT NULL,
             {KEY_DATE} TIMESTAMP NOT NULL
         )
     ''')
@@ -37,11 +42,40 @@ async def sql_stop():
     await database.disconnect()
 
 
-async def sql_add_user(user_id: int):
+async def sql_add_user(user_id: int, lang_code: str):
+    record = {
+        KEY_ID: user_id,
+    }
+    user_id_found = await database.fetch_all(f'SELECT * FROM {KEY_TABLE_USERS} WHERE {KEY_ID}=:{KEY_ID}', values=record)
+    if not user_id_found:
+        record = {
+            KEY_ID: user_id,
+            KEY_LANG: lang_code
+        }
+        await database.execute(
+            f'''INSERT INTO {KEY_TABLE_USERS} VALUES(
+                :{KEY_ID}, 
+                :{KEY_LANG}
+            )''',
+            record
+        )
+    else:
+        await sql_set_lang(user_id, lang_code)
+
+
+async def sql_get_lang(user_id: int) -> str:
     record = {KEY_ID: user_id}
-    user_id = await database.fetch_all(f'SELECT * FROM {KEY_TABLE_USERS} WHERE {KEY_ID}=:{KEY_ID}', values=record)
-    if not user_id:
-        await database.execute(f'INSERT INTO {KEY_TABLE_USERS} VALUES(:{KEY_ID})', values=record)
+    result = await database.fetch_all(f'SELECT * FROM {KEY_TABLE_USERS} WHERE {KEY_ID}=:{KEY_ID}', record)
+    return result[0][1] if result else EN
+
+
+async def sql_set_lang(user_id: int, lang_code: str):
+    record = {
+        KEY_ID: user_id,
+        KEY_LANG: lang_code
+    }
+    query = f'''UPDATE {KEY_TABLE_USERS} SET {KEY_LANG} = :{KEY_LANG} WHERE {KEY_ID} = :{KEY_ID}'''
+    await database.execute(query, record)
 
 
 async def sql_check_expired_drugs():

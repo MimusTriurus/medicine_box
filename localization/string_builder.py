@@ -25,6 +25,7 @@ def make_cancel_btn_title(lang_code: str) -> str:
 def make_clean_btn_title(lang_code: str) -> str:
     return f'{ICON_CROSS_MARK}{ICON_SPACER}{localizers.get(lang_code, en).gettext(ID_CLEAN)}'
 
+
 def make_start_message(lang_code: str) -> str:
     localizer = localizers.get(lang_code, en)
     hello_message = localizer.gettext(ID_START) + '\n\n'
@@ -95,7 +96,7 @@ def make_drug_added_message(lang_code: str, drug_name: str, drug_expired_date) -
            f' <b>{drug_name} {drug_expired_date}</b>'
 
 
-def make_drug_deleted_message(lang_code: str, drug_name: str, drug_expired_date) -> str:
+def make_drug_deleted_message(lang_code: str, drug_name: str, drug_expired_date: str) -> str:
     return f'{ICON_CHECK_MARK}{ICON_SPACER}{localizers.get(lang_code, en).gettext(ID_DELETED)}:' \
            f' <b>{drug_name} {drug_expired_date}</b>'
 
@@ -138,3 +139,11 @@ def make_month_title(month_number: int, lang_code: str):
     }
 
     return months[month_number]
+
+
+def make_expired_drug_message(lang_code: str, drug_name: str, drug_expired_date: str):
+    return f'{ICON_EXCLAMATION}{ICON_SPACER}' \
+           f'{localizers.get(lang_code, en).gettext(ID_MEDICATION)} ' \
+           f'<b>{drug_name}</b> ' \
+           f'{localizers.get(lang_code, en).gettext(ID_EXPIRED_IN)} ' \
+           f'<b>{drug_expired_date}</b>'

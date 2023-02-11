@@ -184,3 +184,11 @@ msgstr "November"
 #: ../../localization_keys.py:70
 msgid "December"
 msgstr "December"
+
+#: ../../localization_keys.py:72
+msgid "The medication"
+msgstr "The medication"
+
+#: ../../localization_keys.py:73
+msgid "expired in"
+msgstr "expired in"

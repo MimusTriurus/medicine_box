@@ -1,4 +1,4 @@
-DATE_FORMAT = '%Y-%m-%d'
+DATE_FORMAT = '%Y-%m'
 
 LANG = 'lang'
 RU = 'ru'
@@ -29,6 +29,7 @@ KEY_ID = 'id'
 KEY_USER_ID = 'user_id'
 KEY_NAME = 'name'
 KEY_DATE = 'date'
+KEY_LANG = 'lang'
 
 KEY_TABLE_USERS = 'users'
 KEY_TABLE_AID_KIT = 'aid_kit'

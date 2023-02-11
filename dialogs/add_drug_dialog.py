@@ -6,7 +6,7 @@ from aiogram_dialog.manager.protocols import ManagedDialogAdapterProto
 from aiogram_dialog.widgets.input import MessageInput
 from aiogram_dialog.widgets.kbd import Cancel
 
-from constants import KEY_DATE, KEY_NAME, KEY_TABLE_AID_KIT_EXPIRED
+from constants import KEY_DATE, KEY_NAME, KEY_TABLE_AID_KIT_EXPIRED, DATE_FORMAT
 from db_management import sql_add_drug
 from localization.string_builder import (
     make_drug_is_expired_message,
@@ -52,22 +52,22 @@ async def on_expired_date_selected(
     mess = c.message
     dd = manager.current_context().dialog_data
     drug_name = dd[KEY_NAME]
-    drug_date = str(selected_date)
-    dd[KEY_DATE] = drug_date
+    drug_date = selected_date
+    dd[KEY_DATE] = drug_date.strftime(DATE_FORMAT)
     user_id = mess.chat.id
     current_date = date.today()
     lang = c.from_user.language_code
     if current_date > selected_date:
         await sql_add_drug(user_id, dd, KEY_TABLE_AID_KIT_EXPIRED)
         await mess.reply(
-            make_drug_is_expired_message(lang, drug_name, drug_date),
+            make_drug_is_expired_message(lang, drug_name, dd[KEY_DATE]),
             parse_mode=ParseMode.HTML,
             reply_markup=make_main_menu(lang)
         )
     else:
         await sql_add_drug(user_id, dd)
         await mess.reply(
-            make_drug_added_message(lang, drug_name, drug_date),
+            make_drug_added_message(lang, drug_name, dd[KEY_DATE]),
             parse_mode=ParseMode.HTML,
             reply_markup=make_main_menu(lang)
         )

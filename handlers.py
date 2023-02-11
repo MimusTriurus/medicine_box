@@ -10,7 +10,7 @@ from aiogram_dialog.widgets.kbd import Button
 from aiogram_dialog.widgets.text import Const
 
 from components import dp
-from db_management import sql_get_drugs, sql_add_user, sql_del_drugs
+from db_management import sql_get_drugs, sql_add_user, sql_del_drugs, sql_set_lang
 from dialogs.view_drugs_dialog import view_actual_drugs_table, del_actual_drugs_table, expired_drugs_table
 from helpers import make_table
 from localization.string_builder import *
@@ -28,7 +28,7 @@ class FSMDelDrug(StatesGroup):
 @dp.message_handler(Text(equals=localizers[RU].gettext(ID_START)))
 async def request_start_handler(message: types.Message):
     lang = message.from_user.language_code
-    await sql_add_user(message.from_user.id)
+    await sql_add_user(message.from_user.id, lang)
     photo = open('resources/images/botLogo.png', 'rb')
     await message.answer_photo(
         photo,
@@ -42,6 +42,7 @@ async def request_start_handler(message: types.Message):
 @dp.message_handler(Text(equals=make_add_btn_title(RU)))
 async def request_add_drug_handler(message: types.Message, dialog_manager: DialogManager, state=None):
     lang = message.from_user.language_code
+    await sql_set_lang(message.from_user.id, lang)
     start_data = {LANG: lang}
     await dialog_manager.start(FSMAddDrug.name, mode=StartMode.RESET_STACK, data=start_data)
 
@@ -50,6 +51,7 @@ async def request_add_drug_handler(message: types.Message, dialog_manager: Dialo
 @dp.message_handler(Text(equals=make_del_btn_title(RU)))
 async def request_del_drug_handler(message: types.Message, dialog_manager: DialogManager):
     lang = message.from_user.language_code
+    await sql_set_lang(message.from_user.id, lang)
     records = await sql_get_drugs(message.from_user.id)
     if records:
         del_actual_drugs_table.buttons = make_table(records, del_actual_drug_from_db, ICON_CROSS_MARK)
@@ -65,6 +67,7 @@ async def request_del_drug_handler(message: types.Message, dialog_manager: Dialo
 
 async def request_set_drug_id_4_del_handler(message: types.Message, state: FSMContext):
     lang = message.from_user.language_code
+    await sql_set_lang(message.from_user.id, lang)
     if message.text == make_cancel_btn_title(lang):
         await message.reply(
             make_cancelled_message(lang),
@@ -128,6 +131,7 @@ async def del_expired_drug_from_db(c: CallbackQuery, button: Button, manager: Di
 @dp.message_handler(Text(equals=make_actual_btn_title(RU)))
 async def request_view_first_aid_kit(message: types.Message, dialog_manager: DialogManager):
     lang = message.from_user.language_code
+    await sql_set_lang(message.from_user.id, lang)
     records = await sql_get_drugs(message.from_user.id)
     if records:
         view_actual_drugs_table.buttons = make_table(records, None, ICON_INFO)
@@ -145,6 +149,7 @@ async def request_view_first_aid_kit(message: types.Message, dialog_manager: Dia
 @dp.message_handler(Text(equals=make_expired_btn_title(RU)))
 async def request_view_first_aid_kit_expired(message: types.Message, dialog_manager: DialogManager):
     lang = message.from_user.language_code
+    await sql_set_lang(message.from_user.id, lang)
     records = await sql_get_drugs(message.from_user.id, KEY_TABLE_AID_KIT_EXPIRED)
     if records:
         expired_drugs_table.buttons = make_table(records, del_expired_drug_from_db, ICON_CROSS_MARK)

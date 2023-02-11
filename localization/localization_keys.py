@@ -68,3 +68,6 @@ ID_TXT_SEPTEMBER = _('September')
 ID_TXT_OCTOBER = _('October')
 ID_TXT_NOVEMBER = _('November')
 ID_TXT_DECEMBER = _('December')
+
+ID_MEDICATION = _('The medication')
+ID_EXPIRED_IN = _('expired in')

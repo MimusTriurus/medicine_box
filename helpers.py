@@ -10,8 +10,7 @@ from constants import *
 def time_is_over(date_str: str) -> bool:
     date = datetime.strptime(date_str, DATE_FORMAT)
     current_date = datetime.now()
-    return True
-    return current_date > date
+    return current_date >= date
 
 
 def make_table(items, record_click_callback=None, prefix='') -> list:
@@ -29,6 +28,3 @@ def make_table(items, record_click_callback=None, prefix='') -> list:
         data.append(record)
     return data
 
-
-def make_expired_drug_message(drug):
-    return f'Drug {drug[2]} is expired in {drug[3]}'
