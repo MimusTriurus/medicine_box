@@ -54,7 +54,12 @@ async def request_del_drug_handler(message: types.Message, dialog_manager: Dialo
     await sql_set_lang(message.from_user.id, lang)
     records = await sql_get_drugs(message.from_user.id)
     if records:
-        del_actual_drugs_table.buttons = make_table(records, del_actual_drug_from_db, ICON_CROSS_MARK)
+        del_actual_drugs_table.buttons = make_table(
+            records,
+            lang,
+            del_actual_drug_from_db,
+            ICON_CROSS_MARK
+        )
         start_data = {LANG: lang}
         await dialog_manager.start(FSMDelDrugs.drugs, mode=StartMode.RESET_STACK, data=start_data)
         dialog_manager.current_context().dialog_data[LANG] = lang
@@ -134,7 +139,12 @@ async def request_view_first_aid_kit(message: types.Message, dialog_manager: Dia
     await sql_set_lang(message.from_user.id, lang)
     records = await sql_get_drugs(message.from_user.id)
     if records:
-        view_actual_drugs_table.buttons = make_table(records, None, ICON_INFO)
+        view_actual_drugs_table.buttons = make_table(
+            records,
+            lang,
+            None,
+            ICON_INFO
+        )
         start_data = {LANG: lang}
         await dialog_manager.start(FSMViewDrugs.drugs, mode=StartMode.RESET_STACK, data=start_data)
     else:
@@ -152,7 +162,12 @@ async def request_view_first_aid_kit_expired(message: types.Message, dialog_mana
     await sql_set_lang(message.from_user.id, lang)
     records = await sql_get_drugs(message.from_user.id, KEY_TABLE_AID_KIT_EXPIRED)
     if records:
-        expired_drugs_table.buttons = make_table(records, del_expired_drug_from_db, ICON_CROSS_MARK)
+        expired_drugs_table.buttons = make_table(
+            records,
+            lang,
+            del_expired_drug_from_db,
+            ICON_CROSS_MARK
+        )
         start_data = {LANG: lang}
         await dialog_manager.start(FSMExpiredDrugs.drugs, mode=StartMode.RESET_STACK, data=start_data)
     else:

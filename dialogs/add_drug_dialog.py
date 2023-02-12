@@ -13,7 +13,7 @@ from localization.string_builder import (
     make_drug_added_message,
     make_add_drug_name_message,
     make_add_drug_date_message,
-    make_cancel_btn_title
+    make_cancel_btn_title, make_month_title
 )
 from states.state_add_drug import FSMAddDrug
 from ui import make_main_menu
@@ -50,24 +50,24 @@ async def on_expired_date_selected(
         selected_date: date
 ):
     mess = c.message
+    lang = c.from_user.language_code
     dd = manager.current_context().dialog_data
     drug_name = dd[KEY_NAME]
-    drug_date = selected_date
-    dd[KEY_DATE] = drug_date.strftime(DATE_FORMAT)
+    dd[KEY_DATE] = selected_date.strftime(DATE_FORMAT)
+    date_title = f'{make_month_title(selected_date.month, lang)} {selected_date.year}'
     user_id = mess.chat.id
     current_date = date.today()
-    lang = c.from_user.language_code
     if current_date > selected_date:
         await sql_add_drug(user_id, dd, KEY_TABLE_AID_KIT_EXPIRED)
         await mess.reply(
-            make_drug_is_expired_message(lang, drug_name, dd[KEY_DATE]),
+            make_drug_is_expired_message(lang, drug_name, date_title),
             parse_mode=ParseMode.HTML,
             reply_markup=make_main_menu(lang)
         )
     else:
         await sql_add_drug(user_id, dd)
         await mess.reply(
-            make_drug_added_message(lang, drug_name, dd[KEY_DATE]),
+            make_drug_added_message(lang, drug_name, date_title),
             parse_mode=ParseMode.HTML,
             reply_markup=make_main_menu(lang)
         )

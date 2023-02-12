@@ -5,6 +5,7 @@ from aiogram_dialog.widgets.text import Const
 from tabulate import tabulate
 
 from constants import *
+from localization.string_builder import make_month_title
 
 
 def time_is_over(date_str: str) -> bool:
@@ -13,13 +14,14 @@ def time_is_over(date_str: str) -> bool:
     return current_date >= date
 
 
-def make_table(items, record_click_callback=None, prefix='') -> list:
+def make_table(items, lang: str, record_click_callback=None, prefix='') -> list:
     data = list()
     for item in items:
         btn_id = item[KEY_ID]
         name = item[KEY_NAME]
-        date = item[KEY_DATE]
-        title = f'{prefix}    {name}  {date}'
+        date = datetime.strptime(item[KEY_DATE], DATE_FORMAT).date()
+        date_title = f'{make_month_title(date.month, lang)} {date.year}'
+        title = f'{prefix}    {name}  {date_title}'
         record = Button(
             Const(title),
             id=str(btn_id),
