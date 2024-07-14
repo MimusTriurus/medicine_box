@@ -2,11 +2,12 @@ from typing import Optional, Tuple
 
 from databases import Database
 
-from config import DB_URL
+from config import DB_URL, DRUGS_DB_URL
 from constants import *
 from helpers import time_is_over
 
 database = Database(DB_URL)
+drugs_db = Database(DRUGS_DB_URL)
 
 
 async def sql_start():
@@ -24,7 +25,8 @@ async def sql_start():
             {KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,
             {KEY_USER_ID} INTEGER NOT NULL,
             {KEY_NAME} TEXT NOT NULL,
-            {KEY_DATE} TIMESTAMP NOT NULL
+            {KEY_DATE} TIMESTAMP NOT NULL,
+            {KEY_DRUG_ID} INTEGER
         )
     ''')
 
@@ -106,19 +108,20 @@ async def sql_check_expired_drugs():
 
 
 async def sql_add_drug(user_id: int, data: dict, table: str = KEY_TABLE_AID_KIT):
-    # async with state.proxy() as data:
     record = {
         KEY_ID: None,
         KEY_USER_ID: user_id,
         KEY_NAME: data[KEY_NAME],
-        KEY_DATE: data[KEY_DATE]
+        KEY_DATE: data[KEY_DATE],
+        KEY_DRUG_ID: data[KEY_DRUG_ID]
     }
     await database.execute(
         f'''INSERT INTO {table} VALUES (
             :{KEY_ID},
             :{KEY_USER_ID},
             :{KEY_NAME},
-            :{KEY_DATE}
+            :{KEY_DATE},
+            :{KEY_DRUG_ID}
         )''',
         record
     )

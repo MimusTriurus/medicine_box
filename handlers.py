@@ -7,7 +7,7 @@ from aiogram.dispatcher.filters.state import StatesGroup, State
 from aiogram.types import CallbackQuery
 from aiogram_dialog import DialogManager, StartMode
 from aiogram_dialog.widgets.kbd import Button
-from aiogram_dialog.widgets.text import Const
+from aiogram_dialog.widgets.text import Const, Jinja
 
 from components import dp
 from db_management import sql_get_drugs, sql_add_user, sql_del_drugs, sql_set_lang
@@ -111,8 +111,7 @@ async def request_set_drug_id_4_del_handler(message: types.Message, state: FSMCo
 
 
 async def go_clicked(c: CallbackQuery, button: Button, manager: DialogManager):
-    # await c.message.answer("Going on!")
-    print(button.widget_id)
+    await c.message.answer("<b>123</b>123", parse_mode="HTML")
 
 
 async def del_actual_drug_from_db(c: CallbackQuery, button: Button, manager: DialogManager):

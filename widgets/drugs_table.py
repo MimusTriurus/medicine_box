@@ -46,14 +46,16 @@ class DrugsTable(Group):
         prev_page = max(0, current_page - 1)
         pager = [[
             InlineKeyboardButton(
-                text=ICON_TO_LEFT, callback_data=self._item_callback_data(prev_page),
+                text=ICON_TO_LEFT,
+                callback_data=self._item_callback_data(prev_page),
             ),
             InlineKeyboardButton(
                 text=f'{str(current_page + 1)}/{pages}',
                 callback_data=self._item_callback_data(current_page),
             ),
             InlineKeyboardButton(
-                text=ICON_TO_RIGHT, callback_data=self._item_callback_data(next_page),
+                text=ICON_TO_RIGHT,
+                callback_data=self._item_callback_data(next_page),
             ),
         ]]
         page_offset = current_page * self.height

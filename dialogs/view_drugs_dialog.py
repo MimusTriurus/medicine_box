@@ -1,8 +1,11 @@
 from aiogram_dialog import Dialog, Window
 
 from constants import TABLE_HEIGHT
-from localization.string_builder import make_actual_drugs_table_title, \
-    make_del_actual_drugs_table_title, make_expired_drugs_table_title
+from localization.string_builder import (
+    make_actual_drugs_table_title,
+    make_del_actual_drugs_table_title,
+    make_expired_drugs_table_title
+)
 from states.state_drugs import FSMViewDrugs, FSMDelDrugs, FSMExpiredDrugs
 from widgets.drugs_table import DrugsTable
 from widgets.localized_text import LocalizedText

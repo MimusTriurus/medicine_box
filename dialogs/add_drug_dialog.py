@@ -6,8 +6,9 @@ from aiogram_dialog.manager.protocols import ManagedDialogAdapterProto
 from aiogram_dialog.widgets.input import MessageInput
 from aiogram_dialog.widgets.kbd import Cancel
 
-from constants import KEY_DATE, KEY_NAME, KEY_TABLE_AID_KIT_EXPIRED, DATE_FORMAT
+from constants import KEY_DATE, KEY_NAME, KEY_TABLE_AID_KIT_EXPIRED, DATE_FORMAT, KEY_ID, KEY_DRUG_ID
 from db_management import sql_add_drug
+from drugs_db_management import sql_get_drug_info_by_title
 from localization.string_builder import (
     make_drug_is_expired_message,
     make_drug_added_message,
@@ -65,6 +66,11 @@ async def on_expired_date_selected(
             reply_markup=make_main_menu(lang)
         )
     else:
+        drug_info = await sql_get_drug_info_by_title(drug_name.lower())
+        drug_id = None
+        if drug_info:
+            drug_id = drug_info[KEY_ID]
+        dd[KEY_DRUG_ID] = drug_id
         await sql_add_drug(user_id, dd)
         await mess.reply(
             make_drug_added_message(lang, drug_name, date_title),

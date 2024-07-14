@@ -35,6 +35,8 @@ KEY_TABLE_USERS = 'users'
 KEY_TABLE_AID_KIT = 'aid_kit'
 KEY_TABLE_AID_KIT_EXPIRED = 'aid_kit_expired'
 
+KEY_DRUG_ID = 'drug_id'
+
 IDX_ID = 0
 IDX_USR_ID = 1
 IDX_NAME = 2
