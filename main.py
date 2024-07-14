@@ -9,6 +9,7 @@ from jinja2 import Template
 from werkzeug import serving
 import ssl
 
+from config import WEBAPP_PORT
 from db_management import sql_start, sql_stop
 from drugs_db_management import (
     sql_drugs_db_connect,

@@ -1,10 +1,14 @@
-version: '3.7'
+version: '3.3'
 
 services:
   bot:
     container_name: tg_bot
     build: .
+    ports:
+      - "8000:8000"
     volumes:
       - ./bot/logs/:/app/bot/logs
     environment:
-      WEBAPP_PORT: 80
+      WEBAPP_PORT: 8000
+    env_file:
+      - ./vault.env
