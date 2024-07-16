@@ -4,8 +4,6 @@ services:
   bot:
     container_name: tg_bot
     build: .
-    ports:
-      - "8000:8000"
     volumes:
       - ./bot/logs/:/app/bot/logs
     environment:
