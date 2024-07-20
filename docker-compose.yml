@@ -2,7 +2,7 @@ version: '3.3'
 
 services:
   bot:
-    container_name: tg_bot
+    container_name: bot
     build: .
     volumes:
       - ./bot/logs/:/app/bot/logs
@@ -10,4 +10,22 @@ services:
       WEBAPP_PORT: 8000
     env_file:
       - ./vault.env
-    network_mode: host
+    ports:
+      - "8000:8000"
+    networks:
+      - main
+
+  nginx:
+    image: nginx:1.13.7
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - bot
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+    networks:
+      - main
+
+networks:
+  main:

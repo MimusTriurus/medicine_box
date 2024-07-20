@@ -1,6 +1,8 @@
 import logging
 import os
 
+import waitress
+
 from aiogram import Dispatcher
 from aiogram.utils import executor
 from aiogram.utils.executor import start_polling
@@ -101,4 +103,4 @@ if __name__ == '__main__':
     bot_process = Process(target=bot_start_polling)
     bot_process.start()
 
-    serving.run_simple('0.0.0.0', 8000, app)#, ssl_context='adhoc')
+    waitress.serve(app, host='0.0.0.0', port=WEBAPP_PORT)
