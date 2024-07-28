@@ -1,35 +1,28 @@
+import json
 import logging
-import os
-
-import waitress
+from multiprocessing import Process
 
 from aiogram import Dispatcher
-from aiogram.utils import executor
 from aiogram.utils.executor import start_polling
 from aiogram_dialog import DialogRegistry
+from flask import Flask, request, render_template, Response
 from jinja2 import Template
-from werkzeug import serving
-import ssl
 
-from config import WEBAPP_PORT
+from config import WEBAPP_PORT, IS_IT_PROD
 from db_management import sql_start, sql_stop
+from dialogs.add_drug_dialog import add_drug_dialog
+from dialogs.view_drugs_dialog import view_actual_drugs_dialog, del_actual_drugs_dialog, view_expired_drugs_dialog
 from drugs_db_management import (
     sql_drugs_db_connect,
     sql_get_drug_info_by_id,
     sql_drugs_db_stop,
-    KEY_URL,
     KEY_TITLE,
     KEY_DESC,
     KEY_CONTRA,
-    KEY_GROUP
+    KEY_GROUP, sql_get_drug_info_candidates
 )
-from dialogs.add_drug_dialog import add_drug_dialog
-from dialogs.view_drugs_dialog import view_actual_drugs_dialog, del_actual_drugs_dialog, view_expired_drugs_dialog
 from expired_drugs_checker import scheduler, check_every_day
 from handlers import *
-
-from multiprocessing import Process
-from flask import Flask, request
 
 log = logging.getLogger()
 app = Flask(import_name=__name__)
@@ -98,9 +91,30 @@ async def start():
     return f'<h1>Web Application for telegram bot</h1><br>Work in progress...'
 
 
+@app.get(rule='/add_drug')
+async def add_drug():
+    return render_template("search.html", context=['123'])
+    #return render_template("test.html")
+
+
+@app.route('/edit', methods=['GET', 'POST'])
+async def edit():
+    result = []
+    for drug_title in request.form:
+        if len(drug_title) > 1:
+            for r in await sql_get_drug_info_candidates(drug_title):
+                result.append(r[0])
+    return Response(json.dumps(result), mimetype='application/json')
+
+
 if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO)
     bot_process = Process(target=bot_start_polling)
     bot_process.start()
 
-    waitress.serve(app, host='0.0.0.0', port=WEBAPP_PORT)
+    if IS_IT_PROD:
+        import waitress
+        waitress.serve(app, host='0.0.0.0', port=WEBAPP_PORT)
+    else:
+        from werkzeug import serving
+        serving.run_simple('0.0.0.0', WEBAPP_PORT, app, ssl_context='adhoc')

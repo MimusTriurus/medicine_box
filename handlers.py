@@ -142,7 +142,7 @@ async def request_view_first_aid_kit(message: types.Message, dialog_manager: Dia
             records,
             lang,
             None,
-            ICON_INFO
+            # ICON_INFO
         )
         start_data = {LANG: lang}
         await dialog_manager.start(FSMViewDrugs.drugs, mode=StartMode.RESET_STACK, data=start_data)
