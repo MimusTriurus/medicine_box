@@ -6,7 +6,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js"
             integrity="sha512-57oZ/vW8ANMjR/KQ6Be9v/+/h6bq9/l3f0Oc7vn6qMqyhvPd1cvKBRWWpzu0QoneImqr2SkmO4MSqU+RpHom3Q=="
             crossorigin="anonymous" referrerpolicy="no-referrer">
-
     </script>
 
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
@@ -19,14 +18,13 @@
             document.documentElement.className = Telegram.WebApp.colorScheme;
         }
 
-        Telegram.WebApp.onEvent('themeChanged', setThemeClass);
-        setThemeClass();
-
+        //Telegram.WebApp.onEvent('themeChanged', setThemeClass);
+        //setThemeClass();
     </script>
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/datepicker.css')}}"/>
-
+    <!--
     <style>
         body {
             --bg-color: var(--tg-theme-bg-color, #fff);
@@ -373,6 +371,7 @@
             margin: 4px 0;
         }
     </style>
+    -->
 </head>
 
 <body>
@@ -381,10 +380,11 @@
     <section id="top_sect" class="second">
         <!--<button id="main_btn" onclick="DemoApp.sendMessage('');">Send «Hello, World!»</button>-->
         <div class="input-group">
-        <span class="input-group-addon">
-            <i class="glyphicon glyphicon-text-color"></i>
-        </span>
+            <span class="input-group-addon">
+                <i class="glyphicon glyphicon-text-color"></i>
+            </span>
             <input id="medicine_name" class="form-control" placeholder="Enter the name of the medicine" value="евр"/>
+            <input type="month"/>
         </div>
 
         <div class="input-group">
@@ -408,15 +408,14 @@
         SettingsButton: Telegram.WebApp.SettingsButton,
 
         init(options) {
-            console.log('!!!')
-            console.log(this.initData)
-            console.log(this.initDataUnsafe)
             document.body.style.visibility = ''
             Telegram.WebApp.ready()
             Telegram.WebApp.MainButton.setParams({
                 text: 'Submit',
                 is_visible: true
-            }).onClick(DemoApp.close)
+            }).onClick(function () {
+                Telegram.WebApp.sendData('!!!')
+            });
             Telegram.WebApp.BackButton.onClick(function () {
                 DemoApp.showAlert('Back button pressed')
             })

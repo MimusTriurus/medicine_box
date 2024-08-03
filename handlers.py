@@ -175,3 +175,10 @@ async def request_view_first_aid_kit_expired(message: types.Message, dialog_mana
             parse_mode=types.ParseMode.HTML,
             reply_markup=make_main_menu(lang)
         )
+
+
+# @dp.message_handler(content_types="web_app_data")  # получаем отправленные данные
+@dp.message_handler(content_types=types.message.ContentTypes.WEB_APP_DATA)
+def answer(webAppMes):
+    print(webAppMes)  # вся информация о сообщении
+    print(webAppMes.web_app_data.data)  # конкретно то что мы передали в бота
