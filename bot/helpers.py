@@ -4,9 +4,9 @@ from aiogram_dialog.widgets.kbd import Button
 from aiogram_dialog.widgets.kbd.button import WebApp
 from aiogram_dialog.widgets.text import Const
 
+# from webapp.drugs_db_management import KEY_DRUG_ID
 from config import WEBAPP_DOMAIN
 from constants import *
-from localization.string_builder import make_month_title
 
 
 def time_is_over(date_str: str) -> bool:
@@ -29,11 +29,11 @@ def make_table(items, lang: str, record_click_callback=None, prefix='') -> list:
             id=str(btn_id),
             on_click=record_click_callback
         )
-        #
+        '''
         if len(item) == 5:
             drug_id = item[4]
             record = WebApp(Const(title), url=Const(f'https://{WEBAPP_DOMAIN}/get_drug_info?{KEY_DRUG_ID}={drug_id}'))
-
+        '''
         data.append(record)
     return data
 

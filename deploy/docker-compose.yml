@@ -1,5 +1,6 @@
 ---
 services:
+
   init-dhparams:
     image: docker.io/certbot/certbot
     restart: "no"
@@ -51,20 +52,26 @@ services:
     volumes:
       - cert_volume:/etc/letsencrypt:Z
       - acme_challenge:/usr/share/nginx/html/.well-known:Z
-
+  
   bot:
     container_name: bot
-    build: .
-    profiles: ["bot"]
+    build: ../bot
+    profiles: [ "bot" ]
     volumes:
-      - ./bot/logs/:/app/bot/logs
-      - ./db/:/app/db
+      - ./../db/:/app/db
+    env_file:
+      - ./../bot/vault.env
+
+  webapp:
+    container_name: webapp
+    build: ../webapp
+    profiles: [ "webapp" ]
+    volumes:
+      - ./../db/:/app/db
     environment:
       WEBAPP_PORT: 8000
     env_file:
-      - ./vault.env
-    ports:
-      - "8000:8000"
+      - ./../webapp/vault.env
 
 volumes:
   cert_volume: {}
@@ -74,7 +81,7 @@ configs:
   nginx-defaultserver:
     content: |
       upstream back {
-        server bot:8000;
+        server webapp:8000;
       }
 
       server {
@@ -111,5 +118,4 @@ configs:
           root /usr/share/nginx/html;
           internal;
         }
-
       }

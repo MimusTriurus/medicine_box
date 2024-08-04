@@ -1,0 +1,23 @@
+---
+services:
+  bot:
+    container_name: bot
+    build: ../bot
+    profiles: [ "bot" ]
+    volumes:
+      - ./../db/:/app/db
+    env_file:
+      - ./../bot/vault.env
+
+  webapp:
+    container_name: webapp
+    build: ../webapp
+    profiles: [ "webapp" ]
+    ports:
+      - 8000:8000
+    volumes:
+      - ./../db/:/app/db
+    environment:
+      WEBAPP_PORT: 8000
+    env_file:
+      - ./../webapp/vault.env

@@ -1,12 +1,14 @@
 from databases import Database
 from config import DRUGS_DB_URL
-from constants import *
+
+IDX_NAME = 2
 
 KEY_ID = 'id'
 KEY_URL = 'url'
 KEY_TITLE = 'title'
 KEY_RU_TITLE = 'ru_title'
 KEY_EN_TITLE = 'en_title'
+KEY_DRUG_ID = 'drug_id'
 KEY_GROUP = 'drug_group'
 KEY_DESC = 'desc'
 KEY_CONTRA = 'contra'

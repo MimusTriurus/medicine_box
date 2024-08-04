@@ -2,12 +2,11 @@ from typing import Optional, Tuple
 
 from databases import Database
 
-from config import DB_URL, DRUGS_DB_URL
+from config import DB_URL
 from constants import *
 from helpers import time_is_over
 
 database = Database(DB_URL)
-drugs_db = Database(DRUGS_DB_URL)
 
 
 async def sql_start():
