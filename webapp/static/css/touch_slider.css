@@ -1,0 +1,133 @@
+.mailbox {
+  margin-top: 0;
+  margin-bottom: 0;
+  padding-left: 0;
+  list-style: none;
+
+  border: 1px solid #666;
+  font-size: 0.8rem;
+  font-family: sans-serif;
+}
+
+.mailbox__item:not(:last-child) {
+  border-bottom: 1px solid #666;
+}
+
+.swipe-box {
+  --swipebox-height: 125px;
+  height: var(--swipebox-height);
+  overflow: hidden;
+}
+
+.swipe-box__scroller {
+  display: grid;
+  grid-template-columns: repeat(3, 100%);
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.swipe-box__item {
+  height: var(--swipebox-height);
+}
+
+@supports (scroll-snap-type: x mandatory) {
+  .swipe-box__scroller {
+    scroll-snap-type: x mandatory;
+  }
+  
+  .swipe-box__item {
+    scroll-snap-stop: always;
+    scroll-snap-align: center;
+  }
+}
+
+@supports (scroll-snap-points-x: repeat(100%)) and (not (scroll-snap-type: x mandatory)) {
+  .swipe-box__scroller {
+    scroll-snap-type: mandatory;
+    scroll-snap-points-x: repeat(100%);
+  }
+}
+
+.mail {
+  height: 100%;
+  padding: 12px;
+}
+
+.mail__subject {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: bold;
+}
+
+.mail__excerpt {
+  max-height: 3em;
+  overflow: hidden;
+  color: #666;
+}
+
+.mail-action {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  padding: 24px;
+  background-color: var(--mail-action-color);
+}
+
+.mail-action--delete {
+  justify-content: flex-start;
+  --mail-action-color: tomato;
+}
+
+.mail-action--archive {
+  justify-content: flex-end;
+  --mail-action-color: aquamarine;
+}
+
+.mail-action-button:focus {
+  outline: 3px solid var(--focus-color);
+  outline-offset: -3px;
+}
+
+/*
+Basic styles for everything else
+*/
+
+:root {
+  --interactive-color: yellow;
+  --focus-color: dodgerblue;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 1.25em;
+  font-family: serif;
+  line-height: 1.5;
+}
+
+body {
+  max-width: 600px;
+  margin: 3vh auto;
+  padding-right: 6px;
+  padding-left: 6px;
+}
+
+h1 {
+  margin-top: 0;
+}
+
+button {
+  color: inherit;
+  background-color: #fff;
+  font: inherit;  
+}
+
+:focus {
+  outline: 3px solid var(--focus-color);
+}

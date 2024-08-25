@@ -1,0 +1,73 @@
+<!doctype html>
+<html>
+<head>
+    <title>{{ title }}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x"
+          crossorigin="anonymous">
+    <link rel="stylesheet"
+          type="text/css"
+          href="https://cdn.datatables.net/1.10.25/css/dataTables.bootstrap5.css">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/responsive_table.css')}}"/>
+
+    <script src="https://telegram.org/js/telegram-web-app.js?2"></script>
+</head>
+<body>
+
+<div class="container">
+    <h1>{{ title }}</h1>
+    <hr>
+    <table id="data" class="table table-striped table-mobile-responsive table-mobile-sided">
+        <tbody>
+        {% for drug in drugs %}
+        <tr>
+            <td>{{ drug.title }}</td>
+            <td>{{ drug.date }}</td>
+            <td>
+                <a href="{{ url_for('get_drug_info', drug_id=drug.id) }}">Info</a>
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script>
+<script type="text/javascript" charset="utf8"
+        src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap5.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous">
+</script>
+
+<script>
+    Telegram.WebApp.ready();
+
+    Telegram.WebApp.MainButton.setParams({
+        text: 'Submit',
+        is_visible: true
+    })
+
+    $(document).ready(function () {
+        console.log('READY');
+        /*
+        console.log()
+        $.ajax({
+            url: "{{ url_for('test') }}",
+            type: "POST",
+            data: { key: "{{ key }}" },
+            dataType: 'html',
+            success: function (response) {
+                console.log('success')
+            },
+            error: function (xhr, textStatus, error) {
+                console.error(error)
+            }
+        });
+        */
+    });
+</script>
+</body>
+</html>

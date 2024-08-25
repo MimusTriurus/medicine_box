@@ -5,3 +5,5 @@ WEBAPP_PORT = int(os.getenv('WEBAPP_PORT', default=8000))
 WEBAPP_DOMAIN = os.getenv('BASE_DOMAIN')
 
 IS_IT_PROD = os.getenv('IS_IT_PROD', default=False)
+
+PASSWORD = os.getenv('PASSWORD')

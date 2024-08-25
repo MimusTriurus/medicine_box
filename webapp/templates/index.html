@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- prod -->
+    <!--
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css')}}"/>
+    <script src="{{ url_for('static', filename='js/index.js')}}"></script>
+    -->
+    <!-- local -->
+    <link rel="stylesheet" href="../static/css/index.css"/>
+    <link rel="stylesheet" href="../static/css/list.css"/>
+    <link rel="stylesheet" href="../static/css/touch_slider.css"/>
+
+    <script src="../static/js/index.js"></script>
+    <script src="../static/js/touch_slider.js"></script>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+</head>
+<body>
+<input type="radio" id="one" name="buttons" checked onclick="updateValue('one');">
+<label for="one" class="icons non_expired"><span class="glyphicon glyphicon-plus-sign"></span></label>
+
+<input type="radio" id="two" name="buttons">
+<label for="two" class="icons expired"><span class="glyphicon glyphicon-exclamation-sign"></span></label>
+
+
+<div id="content">
+	<nav class="accordion arrows">
+        <div>
+            <input type="radio" name="accordion" id="cb1"></input>
+            <section class="box">
+                <label class="box-title" for="cb1">
+                    <span>Aspirin111111111111111111111111111111111111111111111111111111111111111111111111111</span>
+                    <span style="white-space: pre-line">December 2024</span>
+                </label>
+                <label class="box-close" for="acc-close"></label>
+                <div class="box-content">
+                    Click on an item to open. Click on its header or the list header to close.
+                    Click on an item to open. Click on its header or the list header to close.
+                    Click on an item to open. Click on its header or the list header to close.
+                    Click on an item to open. Click on its header or the list header to close.
+                    Click on an item to open. Click on its header or the list header to close.
+                    Click on an item to open. Click on its header or the list header to close.
+                    Click on an item to open. Click on its header or the list header to close.
+                </div>
+            </section>
+        </div>
+		<input type="radio" name="accordion" id="acc-close" />
+	</nav>
+
+    <div id="box">
+
+    </div>
+</div>
+
+<div id="body">
+
+</div>
+
+<span class="title non_expired">Non-expired</span>
+<span class="title expired">Expired</span>
+
+<div class="border"></div>
+<div class="effect"></div>
+</body>
+</html>

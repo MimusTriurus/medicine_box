@@ -1,0 +1,172 @@
+:root {
+    --non-expired-color: rgb(97, 218, 157);
+    --expired-color:orangered;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    overflow: hidden;
+    padding: 0;
+}
+
+#body {
+    transition: background ease .5s;
+    position: absolute;
+    width: 300vw;
+    height: 300vh;
+    top: 0;
+    left: 0;
+    background-color: var(--non-expired-color);
+}
+
+input {
+    display: none;
+}
+
+label.icons {
+    transition: transform ease .5s, color ease .5s;
+    font-size: 25px;
+    position: absolute;
+    z-index: 3;
+    color: rgb(155, 143, 143);
+    left: 50%;
+    bottom: -10px;
+    transform: translate(-50%, 0%);
+}
+
+label.non_expired {
+    transform: translate(-90px, -10px);
+}
+
+label.expired {
+    transform: translate(70px, -10px);
+}
+
+div#box {
+    z-index: 1;
+    width: 100%;
+    height: 50px;
+    background-color: white;
+    box-shadow: 0px 1px 2px black;
+    position: absolute;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    bottom:0%;
+    left: 50%;
+    transform: translate(-50%, 0%);
+    border: 1px solid white;
+}
+
+div#content {
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    box-shadow: 0px 1px 2px black;
+    position: absolute;
+    top: 0px;
+    left: 50%;
+    transform: translate(-50%, 0%);
+    border: 1px solid black;
+
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+span.title {
+    transition: color .5s, transform .5s, opacity .5s;
+    font-size: 13px;
+    position: absolute;
+    z-index: 2;
+    color: rgb(155, 143, 143);
+    left: 50%;
+    bottom: 5px;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+}
+
+span.non_expired {
+    transform: translate(-90px, 0px);
+}
+
+span.expired {
+    transform: translate(40px, 0px);
+}
+
+#one:checked ~ label.non_expired {
+    transform: translate(-86px, -45px);
+    color: var(--non-expired-color);
+}
+
+#two:checked ~ label.expired {
+    transform: translate(70px, -48px);
+    color: var(--expired-color);
+}
+
+#one:checked ~ span.non_expired {
+    color: var(--non-expired-color);
+    opacity: 1;
+    transform: translate(-110px, 0px);
+}
+
+#two:checked ~ span.expired {
+    color: var(--expired-color);;
+    opacity: 1;
+    transform: translate(63px, 0px);
+}
+
+#one:checked ~ div#body {
+    background-color: var(--non-expired-color);
+}
+
+#two:checked ~ div#body {
+    background-color: var(--expired-color);
+}
+
+div.border {
+    position: absolute;
+
+    z-index: 2;
+    bottom: -15px;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: 6px solid var(--non-expired-color);
+    width: 45px;
+    height: 45px;
+    background-color: white;
+    transition: border .5s, transform .5s, border-radius .3s;
+}
+
+div.fst {
+    transform: translate(-144px, -75px);
+}
+
+#one:checked ~ div.border {
+    border: 6px solid var(--non-expired-color);
+    transform: translate(-95px, -55px);
+    border-radius: 0%;
+}
+
+#two:checked ~ div.border {
+    border: 6px solid var(--expired-color);;
+    transform: translate(58px, -55px);
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+}
+
+div.effect {
+    position: absolute;
+    top: 95%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+}
+
+
+span {
+    cursor: pointer
+}

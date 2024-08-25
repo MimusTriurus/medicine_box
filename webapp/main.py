@@ -1,9 +1,11 @@
 import json
 import logging
 
+from cryptography.fernet import Fernet
 from flask import Flask, request, render_template, Response
 from jinja2 import Template
 
+from config import IS_IT_PROD, WEBAPP_PORT, PASSWORD
 from drugs_db_management import (
     KEY_GROUP,
     KEY_DESC,
@@ -14,7 +16,6 @@ from drugs_db_management import (
     sql_get_drug_info_by_id,
     sql_get_drug_info_candidates
 )
-from config import IS_IT_PROD, WEBAPP_PORT
 
 log = logging.getLogger()
 app = Flask(import_name=__name__)
@@ -22,7 +23,7 @@ app = Flask(import_name=__name__)
 
 def make_drug_info_page(drug_data: dict) -> str:
     try:
-        with open('../webapp/templates/DrugInfoTemplate.html', 'r', encoding='utf-8') as f:
+        with open('templates/drug_info.html', 'r', encoding='utf-8') as f:
             template_data = f.read()
             template = Template(template_data)
             return template.render(
@@ -37,7 +38,7 @@ def make_drug_info_page(drug_data: dict) -> str:
 
 @app.get(rule='/')
 async def start():
-    return f'<h1>Web Application for telegram bot</h1><br>Work in progress...'
+    return render_template('index.html')
 
 
 @app.get(rule='/get_drug_info')
@@ -50,17 +51,51 @@ async def get_drug_info():
 
 @app.get(rule='/add_drug')
 async def add_drug():
-    return render_template('search.html')
+    return render_template('add_drug.html')
+
+
+@app.get(rule='/non_expired_drugs')
+async def non_expired_drugs():
+    key = request.args['key'].encode()
+    cipher_suite = Fernet(PASSWORD.encode())
+    decoded_key = cipher_suite.decrypt(key)
+
+    drugs = []
+    for i in range(1, 31):
+        drugs.append(
+            {
+                'id': i,
+                'title': f'drug_{i}',
+                'date': f'{i}.01.2024'
+            }
+        )
+    return render_template('non_expired_drugs.html', title='None-expired drugs', drugs=drugs)
+
+
+def sanitize_drug_title(input_value: str) -> str:
+    output = input_value.replace('инструкция по применению', '')
+    output = output.replace('ОПИСАНИЕ', '')
+    output = output.rstrip()
+    return output
 
 
 @app.route('/edit', methods=['GET', 'POST'])
 async def edit():
-    result = []
-    for drug_title in request.form:
-        if len(drug_title) > 1:
-            for r in await sql_get_drug_info_candidates(drug_title):
-                result.append(r[0])
+    result = dict()
+    for drug_part_title in request.form:
+        if len(drug_part_title) > 1:
+            for r in await sql_get_drug_info_candidates(drug_part_title):
+                drug_title = sanitize_drug_title(r[0])
+                drug_id = r[1]
+                result[drug_title] = drug_id
     return Response(json.dumps(result), mimetype='application/json')
+
+
+@app.route('/test', methods=['GET', 'POST'])
+async def test():
+    r = request
+    print(request.data)
+    return Response()
 
 
 if __name__ == '__main__':
