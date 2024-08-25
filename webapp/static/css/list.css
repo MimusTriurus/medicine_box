@@ -1,7 +1,7 @@
 :root {
-    --item-height: 40px;
+    --item-height: 100%;
+	--item-shift: 0px;
 }
-
 
 .accordion {
 	margin: auto;
@@ -34,7 +34,8 @@ header.box {
 }
 
 .box-title {
-	width: calc(100% - 40px);
+	margin-top: 15px;
+	width: calc(100% - var(--item-shift));
 	height: var(--item-height);
 	padding: 0 20px;
 	display: inline-block;
@@ -47,15 +48,15 @@ header.box {
 }
 
 .span-title {
-	border: 1px solid red;
-	width: calc(100% - 40px);
+	width: calc(100% - var(--item-shift));
 	text-overflow: ellipsis;
 	white-space: nowrap;
 	overflow: hidden;
 }
 
 .box-content {
-	width: calc(100% - 40px);
+	border-top: 1px solid black;
+	width: calc(100% - var(--item-shift));
 	padding: 30px 20px;
 	font-size: 11pt;
 	color: rgba(0,0,0,.54);
@@ -72,11 +73,11 @@ header.box {
 }
 input:checked + .box {
 	height: auto;
-	margin: 16px 0;
+	margin: 0 0;
     box-shadow: 0 0 6px rgba(0,0,0,.16),0 6px 12px rgba(0,0,0,.32);
 }
 input:checked + .box .box-title {
-	border-bottom: 1px solid rgba(0,0,0,.18);
+	border-bottom: 0px solid rgba(0,0,0,.18);
 }
 input:checked + .box .box-content,
 input:checked + .box .box-close {
@@ -92,7 +93,7 @@ input:checked + .box .box-close {
 	content: '\203a';
 	font-size: 18pt;
 	left: 20px;
-	top: -2px;
+	top: 15px;
 	transition: transform .15s ease-in-out;
 	color: rgba(0,0,0,.54);
 }

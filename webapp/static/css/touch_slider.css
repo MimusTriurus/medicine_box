@@ -9,12 +9,12 @@
   font-family: sans-serif;
 }
 
-.mailbox__item:not(:last-child) {
+.drug__item:not(:last-child) {
   border-bottom: 1px solid #666;
 }
 
 .swipe-box {
-  --swipebox-height: 125px;
+  --swipebox-height: 100%;
   height: var(--swipebox-height);
   overflow: hidden;
 }
@@ -75,14 +75,14 @@
   background-color: var(--mail-action-color);
 }
 
-.mail-action--delete {
+.action--delete-right {
   justify-content: flex-start;
   --mail-action-color: tomato;
 }
 
-.mail-action--archive {
+.action--delete-left {
   justify-content: flex-end;
-  --mail-action-color: aquamarine;
+  --mail-action-color: tomato;
 }
 
 .mail-action-button:focus {

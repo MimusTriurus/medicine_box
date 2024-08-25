@@ -7,7 +7,11 @@
     <!-- prod -->
     <!--
     <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css')}}"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/list.css')}}"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/touch_slider.css')}}"/>
+
     <script src="{{ url_for('static', filename='js/index.js')}}"></script>
+    <script src="{{ url_for('static', filename='js/touch_slider.js')}}"></script>
     -->
     <!-- local -->
     <link rel="stylesheet" href="../static/css/index.css"/>
@@ -29,25 +33,47 @@
 
 <div id="content">
 	<nav class="accordion arrows">
-        <div>
-            <input type="radio" name="accordion" id="cb1"></input>
-            <section class="box">
-                <label class="box-title" for="cb1">
-                    <span>Aspirin111111111111111111111111111111111111111111111111111111111111111111111111111</span>
-                    <span style="white-space: pre-line">December 2024</span>
-                </label>
-                <label class="box-close" for="acc-close"></label>
-                <div class="box-content">
-                    Click on an item to open. Click on its header or the list header to close.
-                    Click on an item to open. Click on its header or the list header to close.
-                    Click on an item to open. Click on its header or the list header to close.
-                    Click on an item to open. Click on its header or the list header to close.
-                    Click on an item to open. Click on its header or the list header to close.
-                    Click on an item to open. Click on its header or the list header to close.
-                    Click on an item to open. Click on its header or the list header to close.
+
+        <div class="swipe-box">
+
+            <div class="drug__item">
+                <div class="swipe-box__scroller">
+                    <div class="swipe-box__item observe-item">
+                      <div class="mail-action action--delete-left">
+                          <span class="glyphicon glyphicon-trash"/>
+                      </div>
+                    </div>
+
+                    <div class="swipe-box__item">
+                        <input type="radio" name="accordion" id="cb1"/>
+                        <section class="box">
+                            <label class="box-title" for="cb1">
+                                <span>Aspirin</span>
+                                <br><span style="white-space: pre-line">December 2024</span>
+                            </label>
+                            <label class="box-close" for="acc-close"></label>
+                            <div class="box-content">
+                                Click on an item to open. Click on its header or the list header to close.
+                                Click on an item to open. Click on its header or the list header to close.
+                                Click on an item to open. Click on its header or the list header to close.
+                                Click on an item to open. Click on its header or the list header to close.
+                                Click on an item to open. Click on its header or the list header to close.
+                                Click on an item to open. Click on its header or the list header to close.
+                                Click on an item to open. Click on its header or the list header to close.
+                            </div>
+                        </section>
+                    </div>
+
+                    <div class="swipe-box__item observe-item">
+                      <div class="mail-action action--delete-right">
+                          <span class="glyphicon glyphicon-trash"/>
+                      </div>
+                    </div>
                 </div>
-            </section>
+            </div>
+
         </div>
+
 		<input type="radio" name="accordion" id="acc-close" />
 	</nav>
 

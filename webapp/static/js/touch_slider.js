@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', function () {
 function handler(entries, observer) {
   for (const entry of entries) {
     if (entry.intersectionRatio === 1) {
-      entry.target.closest('.mailbox__item').remove()
+      entry.target.closest('.drug__item').remove()
       observer.unobserve(entry.target);
     }
   }
