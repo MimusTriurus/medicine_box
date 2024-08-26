@@ -5,7 +5,15 @@
 
 .accordion {
 	margin: auto;
+	margin-top: 5px;
+	height: calc(100% - 55px);
+	overflow: scroll;
 }
+
+li {
+	margin: 0px 5px 5px 5px;
+}
+
 .accordion input {
 	display: none;
 }

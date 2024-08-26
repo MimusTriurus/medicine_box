@@ -8,16 +8,21 @@
     padding: 0;
 }
 
+html, body {
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+
 body {
-    overflow: hidden;
-    padding: 0;
+  height: 100vh;
+  position: relative;
 }
 
 #body {
     transition: background ease .5s;
     position: absolute;
     width: 300vw;
-    height: 300vh;
+    height: 100%;
     top: 0;
     left: 0;
     background-color: var(--non-expired-color);
@@ -53,12 +58,11 @@ div#box {
     background-color: white;
     box-shadow: 0px 1px 2px black;
     position: absolute;
-    border-bottom-left-radius: 10px;
-    border-bottom-right-radius: 10px;
     bottom:0%;
     left: 50%;
     transform: translate(-50%, 0%);
     border: 1px solid white;
+    border-top: 1px solid rgba(0, 0, 0, 0.5);
 }
 
 div#content {
@@ -71,9 +75,6 @@ div#content {
     left: 50%;
     transform: translate(-50%, 0%);
     border: 1px solid black;
-
-    border-bottom-left-radius: 10px;
-    border-bottom-right-radius: 10px;
 }
 
 span.title {
@@ -86,6 +87,7 @@ span.title {
     bottom: 5px;
     transform: translate(-50%, -50%);
     opacity: 0;
+    font-weight: bold;
 }
 
 span.non_expired {
@@ -97,12 +99,12 @@ span.expired {
 }
 
 #one:checked ~ label.non_expired {
-    transform: translate(-86px, -45px);
+    transform: translate(-85px, -31px);
     color: var(--non-expired-color);
 }
 
 #two:checked ~ label.expired {
-    transform: translate(70px, -48px);
+    transform: translate(71px, -33px);
     color: var(--expired-color);
 }
 
@@ -113,7 +115,7 @@ span.expired {
 }
 
 #two:checked ~ span.expired {
-    color: var(--expired-color);;
+    color: var(--expired-color);
     opacity: 1;
     transform: translate(63px, 0px);
 }
@@ -146,13 +148,13 @@ div.fst {
 
 #one:checked ~ div.border {
     border: 6px solid var(--non-expired-color);
-    transform: translate(-95px, -55px);
+    transform: translate(-95px, -40px);
     border-radius: 0%;
 }
 
 #two:checked ~ div.border {
     border: 6px solid var(--expired-color);;
-    transform: translate(58px, -55px);
+    transform: translate(58px, -40px);
     border-radius: 50%;
     width: 50px;
     height: 50px;

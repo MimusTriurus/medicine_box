@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
   const swipeBoxes = document.querySelectorAll('.swipe-box');
+
   swipeBoxes.forEach(swipeBox => {
     const scroller = swipeBox.querySelector('.swipe-box__scroller');
     scroller.scrollLeft += scroller.scrollWidth / 3;
@@ -20,7 +21,7 @@ document.addEventListener('DOMContentLoaded', function () {
 function handler(entries, observer) {
   for (const entry of entries) {
     if (entry.intersectionRatio === 1) {
-      entry.target.closest('.drug__item').remove()
+      entry.target.closest('.swipe-box').remove()
       observer.unobserve(entry.target);
     }
   }

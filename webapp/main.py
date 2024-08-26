@@ -38,7 +38,17 @@ def make_drug_info_page(drug_data: dict) -> str:
 
 @app.get(rule='/')
 async def start():
-    return render_template('index.html')
+    drugs = []
+    for i in range(1, 31):
+        drugs.append(
+            {
+                'id': i,
+                'title': f'drug_{i}',
+                'date': f'{i}.01.2024',
+                'element_id': f'drug_{i}',
+            }
+        )
+    return render_template('index_template.html', drugs=drugs)
 
 
 @app.get(rule='/get_drug_info')

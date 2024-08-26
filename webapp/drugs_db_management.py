@@ -28,6 +28,9 @@ async def sql_drugs_db_stop():
 
 
 async def sql_get_drug_info_by_title(drug_title: str, column: str = KEY_RU_TITLE):
+    if not drugs_db.is_connected:
+        await drugs_db.connect()
+
     record = {column: drug_title}
     result = await drugs_db.fetch_all(f'SELECT * FROM {TABLE_NAME} WHERE {column}=:{column}', record)
     result = sorted(result, key=lambda r: r[IDX_NAME], reverse=False)
@@ -37,11 +40,17 @@ async def sql_get_drug_info_by_title(drug_title: str, column: str = KEY_RU_TITLE
 
 
 async def sql_get_drug_info_candidates(drug_title: str, column: str = KEY_RU_TITLE):
+    if not drugs_db.is_connected:
+        await drugs_db.connect()
+
     result = await drugs_db.fetch_all(f"SELECT title, id FROM {TABLE_NAME} WHERE {KEY_RU_TITLE} LIKE '{drug_title}%'")
     return result
 
 
 async def sql_get_drug_info_by_id(drug_id: str):
+    if not drugs_db.is_connected:
+        await drugs_db.connect()
+
     record = {KEY_ID: drug_id}
     result = await drugs_db.fetch_all(f'SELECT * FROM {TABLE_NAME} WHERE {KEY_ID}=:{KEY_ID}', record)
     result = sorted(result, key=lambda r: r[IDX_NAME], reverse=False)

@@ -14,8 +14,10 @@
 }
 
 .swipe-box {
+  /*
   --swipebox-height: 100%;
   height: var(--swipebox-height);
+  */
   overflow: hidden;
 }
 
@@ -27,7 +29,7 @@
 }
 
 .swipe-box__item {
-  height: var(--swipebox-height);
+  /*height: var(--swipebox-height);*/
 }
 
 @supports (scroll-snap-type: x mandatory) {
