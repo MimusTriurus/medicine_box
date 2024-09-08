@@ -8,7 +8,6 @@ ul, li {
   cursor: default;
 }
 .page {
-  display: none;
   position: absolute;
   top: 0;
   left: 0;
@@ -111,15 +110,18 @@ ul, li {
 }
 #datePage {
   font-size: 22px;
-  border-radius: 3px;
-  position: fixed;
-  top: 40%;
-  MARGIN-RIGHT: auto;
-  vertical-align: middle;
-  MARGIN-LEFT: auto;
+  top: 8%;
+  /*MARGIN-RIGHT: auto;*/
+  /*vertical-align: middle;*/
+  /*MARGIN-LEFT: auto;*/
+  /*
   width: 260px;
   height: 240px;
+  */
   background: #FFFFFF;
+  /*
+  position: fixed;
+  */
   z-index: 9999999;
 }
 #datetitle {

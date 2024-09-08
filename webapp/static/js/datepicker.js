@@ -120,28 +120,28 @@
             const str = '' +
                 '<div id="dateshadow"></div>' +
                 '<div id="datePage" class="page">' +
-                '<section>' +
-                '<div id="datetitle">' +
-                    '<h5 id="datetitleheader">The expiration date of the medicine</h5>' +
-                '</div>' +
-                '<div id="datemark">' +
-                    '<a id="markyear"></a>' +
-                    '<a id="markmonth"></a>' +
-                '</div>' +
-
-                '<div id="datescroll">' +
-                    '<div id="yearwrapper">' +
-                        '<ul></ul>' +
-                    '</div>' +
-                        '<div id="monthwrapper">' +
-                            '<ul></ul>' +
+                    '<section>' +
+                        '<div id="datetitle">' +
+                            '<h5 id="datetitleheader">The expiration date of the medicine</h5>' +
                         '</div>' +
-                    '</div>' +
+                        '<div id="datemark">' +
+                            '<a id="markyear"></a>' +
+                            '<a id="markmonth"></a>' +
+                        '</div>' +
+
+                        '<div id="datescroll">' +
+                            '<div id="yearwrapper">' +
+                                '<ul></ul>' +
+                            '</div>' +
+                            '<div id="monthwrapper">' +
+                                '<ul></ul>' +
+                            '</div>' +
+                        '</div>' +
                     '</section>' +
                     '<footer id="dateFooter">' +
                         '<div id="setcancle">' +
                             '<ul>' +
-                                '<li id="dateconfirm">Confirm</li>' +
+                                '<li id="dateconfirm">Add</li>' +
                                 '<li id="datecancel">Cancel</li>' +
                             '</ul>' +
                         '</div>' +

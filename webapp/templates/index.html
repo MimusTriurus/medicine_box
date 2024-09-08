@@ -4,563 +4,45 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- prod -->
-    <!--
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css')}}"/>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/list.css')}}"/>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/touch_slider.css')}}"/>
 
-    <script src="{{ url_for('static', filename='js/index.js')}}"></script>
-    <script src="{{ url_for('static', filename='js/touch_slider.js')}}"></script>
-    -->
-    <!-- local -->
     <link rel="stylesheet" href="../static/css/index.css"/>
     <link rel="stylesheet" href="../static/css/list.css"/>
     <link rel="stylesheet" href="../static/css/touch_slider.css"/>
+    <link rel="stylesheet" href="../static/css/add_drug_modal.css"/>
 
     <script src="../static/js/index.js"></script>
     <script src="../static/js/touch_slider.js"></script>
 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <link rel="stylesheet" href="../static/css/datepicker.css"/>
+
+    <script src="../static/js/iscroll.js"></script>
+    <script src="../static/js/datepicker.js"></script>
+
+
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js"
+            integrity="sha512-57oZ/vW8ANMjR/KQ6Be9v/+/h6bq9/l3f0Oc7vn6qMqyhvPd1cvKBRWWpzu0QoneImqr2SkmO4MSqU+RpHom3Q=="
+            crossorigin="anonymous" referrerpolicy="no-referrer">
+    </script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+
+    <link rel="stylesheet" href="https://unpkg.com/flickity@2/dist/flickity.min.css">
+    <script src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js"></script>
+
 </head>
+
 <body>
 
 <div id="content">
-
-	<ul class="accordion arrows">
-
-        <li class="swipe-box">
-
-            <div class="drug__item">
-                <div class="swipe-box__scroller">
-                    <div class="swipe-box__item observe-item">
-                      <div class="mail-action action--delete-left">
-                          <span class="glyphicon glyphicon-trash"/>
-                      </div>
-                    </div>
-
-                    <div class="swipe-box__item">
-                        <input type="radio" name="accordion" id="cb1"/>
-                        <section class="box">
-                            <label class="box-title" for="cb1">
-                                <span>Aspirin</span>
-                                <br><span style="white-space: pre-line">December 2024</span>
-                            </label>
-                            <label class="box-close" for="acc-close"></label>
-                            <div class="box-content">
-                                Click on an item to open. Click on its header or the list header to close.
-                            </div>
-                        </section>
-                    </div>
-
-                    <div class="swipe-box__item observe-item">
-                      <div class="mail-action action--delete-right">
-                          <span class="glyphicon glyphicon-trash"/>
-                      </div>
-                    </div>
-                </div>
-            </div>
-        </li>
-
-        <li class="swipe-box">
-
-            <div class="drug__item">
-                <div class="swipe-box__scroller">
-                    <div class="swipe-box__item observe-item">
-                      <div class="mail-action action--delete-left">
-                          <span class="glyphicon glyphicon-trash"/>
-                      </div>
-                    </div>
-
-                    <div class="swipe-box__item">
-                        <input type="radio" name="accordion" id="cb2"/>
-                        <section class="box">
-                            <label class="box-title" for="cb2">
-                                <span>Aspirin</span>
-                                <br><span style="white-space: pre-line">December 2024</span>
-                            </label>
-                            <label class="box-close" for="acc-close"></label>
-                            <div class="box-content">
-                                Click on an item to open. Click on its header or the list header to close.
-                            </div>
-                        </section>
-                    </div>
-
-                    <div class="swipe-box__item observe-item">
-                      <div class="mail-action action--delete-right">
-                          <span class="glyphicon glyphicon-trash"/>
-                      </div>
-                    </div>
-                </div>
-            </div>
-        </li>
-
-        <li class="swipe-box">
-
-            <div class="drug__item">
-                <div class="swipe-box__scroller">
-                    <div class="swipe-box__item observe-item">
-                      <div class="mail-action action--delete-left">
-                          <span class="glyphicon glyphicon-trash"/>
-                      </div>
-                    </div>
-
-                    <div class="swipe-box__item">
-                        <input type="radio" name="accordion" id="cb3"/>
-                        <section class="box">
-                            <label class="box-title" for="cb3">
-                                <span>Aspirin</span>
-                                <br><span style="white-space: pre-line">December 2024</span>
-                            </label>
-                            <label class="box-close" for="acc-close"></label>
-                            <div class="box-content">
-                                Click on an item to open. Click on its header or the list header to close.
-                            </div>
-                        </section>
-                    </div>
-
-                    <div class="swipe-box__item observe-item">
-                      <div class="mail-action action--delete-right">
-                          <span class="glyphicon glyphicon-trash"/>
-                      </div>
-                    </div>
-                </div>
-            </div>
-        </li>
-
-        <li class="swipe-box">
-
-            <div class="drug__item">
-                <div class="swipe-box__scroller">
-                    <div class="swipe-box__item observe-item">
-                      <div class="mail-action action--delete-left">
-                          <span class="glyphicon glyphicon-trash"/>
-                      </div>
-                    </div>
-
-                    <div class="swipe-box__item">
-                        <input type="radio" name="accordion" id="cb4"/>
-                        <section class="box">
-                            <label class="box-title" for="cb4">
-                                <span>Aspirin</span>
-                                <br><span style="white-space: pre-line">December 2024</span>
-                            </label>
-                            <label class="box-close" for="acc-close"></label>
-                            <div class="box-content">
-                                Click on an item to open. Click on its header or the list header to close.
-                            </div>
-                        </section>
-                    </div>
-
-                    <div class="swipe-box__item observe-item">
-                      <div class="mail-action action--delete-right">
-                          <span class="glyphicon glyphicon-trash"/>
-                      </div>
-                    </div>
-                </div>
-            </div>
-        </li>
-
-        <li class="swipe-box">
-
-            <div class="drug__item">
-                <div class="swipe-box__scroller">
-                    <div class="swipe-box__item observe-item">
-                      <div class="mail-action action--delete-left">
-                          <span class="glyphicon glyphicon-trash"/>
-                      </div>
-                    </div>
-
-                    <div class="swipe-box__item">
-                        <input type="radio" name="accordion" id="cb5"/>
-                        <section class="box">
-                            <label class="box-title" for="cb5">
-                                <span>Aspirin</span>
-                                <br><span style="white-space: pre-line">December 2024</span>
-                            </label>
-                            <label class="box-close" for="acc-close"></label>
-                            <div class="box-content">
-                                Click on an item to open. Click on its header or the list header to close.
-                            </div>
-                        </section>
-                    </div>
-
-                    <div class="swipe-box__item observe-item">
-                      <div class="mail-action action--delete-right">
-                          <span class="glyphicon glyphicon-trash"/>
-                      </div>
-                    </div>
-                </div>
-            </div>
-        </li>
-
-        <li class="swipe-box">
-
-            <div class="drug__item">
-                <div class="swipe-box__scroller">
-                    <div class="swipe-box__item observe-item">
-                      <div class="mail-action action--delete-left">
-                          <span class="glyphicon glyphicon-trash"/>
-                      </div>
-                    </div>
-
-                    <div class="swipe-box__item">
-                        <input type="radio" name="accordion" id="cb6"/>
-                        <section class="box">
-                            <label class="box-title" for="cb6">
-                                <span>Aspirin</span>
-                                <br><span style="white-space: pre-line">December 2024</span>
-                            </label>
-                            <label class="box-close" for="acc-close"></label>
-                            <div class="box-content">
-                                Click on an item to open. Click on its header or the list header to close.
-                            </div>
-                        </section>
-                    </div>
-
-                    <div class="swipe-box__item observe-item">
-                      <div class="mail-action action--delete-right">
-                          <span class="glyphicon glyphicon-trash"/>
-                      </div>
-                    </div>
-                </div>
-            </div>
-        </li>
-
-        <li class="swipe-box">
-
-            <div class="drug__item">
-                <div class="swipe-box__scroller">
-                    <div class="swipe-box__item observe-item">
-                      <div class="mail-action action--delete-left">
-                          <span class="glyphicon glyphicon-trash"/>
-                      </div>
-                    </div>
-
-                    <div class="swipe-box__item">
-                        <input type="radio" name="accordion" id="cb7"/>
-                        <section class="box">
-                            <label class="box-title" for="cb7">
-                                <span>Aspirin</span>
-                                <br><span style="white-space: pre-line">December 2024</span>
-                            </label>
-                            <label class="box-close" for="acc-close"></label>
-                            <div class="box-content">
-                                Click on an item to open. Click on its header or the list header to close.
-                            </div>
-                        </section>
-                    </div>
-
-                    <div class="swipe-box__item observe-item">
-                      <div class="mail-action action--delete-right">
-                          <span class="glyphicon glyphicon-trash"/>
-                      </div>
-                    </div>
-                </div>
-            </div>
-        </li>
-
-        <li class="swipe-box">
-
-            <div class="drug__item">
-                <div class="swipe-box__scroller">
-                    <div class="swipe-box__item observe-item">
-                      <div class="mail-action action--delete-left">
-                          <span class="glyphicon glyphicon-trash"/>
-                      </div>
-                    </div>
-
-                    <div class="swipe-box__item">
-                        <input type="radio" name="accordion" id="cb8"/>
-                        <section class="box">
-                            <label class="box-title" for="cb8">
-                                <span>Aspirin</span>
-                                <br><span style="white-space: pre-line">December 2024</span>
-                            </label>
-                            <label class="box-close" for="acc-close"></label>
-                            <div class="box-content">
-                                Click on an item to open. Click on its header or the list header to close.
-                            </div>
-                        </section>
-                    </div>
-
-                    <div class="swipe-box__item observe-item">
-                      <div class="mail-action action--delete-right">
-                          <span class="glyphicon glyphicon-trash"/>
-                      </div>
-                    </div>
-                </div>
-            </div>
-        </li>
-
-        <li class="swipe-box">
-
-            <div class="drug__item">
-                <div class="swipe-box__scroller">
-                    <div class="swipe-box__item observe-item">
-                      <div class="mail-action action--delete-left">
-                          <span class="glyphicon glyphicon-trash"/>
-                      </div>
-                    </div>
-
-                    <div class="swipe-box__item">
-                        <input type="radio" name="accordion" id="cb9"/>
-                        <section class="box">
-                            <label class="box-title" for="cb9">
-                                <span>Aspirin</span>
-                                <br><span style="white-space: pre-line">December 2024</span>
-                            </label>
-                            <label class="box-close" for="acc-close"></label>
-                            <div class="box-content">
-                                Click on an item to open. Click on its header or the list header to close.
-                            </div>
-                        </section>
-                    </div>
-
-                    <div class="swipe-box__item observe-item">
-                      <div class="mail-action action--delete-right">
-                          <span class="glyphicon glyphicon-trash"/>
-                      </div>
-                    </div>
-                </div>
-            </div>
-        </li>
-
-        <li class="swipe-box">
-
-            <div class="drug__item">
-                <div class="swipe-box__scroller">
-                    <div class="swipe-box__item observe-item">
-                      <div class="mail-action action--delete-left">
-                          <span class="glyphicon glyphicon-trash"/>
-                      </div>
-                    </div>
-
-                    <div class="swipe-box__item">
-                        <input type="radio" name="accordion" id="cb10"/>
-                        <section class="box">
-                            <label class="box-title" for="cb10">
-                                <span>Aspirin</span>
-                                <br><span style="white-space: pre-line">December 2024</span>
-                            </label>
-                            <label class="box-close" for="acc-close"></label>
-                            <div class="box-content">
-                                Click on an item to open. Click on its header or the list header to close.
-                            </div>
-                        </section>
-                    </div>
-
-                    <div class="swipe-box__item observe-item">
-                      <div class="mail-action action--delete-right">
-                          <span class="glyphicon glyphicon-trash"/>
-                      </div>
-                    </div>
-                </div>
-            </div>
-        </li>
-
-        <li class="swipe-box">
-
-            <div class="drug__item">
-                <div class="swipe-box__scroller">
-                    <div class="swipe-box__item observe-item">
-                      <div class="mail-action action--delete-left">
-                          <span class="glyphicon glyphicon-trash"/>
-                      </div>
-                    </div>
-
-                    <div class="swipe-box__item">
-                        <input type="radio" name="accordion" id="cb11"/>
-                        <section class="box">
-                            <label class="box-title" for="cb11">
-                                <span>Aspirin</span>
-                                <br><span style="white-space: pre-line">December 2024</span>
-                            </label>
-                            <label class="box-close" for="acc-close"></label>
-                            <div class="box-content">
-                                Click on an item to open. Click on its header or the list header to close.
-                            </div>
-                        </section>
-                    </div>
-
-                    <div class="swipe-box__item observe-item">
-                      <div class="mail-action action--delete-right">
-                          <span class="glyphicon glyphicon-trash"/>
-                      </div>
-                    </div>
-                </div>
-            </div>
-        </li>
-
-        <li class="swipe-box">
-
-            <div class="drug__item">
-                <div class="swipe-box__scroller">
-                    <div class="swipe-box__item observe-item">
-                      <div class="mail-action action--delete-left">
-                          <span class="glyphicon glyphicon-trash"/>
-                      </div>
-                    </div>
-
-                    <div class="swipe-box__item">
-                        <input type="radio" name="accordion" id="cb12"/>
-                        <section class="box">
-                            <label class="box-title" for="cb12">
-                                <span>Aspirin</span>
-                                <br><span style="white-space: pre-line">December 2024</span>
-                            </label>
-                            <label class="box-close" for="acc-close"></label>
-                            <div class="box-content">
-                                Click on an item to open. Click on its header or the list header to close.
-                            </div>
-                        </section>
-                    </div>
-
-                    <div class="swipe-box__item observe-item">
-                      <div class="mail-action action--delete-right">
-                          <span class="glyphicon glyphicon-trash"/>
-                      </div>
-                    </div>
-                </div>
-            </div>
-        </li>
-
-        <li class="swipe-box">
-
-            <div class="drug__item">
-                <div class="swipe-box__scroller">
-                    <div class="swipe-box__item observe-item">
-                      <div class="mail-action action--delete-left">
-                          <span class="glyphicon glyphicon-trash"/>
-                      </div>
-                    </div>
-
-                    <div class="swipe-box__item">
-                        <input type="radio" name="accordion" id="cb13"/>
-                        <section class="box">
-                            <label class="box-title" for="cb13">
-                                <span>Aspirin</span>
-                                <br><span style="white-space: pre-line">December 2024</span>
-                            </label>
-                            <label class="box-close" for="acc-close"></label>
-                            <div class="box-content">
-                                Click on an item to open. Click on its header or the list header to close.
-                            </div>
-                        </section>
-                    </div>
-
-                    <div class="swipe-box__item observe-item">
-                      <div class="mail-action action--delete-right">
-                          <span class="glyphicon glyphicon-trash"/>
-                      </div>
-                    </div>
-                </div>
-            </div>
-        </li>
-
-        <li class="swipe-box">
-
-            <div class="drug__item">
-                <div class="swipe-box__scroller">
-                    <div class="swipe-box__item observe-item">
-                      <div class="mail-action action--delete-left">
-                          <span class="glyphicon glyphicon-trash"/>
-                      </div>
-                    </div>
-
-                    <div class="swipe-box__item">
-                        <input type="radio" name="accordion" id="cb14"/>
-                        <section class="box">
-                            <label class="box-title" for="cb14">
-                                <span>Aspirin</span>
-                                <br><span style="white-space: pre-line">December 2024</span>
-                            </label>
-                            <label class="box-close" for="acc-close"></label>
-                            <div class="box-content">
-                                Click on an item to open. Click on its header or the list header to close.
-                            </div>
-                        </section>
-                    </div>
-
-                    <div class="swipe-box__item observe-item">
-                      <div class="mail-action action--delete-right">
-                          <span class="glyphicon glyphicon-trash"/>
-                      </div>
-                    </div>
-                </div>
-            </div>
-        </li>
-
-        <li class="swipe-box">
-
-            <div class="drug__item">
-                <div class="swipe-box__scroller">
-                    <div class="swipe-box__item observe-item">
-                      <div class="mail-action action--delete-left">
-                          <span class="glyphicon glyphicon-trash"/>
-                      </div>
-                    </div>
-
-                    <div class="swipe-box__item">
-                        <input type="radio" name="accordion" id="cb15"/>
-                        <section class="box">
-                            <label class="box-title" for="cb15">
-                                <span>Aspirin</span>
-                                <br><span style="white-space: pre-line">December 2024</span>
-                            </label>
-                            <label class="box-close" for="acc-close"></label>
-                            <div class="box-content">
-                                Click on an item to open. Click on its header or the list header to close.
-                            </div>
-                        </section>
-                    </div>
-
-                    <div class="swipe-box__item observe-item">
-                      <div class="mail-action action--delete-right">
-                          <span class="glyphicon glyphicon-trash"/>
-                      </div>
-                    </div>
-                </div>
-            </div>
-        </li>
-
-        <li class="swipe-box">
-
-            <div class="drug__item">
-                <div class="swipe-box__scroller">
-                    <div class="swipe-box__item observe-item">
-                      <div class="mail-action action--delete-left">
-                          <span class="glyphicon glyphicon-trash"/>
-                      </div>
-                    </div>
-
-                    <div class="swipe-box__item">
-                        <input type="radio" name="accordion" id="cb16"/>
-                        <section class="box">
-                            <label class="box-title" for="cb16">
-                                <span>Aspirin</span>
-                                <br><span style="white-space: pre-line">December 2024</span>
-                            </label>
-                            <label class="box-close" for="acc-close"></label>
-                            <div class="box-content">
-                                Click on an item to open. Click on its header or the list header to close.
-                            </div>
-                        </section>
-                    </div>
-
-                    <div class="swipe-box__item observe-item">
-                      <div class="mail-action action--delete-right">
-                          <span class="glyphicon glyphicon-trash"/>
-                      </div>
-                    </div>
-                </div>
-            </div>
-        </li>
-
-		<input type="radio" name="accordion" id="acc-close" />
-	</ul>
-
+    <ul id="list" class="accordion arrows">
+        <input type="radio" name="accordion" id="acc-close"/>
+    </ul>
 </div>
 
 <div id="box">
@@ -568,9 +50,45 @@
 </div>
 
 <input type="radio" id="one" name="buttons" checked onclick="updateValue('one');">
-<input type="radio" id="two" name="buttons" checked onclick="updateValue('two');">
+<input type="radio" id="two" name="buttons" onclick="updateValue('two');">
 <label for="one" class="icons non_expired"><span class="glyphicon glyphicon-plus-sign"></span></label>
 <label for="two" class="icons expired"><span class="glyphicon glyphicon-exclamation-sign"></span></label>
+
+<div id="body">
+
+</div>
+
+<div id="context_panel">
+    <!--input type="button" class="trigger" id="btn" name="buttons" onclick='document.getElementById("dialogAddDrug").show();'-->
+    <input type="radio" id="btnAddDrug" onclick="open_drug_window()"/>
+    <label for="btnAddDrug" class="context_btn"><span class="glyphicon glyphicon-plus"></span></label>
+</div>
+
+<div id="control_panel">
+    <div id="dialogAddDrug" class="opened">
+        <section id="top_sect" class="second">
+            <div class="drug_name_panel">
+                <input id="medicine_name" class="form-control" placeholder="Enter the name of the medicine"/>
+            </div>
+
+            <div class="panel">
+                <div id="years_carousel" class="carousel"
+                     data-flickity='{ "freeScroll": true }'>
+                </div>
+            </div>
+
+            <div class="panel">
+                <div id="months_carousel" class="carousel"
+                     data-flickity='{ "freeScroll": true }'>
+                </div>
+            </div>
+
+            <div class="control_panel">
+                <button id="btnAdd" type="button" onclick="add_drug()">Add</button>
+            </div>
+        </section>
+    </div>
+</div>
 
 <span class="title non_expired">Non-expired</span>
 <span class="title expired">Expired</span>
@@ -578,9 +96,113 @@
 <div class="border"></div>
 <div class="effect"></div>
 
-<div id="body">
-
-</div>
-
 </body>
+
+<script>
+    function add_carousel_item(title, target) {
+        let carousel_item = document.createElement('div');
+        carousel_item.className = 'carousel-cell';
+        carousel_item.innerHTML = `
+            <label class="carousel-title">${title}</label>
+        `;
+        document.getElementById(target).appendChild(carousel_item);
+    }
+
+    let years_titles = []
+    let start_year = new Date().getFullYear();
+    for (let i = 0; i < 5; ++i) {
+        const year = start_year++;
+        years_titles.push(year)
+    }
+
+    function add_years() {
+        for (let i = 0; i < years_titles.length; ++i) {
+            add_carousel_item(years_titles[i], 'years_carousel');
+        }
+    }
+
+    const months_titles = [
+        'January',
+        'February',
+        'March',
+        'April',
+        'May',
+        'June',
+        'July',
+        'August',
+        'September',
+        'October',
+        'November',
+        'December',
+    ];
+
+    function add_months() {
+        months_titles.forEach((element) => {
+            add_carousel_item(element, 'months_carousel');
+        });
+    }
+
+    add_years();
+    add_months();
+
+    let months_carousel = document.querySelector('#months_carousel');
+    let months = new Flickity(months_carousel, {
+        accessibility: true,
+    });
+
+    let years_carousel = document.querySelector('#years_carousel');
+    let years = new Flickity(years_carousel, {
+        accessibility: true,
+    });
+
+    // test
+    document.addEventListener('DOMContentLoaded', function () {
+        for (let i = 0; i < 16; ++i) {
+            addTestDrug();
+        }
+    });
+
+    function open_transition_end() {
+        console.log("Transition 'opened' ended");
+    }
+
+    function close_transition_end() {
+        document.getElementById('control_panel').style = 'background: rgba(0, 0, 0, 0%); top: -100%';
+    }
+
+    function open_drug_window() {
+        document.getElementById('control_panel').style = 'background: rgba(0, 0, 0, 30%);';
+        document.getElementById('dialogAddDrug').className = 'opened';
+
+        const transition_opened = document.querySelector(".opened");
+        transition_opened.removeEventListener("transitionend", close_transition_end);
+        transition_opened.addEventListener("transitionend", open_transition_end);
+    }
+
+    function close_drug_window() {
+        document.getElementById('dialogAddDrug').className = 'closed';
+
+        const transition_closed = document.querySelector(".closed");
+        transition_closed.removeEventListener("transitionend", open_transition_end);
+        transition_closed.addEventListener("transitionend", close_transition_end);
+    }
+
+    function add_drug() {
+        console.log(months.selectedIndex);
+        console.log(years.selectedIndex);
+
+        close_drug_window();
+    }
+
+    $("#control_panel").click(function(){
+        close_drug_window();
+    });
+
+    $(function () {
+        $('#beginTime').focus(function () {
+            //$(this).date();
+        });
+    });
+</script>
+
 </html>

@@ -1,12 +1,5 @@
-.mailbox {
-  margin-top: 0;
-  margin-bottom: 0;
-  padding-left: 0;
-  list-style: none;
-
-  border: 1px solid #666;
-  font-size: 0.8rem;
-  font-family: sans-serif;
+.drug__item {
+  margin-bottom: 5px;
 }
 
 .drug__item:not(:last-child) {
@@ -50,86 +43,21 @@
   }
 }
 
-.mail {
-  height: 100%;
-  padding: 12px;
-}
-
-.mail__subject {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  font-weight: bold;
-}
-
-.mail__excerpt {
-  max-height: 3em;
-  overflow: hidden;
-  color: #666;
-}
-
-.mail-action {
+.drug-action {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100%;
   padding: 24px;
-  background-color: var(--mail-action-color);
+  background-color: var(--drug-action-color);
 }
 
 .action--delete-right {
   justify-content: flex-start;
-  --mail-action-color: tomato;
+  --drug-action-color: tomato;
 }
 
 .action--delete-left {
   justify-content: flex-end;
-  --mail-action-color: tomato;
-}
-
-.mail-action-button:focus {
-  outline: 3px solid var(--focus-color);
-  outline-offset: -3px;
-}
-
-/*
-Basic styles for everything else
-*/
-
-:root {
-  --interactive-color: yellow;
-  --focus-color: dodgerblue;
-}
-
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
-
-html {
-  font-size: 1.25em;
-  font-family: serif;
-  line-height: 1.5;
-}
-
-body {
-  max-width: 600px;
-  margin: 3vh auto;
-  padding-right: 6px;
-  padding-left: 6px;
-}
-
-h1 {
-  margin-top: 0;
-}
-
-button {
-  color: inherit;
-  background-color: #fff;
-  font: inherit;  
-}
-
-:focus {
-  outline: 3px solid var(--focus-color);
+  --drug-action-color: tomato;
 }
