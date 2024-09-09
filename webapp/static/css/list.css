@@ -4,10 +4,13 @@
 }
 
 .accordion {
-	margin: auto;
 	margin-top: 5px;
 	height: calc(100% - 55px);
 	overflow: scroll;
+}
+
+ul {
+	/*scrollbar-color: rgba(0, 0, 0, 0%) rgba(0, 0, 0, 0%);*/
 }
 
 li {

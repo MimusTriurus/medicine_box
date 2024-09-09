@@ -1,11 +1,10 @@
 import json
 import logging
 
-from cryptography.fernet import Fernet
 from flask import Flask, request, render_template, Response
 from jinja2 import Template
 
-from config import IS_IT_PROD, WEBAPP_PORT, PASSWORD
+from config import IS_IT_PROD, WEBAPP_PORT
 from drugs_db_management import (
     KEY_GROUP,
     KEY_DESC,
@@ -16,12 +15,18 @@ from drugs_db_management import (
     sql_get_drug_info_by_id,
     sql_get_drug_info_candidates
 )
+from webapp.constants import KEY_USER_ID, KEY_ID, KEY_NAME, KEY_DATE
+from webapp.db_management import sql_add_drug, sql_get_drugs, sql_del_drugs
 
 log = logging.getLogger()
 app = Flask(import_name=__name__)
 
 
+# obsolete
 def make_drug_info_page(drug_data: dict) -> str:
+    if not drug_data:
+        return "No info. Sorry."
+
     try:
         with open('templates/drug_info.html', 'r', encoding='utf-8') as f:
             template_data = f.read()
@@ -46,11 +51,13 @@ async def start():
                 'title': f'drug_{i}',
                 'date': f'{i}.01.2024',
                 'element_id': f'drug_{i}',
+                'description': f'description_{i}'
             }
         )
-    return render_template('index_template.html', drugs=drugs)
+    return render_template('index_template.html', drugs=drugs, usr_id="test_user")
 
 
+# obsolete
 @app.get(rule='/get_drug_info')
 async def get_drug_info():
     drug_info_id = request.args.get(KEY_DRUG_ID)
@@ -59,27 +66,41 @@ async def get_drug_info():
     return make_drug_info_page(drug_info)
 
 
-@app.get(rule='/add_drug')
+async def make_drug_record(drug: dict) -> dict:
+    info_data = await sql_get_drug_info_by_id(drug[KEY_DRUG_ID])
+    return {
+        KEY_ID: drug[KEY_ID],
+        KEY_TITLE: drug[KEY_NAME],
+        KEY_DATE: drug[KEY_DATE],
+        'description': make_drug_info_page(info_data)
+    }
+
+
+@app.post(rule='/add_drug')
 async def add_drug():
-    return render_template('add_drug.html')
+    drug_data = dict(request.form)
+    user_id = int(drug_data[KEY_USER_ID])
+    record_id = await sql_add_drug(user_id, request.form)
+    drug_data[KEY_ID] = record_id
+    drug_record = await make_drug_record(drug_data)
+    return Response(json.dumps(drug_record), mimetype='application/json')
+
+
+@app.delete(rule='/del_non_expired_drug')
+async def del_non_expired_drug():
+    drug_id = int(request.form[KEY_DRUG_ID])
+    await sql_del_drugs(drug_id)
+    return Response()
 
 
 @app.get(rule='/non_expired_drugs')
 async def non_expired_drugs():
-    key = request.args['key'].encode()
-    cipher_suite = Fernet(PASSWORD.encode())
-    decoded_key = cipher_suite.decrypt(key)
-
+    usr_id = int(request.args['usr_id'])
     drugs = []
-    for i in range(1, 31):
-        drugs.append(
-            {
-                'id': i,
-                'title': f'drug_{i}',
-                'date': f'{i}.01.2024'
-            }
-        )
-    return render_template('non_expired_drugs.html', title='None-expired drugs', drugs=drugs)
+    for drug in await sql_get_drugs(usr_id):
+        drug_record = await make_drug_record(drug)
+        drugs.append(drug_record)
+    return Response(json.dumps(drugs), mimetype='application/json')
 
 
 def sanitize_drug_title(input_value: str) -> str:

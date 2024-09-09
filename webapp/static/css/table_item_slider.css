@@ -1,16 +1,8 @@
-.drug__item {
-  margin-bottom: 5px;
-}
-
 .drug__item:not(:last-child) {
   border-bottom: 1px solid #666;
 }
 
 .swipe-box {
-  /*
-  --swipebox-height: 100%;
-  height: var(--swipebox-height);
-  */
   overflow: hidden;
 }
 
@@ -19,10 +11,6 @@
   grid-template-columns: repeat(3, 100%);
   overflow-x: auto;
   overflow-y: hidden;
-}
-
-.swipe-box__item {
-  /*height: var(--swipebox-height);*/
 }
 
 @supports (scroll-snap-type: x mandatory) {

@@ -43,7 +43,7 @@ label.icons {
     transform: translate(-50%, 0%);
 }
 
-div#context_panel {
+div.context_panel {
     background: white;
     border: 1px solid black;
     border-radius: 30%;
@@ -61,7 +61,14 @@ label.context_btn {
     position: absolute;
     font-size: 25px;
     color: rgb(0, 0, 0);
+}
+
+label#iconAddDrug {
     transform: translate(53%, 25%);
+}
+
+label#iconBuyDrug {
+    transform: translate(48%, 31%);
 }
 
 label.non_expired {
@@ -120,6 +127,7 @@ span.expired {
 }
 
 #one:checked ~ label.non_expired {
+
     transform: translate(-85px, -31px);
     color: var(--non-expired-color);
 }

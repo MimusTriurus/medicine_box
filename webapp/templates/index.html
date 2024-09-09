@@ -5,43 +5,42 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <link rel="stylesheet" href="../static/css/index.css"/>
-    <link rel="stylesheet" href="../static/css/list.css"/>
-    <link rel="stylesheet" href="../static/css/touch_slider.css"/>
-    <link rel="stylesheet" href="../static/css/add_drug_modal.css"/>
-
-    <script src="../static/js/index.js"></script>
-    <script src="../static/js/touch_slider.js"></script>
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-
-    <link rel="stylesheet" href="../static/css/datepicker.css"/>
-
-    <script src="../static/js/iscroll.js"></script>
-    <script src="../static/js/datepicker.js"></script>
-
-
     <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/flickity@2/dist/flickity.min.css">
 
+    <link rel="stylesheet" href="../static/css/index.css"/>
+    <link rel="stylesheet" href="../static/css/list.css"/>
+    <link rel="stylesheet" href="../static/css/table_item_slider.css"/>
+    <link rel="stylesheet" href="../static/css/add_drug.css"/>
 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js"
             integrity="sha512-57oZ/vW8ANMjR/KQ6Be9v/+/h6bq9/l3f0Oc7vn6qMqyhvPd1cvKBRWWpzu0QoneImqr2SkmO4MSqU+RpHom3Q=="
             crossorigin="anonymous" referrerpolicy="no-referrer">
     </script>
+    <script src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
+    <script src="../static/js/index.js"></script>
+    <script src="../static/js/touch_slider.js"></script>
+    <script src="../static/js/add_drug.js"></script>
+    <script src="../static/js/iscroll.js"></script>
 
-    <link rel="stylesheet" href="https://unpkg.com/flickity@2/dist/flickity.min.css">
-    <script src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js"></script>
+    <style>
 
+    </style>
 </head>
 
 <body>
 
 <div id="content">
-    <ul id="list" class="accordion arrows">
+    <ul id="list_non_expired" class="accordion arrows">
         <input type="radio" name="accordion" id="acc-close"/>
+    </ul>
+
+    <ul id="list_expired" class="accordion arrows">
+        <input type="radio" name="accordion" id="acc-close-expired"/>
     </ul>
 </div>
 
@@ -49,8 +48,8 @@
 
 </div>
 
-<input type="radio" id="one" name="buttons" checked onclick="updateValue('one');">
-<input type="radio" id="two" name="buttons" onclick="updateValue('two');">
+<input type="radio" id="one" name="buttons" checked onclick="updateValue(0);">
+<input type="radio" id="two" name="buttons" onclick="updateValue(1);">
 <label for="one" class="icons non_expired"><span class="glyphicon glyphicon-plus-sign"></span></label>
 <label for="two" class="icons expired"><span class="glyphicon glyphicon-exclamation-sign"></span></label>
 
@@ -58,14 +57,18 @@
 
 </div>
 
-<div id="context_panel">
-    <!--input type="button" class="trigger" id="btn" name="buttons" onclick='document.getElementById("dialogAddDrug").show();'-->
+<div class="context_panel" id="add_drug_panel">
     <input type="radio" id="btnAddDrug" onclick="open_drug_window()"/>
-    <label for="btnAddDrug" class="context_btn"><span class="glyphicon glyphicon-plus"></span></label>
+    <label for="btnAddDrug" class="context_btn" id="iconAddDrug"><span class="glyphicon glyphicon-plus"></span></label>
+</div>
+
+<div class="context_panel" id="buy_drug_panel" hidden>
+    <input type="radio" id="btnBuyDrug"/>
+    <label for="btnBuyDrug" class="context_btn" id="iconBuyDrug"><span class="glyphicon glyphicon-ruble"></span></label>
 </div>
 
 <div id="control_panel">
-    <div id="dialogAddDrug" class="opened">
+    <div id="dialogAddDrug" class="closed">
         <section id="top_sect" class="second">
             <div class="drug_name_panel">
                 <input id="medicine_name" class="form-control" placeholder="Enter the name of the medicine"/>
@@ -99,61 +102,8 @@
 </body>
 
 <script>
-    function add_carousel_item(title, target) {
-        let carousel_item = document.createElement('div');
-        carousel_item.className = 'carousel-cell';
-        carousel_item.innerHTML = `
-            <label class="carousel-title">${title}</label>
-        `;
-        document.getElementById(target).appendChild(carousel_item);
-    }
-
-    let years_titles = []
-    let start_year = new Date().getFullYear();
-    for (let i = 0; i < 5; ++i) {
-        const year = start_year++;
-        years_titles.push(year)
-    }
-
-    function add_years() {
-        for (let i = 0; i < years_titles.length; ++i) {
-            add_carousel_item(years_titles[i], 'years_carousel');
-        }
-    }
-
-    const months_titles = [
-        'January',
-        'February',
-        'March',
-        'April',
-        'May',
-        'June',
-        'July',
-        'August',
-        'September',
-        'October',
-        'November',
-        'December',
-    ];
-
-    function add_months() {
-        months_titles.forEach((element) => {
-            add_carousel_item(element, 'months_carousel');
-        });
-    }
-
     add_years();
     add_months();
-
-    let months_carousel = document.querySelector('#months_carousel');
-    let months = new Flickity(months_carousel, {
-        accessibility: true,
-    });
-
-    let years_carousel = document.querySelector('#years_carousel');
-    let years = new Flickity(years_carousel, {
-        accessibility: true,
-    });
 
     // test
     document.addEventListener('DOMContentLoaded', function () {
@@ -162,47 +112,7 @@
         }
     });
 
-    function open_transition_end() {
-        console.log("Transition 'opened' ended");
-    }
-
-    function close_transition_end() {
-        document.getElementById('control_panel').style = 'background: rgba(0, 0, 0, 0%); top: -100%';
-    }
-
-    function open_drug_window() {
-        document.getElementById('control_panel').style = 'background: rgba(0, 0, 0, 30%);';
-        document.getElementById('dialogAddDrug').className = 'opened';
-
-        const transition_opened = document.querySelector(".opened");
-        transition_opened.removeEventListener("transitionend", close_transition_end);
-        transition_opened.addEventListener("transitionend", open_transition_end);
-    }
-
-    function close_drug_window() {
-        document.getElementById('dialogAddDrug').className = 'closed';
-
-        const transition_closed = document.querySelector(".closed");
-        transition_closed.removeEventListener("transitionend", open_transition_end);
-        transition_closed.addEventListener("transitionend", close_transition_end);
-    }
-
-    function add_drug() {
-        console.log(months.selectedIndex);
-        console.log(years.selectedIndex);
-
-        close_drug_window();
-    }
-
-    $("#control_panel").click(function(){
-        close_drug_window();
-    });
-
-    $(function () {
-        $('#beginTime').focus(function () {
-            //$(this).date();
-        });
-    });
+    close_transition_end();
 </script>
 
 </html>

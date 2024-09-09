@@ -1,5 +1,5 @@
 div#control_panel {
-    z-index: 1;
+    z-index: 3;
     width: 100%;
     height: 100%;
     position: absolute;
@@ -130,4 +130,43 @@ body {
     height: 40px;
     width: 70px;
     font-size: 18px;
+}
+
+/* drug candidates popup menu */
+
+.ui-menu {
+
+}
+
+.ui-menu-item {
+    font-size: 20px;
+}
+
+.ui-menu-item em {
+    font-style: normal;
+    font-weight: 700
+}
+
+.ui-menu .ui-menu-item a {
+    font-size: 12px
+}
+
+.ui-menu .aut.ui-menu-item {
+    border-bottom: 1px dotted #ccc
+}
+
+.ui-menu .aut.ui-menu-item:last-child {
+    border-bottom: none
+}
+
+.ui-menu .aut.ui-menu-item a {
+    line-height: 1.2;
+    color: #2e3f51;
+    word-break: break-word
+}
+
+.ui-menu .aut.ui-menu-item i {
+    margin-right: 8px;
+    font-size: 12px;
+    color: #999
 }
