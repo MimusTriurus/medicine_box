@@ -15,7 +15,7 @@ from drugs_db_management import (
     sql_get_drug_info_by_id,
     sql_get_drug_info_candidates
 )
-from webapp.constants import KEY_USER_ID, KEY_ID, KEY_NAME, KEY_DATE
+from webapp.constants import KEY_USER_ID, KEY_ID, KEY_NAME, KEY_DATE, KEY_TABLE_AID_KIT_EXPIRED
 from webapp.db_management import sql_add_drug, sql_get_drugs, sql_del_drugs
 
 log = logging.getLogger()
@@ -43,18 +43,7 @@ def make_drug_info_page(drug_data: dict) -> str:
 
 @app.get(rule='/')
 async def start():
-    drugs = []
-    for i in range(1, 31):
-        drugs.append(
-            {
-                'id': i,
-                'title': f'drug_{i}',
-                'date': f'{i}.01.2024',
-                'element_id': f'drug_{i}',
-                'description': f'description_{i}'
-            }
-        )
-    return render_template('index_template.html', drugs=drugs, usr_id="test_user")
+    return render_template('index_template.html', usr_id="test_user")
 
 
 # obsolete
@@ -80,9 +69,12 @@ async def make_drug_record(drug: dict) -> dict:
 async def add_drug():
     drug_data = dict(request.form)
     user_id = int(drug_data[KEY_USER_ID])
-    record_id = await sql_add_drug(user_id, request.form)
+    record_id = await sql_add_drug(user_id, drug_data)
     drug_data[KEY_ID] = record_id
     drug_record = await make_drug_record(drug_data)
+    # region test area
+    await sql_add_drug(user_id, drug_data, KEY_TABLE_AID_KIT_EXPIRED)
+    # endregion
     return Response(json.dumps(drug_record), mimetype='application/json')
 
 
@@ -93,11 +85,28 @@ async def del_non_expired_drug():
     return Response()
 
 
+@app.delete(rule='/del_expired_drug')
+async def del_expired_drug():
+    drug_id = int(request.form[KEY_DRUG_ID])
+    await sql_del_drugs(drug_id, KEY_TABLE_AID_KIT_EXPIRED)
+    return Response()
+
+
 @app.get(rule='/non_expired_drugs')
 async def non_expired_drugs():
     usr_id = int(request.args['usr_id'])
     drugs = []
     for drug in await sql_get_drugs(usr_id):
+        drug_record = await make_drug_record(drug)
+        drugs.append(drug_record)
+    return Response(json.dumps(drugs), mimetype='application/json')
+
+
+@app.get(rule='/expired_drugs')
+async def expired_drugs():
+    usr_id = int(request.args['usr_id'])
+    drugs = []
+    for drug in await sql_get_drugs(usr_id, table=KEY_TABLE_AID_KIT_EXPIRED):
         drug_record = await make_drug_record(drug)
         drugs.append(drug_record)
     return Response(json.dumps(drugs), mimetype='application/json')

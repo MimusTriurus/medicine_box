@@ -33,7 +33,8 @@ async def sql_start():
             {KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,
             {KEY_USER_ID} INTEGER NOT NULL,
             {KEY_NAME} TEXT NOT NULL, 
-            {KEY_DATE} TIMESTAMP NOT NULL
+            {KEY_DATE} TIMESTAMP NOT NULL,
+            {KEY_DRUG_ID} INTEGER
         )
     ''')
 

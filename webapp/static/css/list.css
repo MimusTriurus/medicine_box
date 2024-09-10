@@ -68,7 +68,7 @@ header.box {
 .box-content {
 	border-top: 1px solid black;
 	width: calc(100% - var(--item-shift));
-	padding: 30px 20px;
+	padding: 5px 5px;
 	font-size: 11pt;
 	color: rgba(0,0,0,.54);
 	display: none;
@@ -96,7 +96,7 @@ input:checked + .box .box-close {
 }
 .arrows section .box-title {
 	padding-left: 44px;
-	width: calc(100% - 64px);
+	width: calc(100%);
 }
 .arrows section .box-title:before {
 	position: absolute;

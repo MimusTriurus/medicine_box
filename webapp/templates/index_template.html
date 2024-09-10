@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/list.css')}}"/>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/table_item_slider.css')}}"/>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/add_drug.css')}}"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/drug_description.css')}}"/>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js"
@@ -32,11 +33,11 @@
 <body>
 
 <div id="content">
-    <ul id="list_non_expired" class="accordion arrows">
+    <ul id="non_expired" class="accordion arrows">
         <input type="radio" name="accordion" id="acc-close"/>
     </ul>
 
-    <ul id="list_expired" class="accordion arrows">
+    <ul id="expired" class="accordion arrows">
         <input type="radio" name="accordion" id="acc-close-expired"/>
     </ul>
 </div>
@@ -105,23 +106,29 @@
     set_update_drugs_candidates_url('{{ url_for("edit") }}');
     set_add_drug_url('{{ url_for("add_drug") }}');
     set_del_drug_url('{{ url_for("del_non_expired_drug") }}');
+    set_del_expired_drug_url('{{ url_for("del_expired_drug") }}');
 
-    document.addEventListener('DOMContentLoaded', function () {
+    function request_drugs(url, target_table) {
         $.ajax({
-            url: "{{ url_for('non_expired_drugs') }}",
+            url: url,
             type: "GET",
             data: {usr_id: tuser_id},
             dataType: 'html',
             success: function (response) {
                 let drugs = JSON.parse(response);
                 drugs.forEach(drug => {
-                    add_drug_item(drug, 'list_non_expired');
+                    add_drug_item(drug, target_table);
                 });
             },
             error: function (xhr, textStatus, error) {
                 console.error(error)
             }
         });
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        request_drugs("{{ url_for('non_expired_drugs') }}", 'non_expired');
+        request_drugs("{{ url_for('expired_drugs') }}", 'expired');
     });
 
     close_transition_end();

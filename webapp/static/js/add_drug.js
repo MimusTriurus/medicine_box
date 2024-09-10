@@ -75,18 +75,6 @@ function close_drug_window() {
     transition_closed.addEventListener('transitionend', close_transition_end);
 }
 
-let i = 0;
-
-function addTestDrug() {
-    let drug = {};
-    drug["element_id"] = `drug_${i}`;
-    drug["title"] = `Aspirin_${i}`;
-    drug["date"] = `${i}.${i}.2024`;
-    drug["description"] = `description ${i}`;
-    i++;
-    addDrugItem(drug, 'list_non_expired');
-}
-
 function set_update_drugs_candidates_url(value) {
     update_drugs_candidates_url = value;
 }
@@ -96,9 +84,17 @@ function set_add_drug_url(value) {
 }
 
 function add_drug_item(drug, target) {
+    const date_segments = drug["date"].split('-');
+    const year = date_segments[0];
+    const month_idx = parseInt(date_segments[1], 11) - 1;
+    let month_title = months_titles[month_idx];
+
+    const date_title = `${year} ${month_title}`;
+
     let swipeBox = document.createElement('li');
     swipeBox.className = 'swipe-box';
     swipeBox.setAttribute('data-drug-id', drug["id"]);
+    swipeBox.setAttribute('data-drug-type', target);
     swipeBox.innerHTML = `
         <div class="drug__item">
             <div class="swipe-box__scroller">
@@ -113,7 +109,7 @@ function add_drug_item(drug, target) {
                     <section class="box">
                         <label class="box-title" for="${drug["id"]}">
                             <span>${drug["title"]}</span>
-                            <br><span style="white-space: pre-line">${drug["date"]}</span>
+                            <br><span style="white-space: pre-line">${date_title}</span>
                         </label>
                         <label class="box-close" for="acc-close"></label>
                         <div class="box-content">
@@ -153,9 +149,9 @@ function add_drug() {
         url: add_drug_url,
         data: drug_data
     }).done(function (data) {
-        add_drug_item(data,'list_non_expired');
+        add_drug_item(data, 'non_expired');
     });
-    //close_drug_window();
+    close_drug_window();
 }
 
 function updateDrugsCandidates(e) {
