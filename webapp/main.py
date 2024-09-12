@@ -11,9 +11,11 @@ from drugs_db_management import (
     KEY_CONTRA,
     KEY_TITLE,
     KEY_DRUG_ID,
+    KEY_EN_TITLE,
+    KEY_RU_TITLE,
     sql_drugs_db_connect,
     sql_get_drug_info_by_id,
-    sql_get_drug_info_candidates
+    sql_get_drug_info_candidates,
 )
 from webapp.constants import KEY_USER_ID, KEY_ID, KEY_NAME, KEY_DATE, KEY_TABLE_AID_KIT_EXPIRED
 from webapp.db_management import sql_add_drug, sql_get_drugs, sql_del_drugs
@@ -119,12 +121,17 @@ def sanitize_drug_title(input_value: str) -> str:
     return output
 
 
+def rus_match(text, alphabet=set('абвгдеёжзийклмнопрстуфхцчшщъыьэюя')) -> bool:
+    return not alphabet.isdisjoint(text.lower())
+
+
 @app.route('/edit', methods=['GET', 'POST'])
 async def edit():
     result = dict()
     for drug_part_title in request.form:
         if len(drug_part_title) > 1:
-            for r in await sql_get_drug_info_candidates(drug_part_title):
+            target_column = KEY_RU_TITLE if rus_match(drug_part_title) else KEY_EN_TITLE
+            for r in await sql_get_drug_info_candidates(drug_part_title, target_column):
                 drug_title = sanitize_drug_title(r[0])
                 drug_id = r[1]
                 result[drug_title] = drug_id

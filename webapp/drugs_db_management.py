@@ -43,7 +43,7 @@ async def sql_get_drug_info_candidates(drug_title: str, column: str = KEY_RU_TIT
     if not drugs_db.is_connected:
         await drugs_db.connect()
 
-    result = await drugs_db.fetch_all(f"SELECT title, id FROM {TABLE_NAME} WHERE {KEY_RU_TITLE} LIKE '{drug_title}%'")
+    result = await drugs_db.fetch_all(f"SELECT title, id FROM {TABLE_NAME} WHERE {column} LIKE '{drug_title}%'")
     return result
 
 
