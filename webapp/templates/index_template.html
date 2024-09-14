@@ -7,24 +7,26 @@
 
     <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://unpkg.com/flickity@2/dist/flickity.min.css">
 
     <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css')}}"/>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/list.css')}}"/>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/table_item_slider.css')}}"/>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/add_drug.css')}}"/>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/drug_description.css')}}"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/corousel.css')}}"/>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js"
             integrity="sha512-57oZ/vW8ANMjR/KQ6Be9v/+/h6bq9/l3f0Oc7vn6qMqyhvPd1cvKBRWWpzu0QoneImqr2SkmO4MSqU+RpHom3Q=="
             crossorigin="anonymous" referrerpolicy="no-referrer">
     </script>
-    <script src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
     <script src="{{ url_for('static', filename='js/index.js')}}"></script>
     <script src="{{ url_for('static', filename='js/touch_slider.js')}}"></script>
+    <script src="{{ url_for('static', filename='js/corousel.js')}}"></script>
     <script src="{{ url_for('static', filename='js/add_drug.js')}}"></script>
     <script src="{{ url_for('static', filename='js/iscroll.js')}}"></script>
 
@@ -48,8 +50,12 @@
 
 <input type="radio" id="one" name="buttons" checked onclick="updateValue(0);">
 <input type="radio" id="two" name="buttons" onclick="updateValue(1);">
-<label for="one" class="icons non_expired"><span class="glyphicon glyphicon-plus-sign"></span></label>
-<label for="two" class="icons expired"><span class="glyphicon glyphicon-exclamation-sign"></span></label>
+<label for="one" class="icons non_expired">
+    <span class="glyphicon glyphicon-plus-sign"></span>
+</label>
+<label for="two" class="icons expired">
+    <span class="glyphicon glyphicon-exclamation-sign"></span>
+</label>
 
 <div id="body">
 
@@ -62,14 +68,20 @@
 
 <div class="context_panel" id="buy_drug_panel" hidden>
     <input type="radio" id="btnBuyDrug"/>
-    <label for="btnBuyDrug" class="context_btn" id="iconBuyDrug"><span class="glyphicon glyphicon-ruble"></span></label>
+    <label for="btnBuyDrug" class="context_btn" id="iconBuyDrug">
+        <!--<span class="glyphicon glyphicon-ruble"></span>-->
+        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-cart4"
+             viewBox="0 0 16 16">
+            <path d="M0 2.5A.5.5 0 0 1 .5 2H2a.5.5 0 0 1 .485.379L2.89 4H14.5a.5.5 0 0 1 .485.621l-1.5 6A.5.5 0 0 1 13 11H4a.5.5 0 0 1-.485-.379L1.61 3H.5a.5.5 0 0 1-.5-.5M3.14 5l.5 2H5V5zM6 5v2h2V5zm3 0v2h2V5zm3 0v2h1.36l.5-2zm1.11 3H12v2h.61zM11 8H9v2h2zM8 8H6v2h2zM5 8H3.89l.5 2H5zm0 5a1 1 0 1 0 0 2 1 1 0 0 0 0-2m-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0m9-1a1 1 0 1 0 0 2 1 1 0 0 0 0-2m-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0"/>
+        </svg>
+    </label>
 </div>
 
 <div id="control_panel">
     <div id="dialogAddDrug" class="closed">
         <section id="top_sect" class="second">
             <div class="drug_name_panel">
-                <input id="medicine_name" class="form-control" placeholder="Enter the name of the medicine"/>
+                <input id="medicine_name" class="form-control" placeholder="Name of the medicine"/>
             </div>
 
             <div class="panel">
@@ -85,7 +97,12 @@
             </div>
 
             <div class="control_panel">
-                <button id="btnAdd" type="button" onclick="add_drug()">Add</button>
+                <button id="btnAdd" onclick="add_drug()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="rgb(97, 218, 157)"
+                         class="bi bi-check-lg" viewBox="0 0 16 16">
+                        <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425z"/>
+                    </svg>
+                </button>
             </div>
         </section>
     </div>
@@ -117,6 +134,7 @@
             success: function (response) {
                 let drugs = JSON.parse(response);
                 drugs.forEach(drug => {
+                    //drug['title'] = 'аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин '
                     add_drug_item(drug, target_table);
                 });
             },
@@ -130,7 +148,6 @@
         request_drugs("{{ url_for('non_expired_drugs') }}", 'non_expired');
         request_drugs("{{ url_for('expired_drugs') }}", 'expired');
     });
-
     close_transition_end();
 </script>
 

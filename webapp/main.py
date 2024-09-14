@@ -1,3 +1,4 @@
+import datetime
 import json
 import logging
 
@@ -17,7 +18,15 @@ from drugs_db_management import (
     sql_get_drug_info_by_id,
     sql_get_drug_info_candidates,
 )
-from webapp.constants import KEY_USER_ID, KEY_ID, KEY_NAME, KEY_DATE, KEY_TABLE_AID_KIT_EXPIRED
+from webapp.constants import (
+    KEY_USER_ID,
+    KEY_ID,
+    KEY_NAME,
+    KEY_DATE,
+    KEY_TABLE_AID_KIT_EXPIRED,
+    KEY_TABLE_AID_KIT,
+    KEY_TARGET_TABLE,
+)
 from webapp.db_management import sql_add_drug, sql_get_drugs, sql_del_drugs
 
 log = logging.getLogger()
@@ -70,13 +79,15 @@ async def make_drug_record(drug: dict) -> dict:
 @app.post(rule='/add_drug')
 async def add_drug():
     drug_data = dict(request.form)
+    date = datetime.datetime.strptime(drug_data[KEY_DATE], '%Y-%m').date()
+    target_table = KEY_TABLE_AID_KIT
+    if date < datetime.datetime.now().date():
+        target_table = KEY_TABLE_AID_KIT_EXPIRED
     user_id = int(drug_data[KEY_USER_ID])
-    record_id = await sql_add_drug(user_id, drug_data)
+    record_id = await sql_add_drug(user_id, drug_data, target_table)
     drug_data[KEY_ID] = record_id
     drug_record = await make_drug_record(drug_data)
-    # region test area
-    await sql_add_drug(user_id, drug_data, KEY_TABLE_AID_KIT_EXPIRED)
-    # endregion
+    drug_record[KEY_TARGET_TABLE] = target_table
     return Response(json.dumps(drug_record), mimetype='application/json')
 
 

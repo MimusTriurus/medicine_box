@@ -33,6 +33,7 @@ function add_carousel_item(title, target) {
 
 
 let start_year = new Date().getFullYear();
+let start_month = new Date().getMonth();
 for (let i = 0; i < 5; ++i) {
     const year = start_year++;
     years_titles.push(year)
@@ -59,6 +60,7 @@ function close_transition_end() {
 }
 
 function open_drug_window() {
+    months.select(start_month);
     document.getElementById('control_panel').style = 'background: rgba(0, 0, 0, 30%);';
     document.getElementById('dialogAddDrug').className = 'opened';
 
@@ -84,30 +86,33 @@ function set_add_drug_url(value) {
 }
 
 function add_drug_item(drug, target) {
-    const date_segments = drug["date"].split('-');
+    const date_segments = drug['date'].split('-');
     const year = date_segments[0];
-    const month_idx = parseInt(date_segments[1], 11) - 1;
+    const month_idx = parseInt(date_segments[1]) - 1;
     let month_title = months_titles[month_idx];
 
     const date_title = `${year} ${month_title}`;
-
+    let item_id = `${target}_${drug['id']}`
     let swipeBox = document.createElement('li');
     swipeBox.className = 'swipe-box';
-    swipeBox.setAttribute('data-drug-id', drug["id"]);
+    swipeBox.setAttribute('data-drug-id', drug['id']);
     swipeBox.setAttribute('data-drug-type', target);
     swipeBox.innerHTML = `
         <div class="drug__item">
             <div class="swipe-box__scroller">
                 <div class="swipe-box__item observe-item">
                   <label class="drug-action action--delete-left">
-                      <span class="glyphicon glyphicon-trash"/>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                          <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
+                          <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
+                       </svg>
                   </label>
                 </div>
 
                 <div class="swipe-box__item">
-                    <input type="radio" name="accordion" id="${drug["id"]}"/>
+                    <input type="radio" name="accordion" id="${item_id}"/>
                     <section class="box">
-                        <label class="box-title" for="${drug["id"]}">
+                        <label class="box-title" for="${item_id}">
                             <span>${drug["title"]}</span>
                             <br><span style="white-space: pre-line">${date_title}</span>
                         </label>
@@ -120,7 +125,10 @@ function add_drug_item(drug, target) {
 
                 <div class="swipe-box__item observe-item">
                   <label class="drug-action action--delete-right">
-                      <span class="glyphicon glyphicon-trash"/>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                          <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
+                          <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
+                       </svg>
                   </label>
                 </div>
             </div>
@@ -132,24 +140,31 @@ function add_drug_item(drug, target) {
 }
 
 function add_drug() {
-    const drug_name = document.getElementById('medicine_name').value;
+    let drug_element = document.getElementById('medicine_name')
+    const drug_name = drug_element.value;
+    if (drug_name.trim() === '') {
+        drug_element.classList.add('error');
+        setTimeout(function () {
+            drug_element.classList.remove('error');
+        }, 300);
+        return;
+    }
+    drug_element.value = '';
     const id = drug_candidates[drug_name];
-
     const date = years_titles[years.selectedIndex] + '-' + (months.selectedIndex + 1);
-
     let drug_data = {
         'user_id': tuser_id,
         'name': drug_name,
         'date': date,
         'drug_id': id
     }
-
     $.ajax({
         type: "POST",
         url: add_drug_url,
         data: drug_data
     }).done(function (data) {
-        add_drug_item(data, 'non_expired');
+        console.log(data)
+        add_drug_item(data, data['target_table']);
     });
     close_drug_window();
 }
@@ -174,7 +189,6 @@ document.addEventListener('DOMContentLoaded', function () {
     months = new Flickity(months_carousel, {
         accessibility: true,
     });
-
     let years_carousel = document.querySelector('#years_carousel');
     years = new Flickity(years_carousel, {
         accessibility: true,
