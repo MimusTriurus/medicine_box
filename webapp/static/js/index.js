@@ -1,4 +1,4 @@
-let tuser_id = window.Telegram.WebApp.initDataUnsafe.user.id;
+let tuser_id = window.Telegram.WebApp.initData ? window.Telegram.WebApp.initDataUnsafe.user.id : 486190703;
 function updateValue(id) {
     $("#non_expired").hide();
     $("#expired").hide();
