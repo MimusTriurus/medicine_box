@@ -33,8 +33,8 @@ KEY_LANG = 'lang'
 KEY_DRUG_ID = 'drug_id'
 
 KEY_TABLE_USERS = 'users'
-KEY_TABLE_AID_KIT = 'aid_kit'
-KEY_TABLE_AID_KIT_EXPIRED = 'aid_kit_expired'
+KEY_TABLE_AID_KIT = 'non_expired'
+KEY_TABLE_AID_KIT_EXPIRED = 'expired'
 
 IDX_ID = 0
 IDX_USR_ID = 1
