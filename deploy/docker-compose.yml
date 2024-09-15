@@ -6,24 +6,23 @@ services:
     restart: "no"
     entrypoint: /bin/sh
     command: -c 'test -f /etc/letsencrypt/ssl-dhparams.pem || openssl dhparam -out /etc/letsencrypt/ssl-dhparams.pem 4096'
-    profiles: ["cert"]
     volumes:
       - cert_volume:/etc/letsencrypt:Z
+
   certbot-oneshot:
     image: docker.io/certbot/certbot
     restart: "no"
     entrypoint: /bin/sh
     command: -c 'test -d /etc/letsencrypt/live/medicine-box-bot.ru || certbot certonly --standalone --register-unsafely-without-email -d "medicine-box-bot.ru" --rsa-key-size 2048 --agree-tos --force-renewal'
-    profiles: ["cert"]
     ports:
       - 80:80
     volumes:
       - cert_volume:/etc/letsencrypt:Z
+
   nginx:
     image: docker.io/library/nginx
     entrypoint: /bin/sh
     command: -c 'while :; do sleep 6h && wait $${!}; nginx -s reload; done & nginx -g "daemon off;"'
-    profiles: ["webapp"]
     configs:
       - source: nginx-defaultserver
         target: /etc/nginx/conf.d/default.conf
@@ -40,11 +39,11 @@ services:
     volumes:
       - cert_volume:/etc/letsencrypt:Z
       - acme_challenge:/usr/share/nginx/html/.well-known:Z
+
   certbot:
     image: docker.io/certbot/certbot
     entrypoint: /bin/sh
     command: -c 'trap exit TERM; while :; do certbot renew; sleep 24h && wait $${!}; done;'
-    profiles: ["cert"]
     depends_on:
       nginx:
         condition: service_started
@@ -56,7 +55,6 @@ services:
   bot:
     container_name: bot
     build: ../bot
-    profiles: [ "bot" ]
     volumes:
       - ./../db/:/app/db
     env_file:
@@ -65,7 +63,6 @@ services:
   webapp:
     container_name: webapp
     build: ../webapp
-    profiles: [ "webapp" ]
     volumes:
       - ./../db/:/app/db
     environment:
