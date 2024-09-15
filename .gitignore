@@ -73,3 +73,4 @@ target/
 
 # Database file
 uno.sqlite3
+db/medicine_boxes.db
