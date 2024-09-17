@@ -52,13 +52,13 @@ services:
       - cert_volume:/etc/letsencrypt:Z
       - acme_challenge:/usr/share/nginx/html/.well-known:Z
   
-  bot:
-    container_name: bot
-    build: ../bot
-    volumes:
-      - ./../db/:/app/db
-    env_file:
-      - ./../bot/vault.env
+  #bot:
+  #  container_name: bot
+  #  build: ../bot
+  #  volumes:
+  #    - ./../db/:/app/db
+  #  env_file:
+  #    - ./../bot/vault.env
 
   webapp:
     container_name: webapp
