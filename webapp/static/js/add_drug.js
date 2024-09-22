@@ -26,7 +26,7 @@ function add_carousel_item(title, target) {
     let carousel_item = document.createElement('div');
     carousel_item.className = 'carousel-cell';
     carousel_item.innerHTML = `
-            <label class="carousel-title">${title}</label>
+            <label class="carousel-title" data-i18n-key="${title}">${title}</label>
         `;
     document.getElementById(target).appendChild(carousel_item);
 }
@@ -114,7 +114,9 @@ function add_drug_item(drug, target) {
                     <section class="box">
                         <label class="box-title" for="${item_id}">
                             <span>${drug["title"]}</span>
-                            <br><span style="white-space: pre-line">${date_title}</span>
+                            <br>
+                            <span style="white-space: pre-line">${year}</span>
+                            <span style="white-space: pre-line" data-i18n-key="${month_title}">${month_title}</span>
                         </label>
                         <label class="box-close" for="acc-close"></label>
                         <div class="box-content">

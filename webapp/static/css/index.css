@@ -121,11 +121,15 @@ span.title {
 span.non_expired {
     transform: translate(-90px, 0px);
     background: transparent;
+    width: 150px;
+    text-align:center;
 }
 
 span.expired {
     transform: translate(40px, 0px);
     background: transparent;
+    width: 150px;
+    text-align:center;
 }
 
 #one:checked ~ label.non_expired {
@@ -142,13 +146,13 @@ span.expired {
 #one:checked ~ span.non_expired {
     color: var(--non-expired-color);
     opacity: 1;
-    transform: translate(-110px, 0px);
+    transform: translate(-150px, 0px);
 }
 
 #two:checked ~ span.expired {
     color: var(--expired-color);
     opacity: 1;
-    transform: translate(63px, 0px);
+    transform: translate(10px, 0px);
 }
 
 #one:checked ~ div#body {

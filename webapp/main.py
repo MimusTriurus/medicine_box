@@ -18,7 +18,7 @@ from drugs_db_management import (
     sql_get_drug_info_by_id,
     sql_get_drug_info_candidates,
 )
-from webapp.constants import (
+from constants import (
     KEY_USER_ID,
     KEY_ID,
     KEY_NAME,
@@ -27,7 +27,7 @@ from webapp.constants import (
     KEY_TABLE_AID_KIT,
     KEY_TARGET_TABLE,
 )
-from webapp.db_management import sql_add_drug, sql_get_drugs, sql_del_drugs
+from db_management import sql_add_drug, sql_get_drugs, sql_del_drugs
 
 log = logging.getLogger()
 app = Flask(import_name=__name__)
@@ -164,4 +164,4 @@ if __name__ == '__main__':
         waitress.serve(app, host=HOST, port=WEBAPP_PORT)
     else:
         from werkzeug import serving
-        serving.run_simple(HOST, WEBAPP_PORT, app, ssl_context='adhoc')
+        serving.run_simple(HOST, WEBAPP_PORT, app)

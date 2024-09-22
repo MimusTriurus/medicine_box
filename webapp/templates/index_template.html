@@ -81,7 +81,7 @@
     <div id="dialogAddDrug" class="closed">
         <section id="top_sect" class="second">
             <div class="drug_name_panel">
-                <input id="medicine_name" class="form-control" placeholder="Name of the medicine"/>
+                <input id="medicine_name" class="form-control" data-i18n-key="name_of_drug" placeholder="Name of the medicine"/>
             </div>
 
             <div class="panel">
@@ -108,8 +108,8 @@
     </div>
 </div>
 
-<span class="title non_expired">Non-expired</span>
-<span class="title expired">Expired</span>
+<span class="title non_expired" data-i18n-key="non_expired">Non-expired</span>
+<span class="title expired" data-i18n-key="expired">Expired</span>
 
 <div class="border"></div>
 <div class="effect"></div>
@@ -136,6 +136,7 @@
                 drugs.forEach(drug => {
                     //drug['title'] = 'аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин '
                     add_drug_item(drug, target_table);
+                    document.querySelectorAll("[data-i18n-key]").forEach(translateElement);
                 });
             },
             error: function (xhr, textStatus, error) {
@@ -144,9 +145,63 @@
         });
     }
 
+    const locale = "ru";
+    const translations = {
+        "en": {
+            "non_expired": "Non-expired",
+            "expired": "Expired",
+            "name_of_drug": "Name of the medicine",
+            'January': 'January',
+            'February': 'February',
+            'March': 'March',
+            'April': 'April',
+            'May': 'May',
+            'June': 'June',
+            'July': 'July',
+            'August': 'August',
+            'September': 'September',
+            'October': 'October',
+            'November': 'November',
+            'December': 'December',
+        },
+        "ru": {
+            "non_expired": "Лекарства",
+            "expired": "Просроченные",
+            "name_of_drug": "Название лекарства",
+            'January': 'Январь',
+            'February': 'Февраль',
+            'March': 'Март',
+            'April': 'Апрель',
+            'May': 'Май',
+            'June': 'Июнь',
+            'July': 'Июль',
+            'August': 'Август',
+            'September': 'Сентябрь',
+            'October': 'Октябрь',
+            'November': 'Ноябрь',
+            'December': 'Декабрь',
+        },
+    };
+
+    function translateElement(element) {
+        const key = element.getAttribute("data-i18n-key");
+        const translation = translations[locale][key];
+        if (translation === undefined) {
+            return;
+        }
+        if (element.placeholder) {
+            element.placeholder = translation;
+        }
+        else {
+            element.innerText = translation;
+        }
+    }
+
     document.addEventListener('DOMContentLoaded', function () {
         request_drugs("{{ url_for('non_expired_drugs') }}", 'non_expired');
         request_drugs("{{ url_for('expired_drugs') }}", 'expired');
+
+        document.querySelectorAll("[data-i18n-key]").forEach(translateElement);
     });
     close_transition_end();
 </script>
