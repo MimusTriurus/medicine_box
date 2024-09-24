@@ -164,4 +164,4 @@ if __name__ == '__main__':
         waitress.serve(app, host=HOST, port=WEBAPP_PORT)
     else:
         from werkzeug import serving
-        serving.run_simple(HOST, WEBAPP_PORT, app)
+        serving.run_simple(HOST, WEBAPP_PORT, app, ssl_context='adhoc')

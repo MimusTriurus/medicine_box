@@ -1,19 +1,60 @@
-let tuser_id = window.Telegram.WebApp.initData ? window.Telegram.WebApp.initDataUnsafe.user.id : 486190703;
-function updateValue(id) {
-    $("#non_expired").hide();
-    $("#expired").hide();
+let tg = window.Telegram.WebApp;
+tg.expand();
+let tuser_id = tg.initData ? tg.initDataUnsafe.user.id : 486190703;
+let userLanguage = tg.initData ? tg.initDataUnsafe.user.language_code : 'ru';
+console.log(userLanguage);
 
-    $("#add_drug_panel").hide();
-    $("#buy_drug_panel").hide();
+let get_non_expired_url = NaN;
 
+function set_get_non_expired_url(url) {
+    get_non_expired_url = url;
+}
+
+let get_expired_url = NaN;
+
+function set_get_expired_url(url) {
+    get_expired_url = url;
+}
+
+function request_drugs(url, target_table) {
+    $.ajax({
+        url: url,
+        type: "GET",
+        data: {usr_id: tuser_id},
+        dataType: 'html',
+        success: function (response) {
+            let drugs = JSON.parse(response);
+            drugs.forEach(drug => {
+                //drug['title'] = 'аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин '
+                add_drug_item(drug, target_table);
+                document.querySelectorAll("[data-i18n-key]").forEach(translateElement);
+            });
+        },
+        error: function (xhr, textStatus, error) {
+            console.error(error)
+        }
+    });
+}
+
+function switch_tab(id) {
     switch (id) {
-        case 0:
-            $("#non_expired").show();
+        case NON_EXPIRED:
+            $(`#${EXPIRED}`).hide();
+            $("#buy_drug_panel").hide();
+
+            $(`#${NON_EXPIRED}`).show();
             $("#add_drug_panel").show();
+            clear_drug_items(NON_EXPIRED);
+            request_drugs(get_non_expired_url, NON_EXPIRED);
             break;
-        case 1:
-            $("#expired").show();
+        case EXPIRED:
+            $(`#${NON_EXPIRED}`).hide();
+            $("#add_drug_panel").hide();
+
+            $(`#${EXPIRED}`).show();
             $("#buy_drug_panel").show();
+            clear_drug_items(EXPIRED);
+            request_drugs(get_expired_url, EXPIRED);
             break;
     }
 }

@@ -31,13 +31,13 @@ function handler(entries, observer) {
             const drug_id = drug_item.getAttribute('data-drug-id');
             const drug_type = drug_item.getAttribute('data-drug-type');
             let target_url = del_drug_url;
-            if (drug_type === 'expired') {
+            if (drug_type === EXPIRED) {
                 target_url = del_expired_drug_url;
             }
             $.ajax({
-                type: "DELETE",
+                type: 'DELETE',
                 url: target_url,
-                data: { "drug_id": drug_id }
+                data: { 'drug_id': drug_id }
             }).done(function () {
                 drug_item.remove();
                 observer.unobserve(entry.target);

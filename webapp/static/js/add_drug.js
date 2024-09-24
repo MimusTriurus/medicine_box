@@ -34,6 +34,7 @@ function add_carousel_item(title, target) {
 
 let start_year = new Date().getFullYear();
 let start_month = new Date().getMonth();
+start_month = start_month === 11 ? 0 : start_month + 1;
 for (let i = 0; i < 5; ++i) {
     const year = start_year++;
     years_titles.push(year)
@@ -91,7 +92,6 @@ function add_drug_item(drug, target) {
     const month_idx = parseInt(date_segments[1]) - 1;
     let month_title = months_titles[month_idx];
 
-    const date_title = `${year} ${month_title}`;
     let item_id = `${target}_${drug['id']}`
     let swipeBox = document.createElement('li');
     swipeBox.className = 'swipe-box';
@@ -141,6 +141,14 @@ function add_drug_item(drug, target) {
     swipe_box_initialization(swipeBox);
 }
 
+function clear_drug_items(target) {
+    let drug_items = document.getElementById(target);
+    if (drug_items === null) {
+        return;
+    }
+    drug_items.innerHTML = '';
+}
+
 function add_drug() {
     let drug_element = document.getElementById('medicine_name')
     const drug_name = drug_element.value;
@@ -165,7 +173,6 @@ function add_drug() {
         url: add_drug_url,
         data: drug_data
     }).done(function (data) {
-        console.log(data)
         add_drug_item(data, data['target_table']);
     });
     close_drug_window();
@@ -195,7 +202,7 @@ document.addEventListener('DOMContentLoaded', function () {
     years = new Flickity(years_carousel, {
         accessibility: true,
     });
-
+    years.next();
     $('#control_panel').click(function (e) {
         if (e.target.id === 'control_panel') {
             close_drug_window();

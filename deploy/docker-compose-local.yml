@@ -7,7 +7,7 @@ services:
     volumes:
       - ./../db/:/app/db
     env_file:
-      - ./../bot/vault.env
+      - ../secrets/bot_vault.env
 
   webapp:
     container_name: webapp
@@ -20,4 +20,4 @@ services:
     environment:
       WEBAPP_PORT: 8000
     env_file:
-      - ./../webapp/vault.env
+      - ../secrets/webapp_vault.env

@@ -18,12 +18,14 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js"
             integrity="sha512-57oZ/vW8ANMjR/KQ6Be9v/+/h6bq9/l3f0Oc7vn6qMqyhvPd1cvKBRWWpzu0QoneImqr2SkmO4MSqU+RpHom3Q=="
-            crossorigin="anonymous" referrerpolicy="no-referrer">
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer">
     </script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
+    <script src="{{ url_for('static', filename='js/constants.js')}}"></script>
     <script src="{{ url_for('static', filename='js/index.js')}}"></script>
     <script src="{{ url_for('static', filename='js/touch_slider.js')}}"></script>
     <script src="{{ url_for('static', filename='js/corousel.js')}}"></script>
@@ -48,8 +50,8 @@
 
 </div>
 
-<input type="radio" id="one" name="buttons" checked onclick="updateValue(0);">
-<input type="radio" id="two" name="buttons" onclick="updateValue(1);">
+<input type="radio" id="one" name="buttons" checked onclick="switch_tab(NON_EXPIRED);">
+<input type="radio" id="two" name="buttons" onclick="switch_tab(EXPIRED);">
 <label for="one" class="icons non_expired">
     <span class="glyphicon glyphicon-plus-sign"></span>
 </label>
@@ -81,17 +83,22 @@
     <div id="dialogAddDrug" class="closed">
         <section id="top_sect" class="second">
             <div class="drug_name_panel">
-                <input id="medicine_name" class="form-control" data-i18n-key="name_of_drug" placeholder="Name of the medicine"/>
+                <input id="medicine_name"
+                       class="form-control"
+                       data-i18n-key="name_of_drug"
+                       placeholder="Name of the medicine"/>
             </div>
 
             <div class="panel">
-                <div id="years_carousel" class="carousel"
+                <div id="years_carousel"
+                     class="carousel"
                      data-flickity='{ "wrapAround": true }'>
                 </div>
             </div>
 
             <div class="panel">
-                <div id="months_carousel" class="carousel"
+                <div id="months_carousel"
+                     class="carousel"
                      data-flickity='{ "wrapAround": true }'>
                 </div>
             </div>
@@ -124,28 +131,9 @@
     set_add_drug_url('{{ url_for("add_drug") }}');
     set_del_drug_url('{{ url_for("del_non_expired_drug") }}');
     set_del_expired_drug_url('{{ url_for("del_expired_drug") }}');
+    set_get_non_expired_url("{{ url_for('non_expired_drugs') }}");
+    set_get_expired_url("{{ url_for('expired_drugs') }}");
 
-    function request_drugs(url, target_table) {
-        $.ajax({
-            url: url,
-            type: "GET",
-            data: {usr_id: tuser_id},
-            dataType: 'html',
-            success: function (response) {
-                let drugs = JSON.parse(response);
-                drugs.forEach(drug => {
-                    //drug['title'] = 'аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин '
-                    add_drug_item(drug, target_table);
-                    document.querySelectorAll("[data-i18n-key]").forEach(translateElement);
-                });
-            },
-            error: function (xhr, textStatus, error) {
-                console.error(error)
-            }
-        });
-    }
-
-    const locale = "ru";
     const translations = {
         "en": {
             "non_expired": "Non-expired",
@@ -185,22 +173,19 @@
 
     function translateElement(element) {
         const key = element.getAttribute("data-i18n-key");
-        const translation = translations[locale][key];
+        const translation = translations[userLanguage][key];
         if (translation === undefined) {
             return;
         }
         if (element.placeholder) {
             element.placeholder = translation;
-        }
-        else {
+        } else {
             element.innerText = translation;
         }
     }
 
     document.addEventListener('DOMContentLoaded', function () {
-        request_drugs("{{ url_for('non_expired_drugs') }}", 'non_expired');
-        request_drugs("{{ url_for('expired_drugs') }}", 'expired');
-
+        switch_tab(NON_EXPIRED);
         document.querySelectorAll("[data-i18n-key]").forEach(translateElement);
     });
     close_transition_end();
