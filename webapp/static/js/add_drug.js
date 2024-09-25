@@ -118,7 +118,7 @@ function add_drug_item(drug, target) {
                             <span style="white-space: pre-line">${year}</span>
                             <span style="white-space: pre-line" data-i18n-key="${month_title}">${month_title}</span>
                         </label>
-                        <label class="box-close" for="acc-close"></label>
+                        <label class="box-close" for="acc_close_${target}"></label>
                         <div class="box-content">
                             ${drug["description"]}
                         </div>
@@ -146,7 +146,7 @@ function clear_drug_items(target) {
     if (drug_items === null) {
         return;
     }
-    drug_items.innerHTML = '';
+    drug_items.innerHTML = `<input type="radio" name="accordion" id="acc_close_${target}"/>`;
 }
 
 function add_drug() {
