@@ -5,7 +5,7 @@ import logging
 from flask import Flask, request, render_template, Response
 from jinja2 import Template
 
-from config import IS_IT_PROD, WEBAPP_PORT
+from config import WEBAPP_PORT
 from drugs_db_management import (
     KEY_GROUP,
     KEY_DESC,
@@ -159,9 +159,4 @@ async def test():
 if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO)
     HOST = '0.0.0.0'
-    if IS_IT_PROD:
-        import waitress
-        waitress.serve(app, host=HOST, port=WEBAPP_PORT)
-    else:
-        from werkzeug import serving
-        serving.run_simple(HOST, WEBAPP_PORT, app, ssl_context='adhoc')
+    app.run(host=HOST, port=WEBAPP_PORT)

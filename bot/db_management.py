@@ -42,9 +42,7 @@ async def sql_stop():
 
 
 async def sql_add_user(user_id: int, lang_code: str):
-    record = {
-        KEY_ID: user_id,
-    }
+    record = {KEY_ID: user_id}
     user_id_found = await database.fetch_all(f'SELECT * FROM {KEY_TABLE_USERS} WHERE {KEY_ID}=:{KEY_ID}', values=record)
     if not user_id_found:
         record = {
