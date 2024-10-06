@@ -75,3 +75,4 @@ target/
 uno.sqlite3
 *.db
 db/
+db/drugs.db
