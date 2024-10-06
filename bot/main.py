@@ -16,7 +16,8 @@ async def on_startup(dispatcher: Dispatcher):
     log.info('bot started...')
     await sql_start()
 
-    scheduler.add_job(check_every_day, 'interval', minutes=1, args=(dispatcher,))
+    # scheduler.add_job(check_every_day, 'interval', minutes=1, args=(dispatcher,))
+    scheduler.add_job(check_every_day, 'interval', days=30, args=(dispatcher,))
     scheduler.start()
 
     dispatcher.register_message_handler(request_start_handler)
