@@ -1,6 +1,9 @@
 import datetime
 import json
 import logging
+import re
+
+import requests
 
 from flask import Flask, request, render_template, Response
 from jinja2 import Template
@@ -52,6 +55,44 @@ def make_drug_info_page(drug_data: dict) -> str:
         print(e)
 
 
+def make_expired_drug_info_page(drug_data: dict) -> str:
+    if not drug_data:
+        return "No info. Sorry."
+
+    try:
+        drug_id = drug_data[KEY_DRUG_ID]
+
+        url = f'https://www.vidal.ru/protec/{drug_id}'
+        response = requests.get(url)
+        content = ''
+        if response.status_code == 200:
+            content = response.text.encode('latin-1').decode('unicode_escape').replace('\\', '')
+            content = content.replace('<!--noindex-->', '')
+            content = content[1:]
+            content = content[:-1]
+
+            content = re.sub(
+                r'\s*<tr>\s*'
+                r'<td colspan="4" style="text-align:center">\s*'
+                r'<button class="btn-red btn-protec-more">Еще</button>\s*'
+                r'</td>\s*'
+                r'</tr>\s*',
+                '',
+                content,
+                re.DOTALL
+            )
+
+        with open('templates/expired_drug_info.html', 'r', encoding='utf-8') as f:
+            template_data = f.read()
+            template = Template(template_data)
+            return template.render(
+                drug_group=drug_data[KEY_GROUP],
+                content=content
+            )
+    except Exception as e:
+        print(e)
+
+
 @app.get(rule='/')
 async def start():
     return render_template('index_template.html', usr_id="test_user")
@@ -73,6 +114,16 @@ async def make_drug_record(drug: dict) -> dict:
         KEY_TITLE: drug[KEY_NAME],
         KEY_DATE: drug[KEY_DATE],
         'description': make_drug_info_page(info_data)
+    }
+
+
+async def make_expired_drug_record(drug: dict) -> dict:
+    info_data = await sql_get_drug_info_by_id(drug[KEY_DRUG_ID])
+    return {
+        KEY_ID: drug[KEY_ID],
+        KEY_TITLE: drug[KEY_NAME],
+        KEY_DATE: drug[KEY_DATE],
+        'description': make_expired_drug_info_page(info_data)
     }
 
 
@@ -120,16 +171,9 @@ async def expired_drugs():
     usr_id = int(request.args['usr_id'])
     drugs = []
     for drug in await sql_get_drugs(usr_id, table=KEY_TABLE_AID_KIT_EXPIRED):
-        drug_record = await make_drug_record(drug)
+        drug_record = await make_expired_drug_record(drug)
         drugs.append(drug_record)
     return Response(json.dumps(drugs), mimetype='application/json')
-
-
-def sanitize_drug_title(input_value: str) -> str:
-    output = input_value.replace('инструкция по применению', '')
-    output = output.replace('ОПИСАНИЕ', '')
-    output = output.rstrip()
-    return output
 
 
 def rus_match(text, alphabet=set('абвгдеёжзийклмнопрстуфхцчшщъыьэюя')) -> bool:
@@ -143,7 +187,7 @@ async def edit():
         if len(drug_part_title) > 1:
             target_column = KEY_RU_TITLE if rus_match(drug_part_title) else KEY_EN_TITLE
             for r in await sql_get_drug_info_candidates(drug_part_title, target_column):
-                drug_title = sanitize_drug_title(r[0])
+                drug_title = r[0]
                 drug_id = r[1]
                 result[drug_title] = drug_id
     return Response(json.dumps(result), mimetype='application/json')

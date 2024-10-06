@@ -75,7 +75,7 @@ header.box {
 }
 .box-close {
 	position: absolute;
-	height: var(--item-height);
+	height: 70px;
 	width: 100%;
 	top: 0;
 	left: 0;

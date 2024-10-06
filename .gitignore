@@ -73,4 +73,5 @@ target/
 
 # Database file
 uno.sqlite3
+*.db
 db/

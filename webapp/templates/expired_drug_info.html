@@ -1,0 +1,48 @@
+<style>
+    .buy-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 12px;
+    }
+
+    .buy-table td {
+        border: 1px solid #cfcfcf;
+        padding: 7px 10px;
+        text-align: center;
+        width: 80px;
+    }
+
+    .buy-table td.buy-name {
+        width: auto;
+        text-align: left;
+    }
+
+    .buy-header {
+        color: #d71344;
+        font-size: 1.3em;
+        margin: 25px 0 10px;
+    }
+
+    #buy-box {
+        display: none;
+    }
+
+    #buy-box.mobile td {
+        display: block;
+        width: 90%;
+        margin: 0 auto;
+        text-align: center;
+    }
+
+    #buy-box.mobile td.buy-last {
+        margin-bottom: 25px;
+    }
+</style>
+
+<div style="margin-left: 10px">
+    {{drug_group}}
+    <div id="buy-box" style="display: block;">
+        {{content}}
+    </div>
+    </br>
+</div>
