@@ -1,5 +1,12 @@
 ---
 services:
+  noip_duc:
+    image: 'ghcr.io/noipcom/noip-duc:latest'
+    restart: unless-stopped
+    network_mode: host
+    env_file:
+      - ../secrets/no_ip_vault.env
+
   nginx_proxy:
     image: 'jc21/nginx-proxy-manager:latest'
     restart: unless-stopped
