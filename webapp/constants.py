@@ -44,3 +44,5 @@ IDX_NAME = 2
 IDX_DATE = 3
 
 TABLE_HEIGHT = 6
+
+MSG_NO_INFO = 'No info. Sorry.'

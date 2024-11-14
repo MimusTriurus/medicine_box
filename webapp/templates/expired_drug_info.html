@@ -17,10 +17,54 @@
         text-align: left;
     }
 
-    .buy-header {
+    .base-button {
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        background: #d71344;
+        color: #fff;
+        padding: 8px 12px;
+        font-size: 14px;
+    }
+
+    .buy-table__vendor {
+        display: none;
+    }
+
+    .buy-table__price {
+        margin-bottom: 10px;
+        margin-top: 10px;
+        font-size: 14px;
+        font-weight: 600;
+        line-height: 16.94px;
+    }
+
+    .buy-header__pharmacy-name {
         color: #d71344;
-        font-size: 1.3em;
-        margin: 25px 0 10px;
+        font-size: 18px;
+        font-weight: 900;
+        display: none;
+    }
+
+    .buy-table__title {
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 16.94px;
+        color: #333;
+        display: none;
+    }
+
+    .buy-table__item {
+        margin-top: 15px;
+        margin-right: 10px;
+        display: grid;
+        grid-template-columns: 1fr 96px min-content;
+        align-items: center;
+    }
+
+    .buy-header {
+        margin-top: 15px;
+        align-items: center;
     }
 
     #buy-box {

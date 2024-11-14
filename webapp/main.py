@@ -8,7 +8,7 @@ import requests
 from flask import Flask, request, render_template, Response
 from jinja2 import Template
 
-from config import WEBAPP_PORT
+from config import WEBAPP_PORT, VIDAL_LINK
 from drugs_db_management import (
     KEY_GROUP,
     KEY_DESC,
@@ -29,11 +29,16 @@ from constants import (
     KEY_TABLE_AID_KIT_EXPIRED,
     KEY_TABLE_AID_KIT,
     KEY_TARGET_TABLE,
+    MSG_NO_INFO,
 )
 from db_management import sql_add_drug, sql_get_drugs, sql_del_drugs
 
 log = logging.getLogger()
 app = Flask(import_name=__name__)
+
+pattern_price = re.compile(r'<div class="buy-table__price">.*?</div>')
+pattern_order = re.compile(r'<div class="buy-table__order">.*?</div>')
+pattern_img = re.compile(r'<img src="/upload.*?/>')
 
 
 # obsolete
@@ -57,31 +62,42 @@ def make_drug_info_page(drug_data: dict) -> str:
 
 def make_expired_drug_info_page(drug_data: dict) -> str:
     if not drug_data:
-        return "No info. Sorry."
+        return MSG_NO_INFO
 
     try:
         drug_id = drug_data[KEY_DRUG_ID]
 
-        url = f'https://www.vidal.ru/protec/{drug_id}'
+        url = f'{VIDAL_LINK}/protec/{drug_id}'
         response = requests.get(url)
         content = ''
         if response.status_code == 200:
             content = response.text.encode('latin-1').decode('unicode_escape').replace('\\', '')
-            content = content.replace('<!--noindex-->', '')
-            content = content[1:]
-            content = content[:-1]
 
             content = re.sub(
-                r'\s*<tr>\s*'
-                r'<td colspan="4" style="text-align:center">\s*'
-                r'<button class="btn-red btn-protec-more">Еще</button>\s*'
-                r'</td>\s*'
-                r'</tr>\s*',
-                '',
-                content,
-                re.DOTALL
+                r'\s+',
+                ' ',
+                content
             )
 
+            prices = pattern_price.findall(content)
+            if not prices:
+                return MSG_NO_INFO
+            orders = pattern_order.findall(content)
+            if not orders:
+                return MSG_NO_INFO
+            images = pattern_img.findall(content)
+            if not images:
+                return MSG_NO_INFO
+            content = ''
+            for i in range(len(images)):
+                images[i] = images[i].replace('<img src="/upload', f'<img src="{VIDAL_LINK}/upload')
+                content += f'''
+                    <div class="buy-table__item">
+                        <div>{images[i]}</div>
+                        {prices[i]}
+                        {orders[i]}
+                    </div>
+                    '''
         with open('templates/expired_drug_info.html', 'r', encoding='utf-8') as f:
             template_data = f.read()
             template = Template(template_data)
