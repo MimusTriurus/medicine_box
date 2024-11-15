@@ -76,3 +76,7 @@ uno.sqlite3
 *.db
 db/
 db/drugs.db
+
+# deploy
+deploy/data/
+deploy/letsencrypt/
