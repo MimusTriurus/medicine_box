@@ -2,6 +2,7 @@ import datetime
 import json
 import logging
 import re
+from typing import Tuple
 
 import requests
 
@@ -30,6 +31,7 @@ from constants import (
     KEY_TABLE_AID_KIT,
     KEY_TARGET_TABLE,
     MSG_NO_INFO,
+    KEY_DRUG_DESC,
 )
 from db_management import sql_add_drug, sql_get_drugs, sql_del_drugs
 
@@ -41,10 +43,9 @@ pattern_order = re.compile(r'<div class="buy-table__order">.*?</div>')
 pattern_img = re.compile(r'<img src="/upload.*?/>')
 
 
-# obsolete
 def make_drug_info_page(drug_data: dict) -> str:
     if not drug_data:
-        return "No info. Sorry."
+        return MSG_NO_INFO
 
     try:
         with open('templates/drug_info.html', 'r', encoding='utf-8') as f:
@@ -111,25 +112,19 @@ def make_expired_drug_info_page(drug_data: dict) -> str:
 
 @app.get(rule='/')
 async def start():
-    return render_template('index_template.html', usr_id="test_user")
-
-
-# obsolete
-@app.get(rule='/get_drug_info')
-async def get_drug_info():
-    drug_info_id = request.args.get(KEY_DRUG_ID)
-    await sql_drugs_db_connect()
-    drug_info = await sql_get_drug_info_by_id(drug_info_id)
-    return make_drug_info_page(drug_info)
+    return render_template('index_template.html', usr_id='test_user')
 
 
 async def make_drug_record(drug: dict) -> dict:
-    info_data = await sql_get_drug_info_by_id(drug[KEY_DRUG_ID])
+    if KEY_DRUG_ID in drug:
+        info_data = await sql_get_drug_info_by_id(drug[KEY_DRUG_ID])
+    else:
+        info_data = None
     return {
         KEY_ID: drug[KEY_ID],
         KEY_TITLE: drug[KEY_NAME],
         KEY_DATE: drug[KEY_DATE],
-        'description': make_drug_info_page(info_data)
+        KEY_DRUG_DESC: make_drug_info_page(info_data)
     }
 
 
@@ -139,7 +134,20 @@ async def make_expired_drug_record(drug: dict) -> dict:
         KEY_ID: drug[KEY_ID],
         KEY_TITLE: drug[KEY_NAME],
         KEY_DATE: drug[KEY_DATE],
-        'description': make_expired_drug_info_page(info_data)
+        KEY_DRUG_DESC: make_expired_drug_info_page(info_data)
+    }
+
+
+async def make_drug_info_record(drug: dict, desc_maker=make_drug_info_page) -> dict:
+    if KEY_DRUG_ID in drug:
+        info_data = await sql_get_drug_info_by_id(drug[KEY_DRUG_ID])
+    else:
+        info_data = None
+    return {
+        KEY_ID: drug[KEY_ID],
+        KEY_TITLE: drug[KEY_NAME],
+        KEY_DATE: drug[KEY_DATE],
+        KEY_DRUG_DESC: desc_maker(info_data)
     }
 
 
@@ -148,12 +156,15 @@ async def add_drug():
     drug_data = dict(request.form)
     date = datetime.datetime.strptime(drug_data[KEY_DATE], '%Y-%m').date()
     target_table = KEY_TABLE_AID_KIT
+    drug_record_maker = make_drug_info_page
     if date < datetime.datetime.now().date():
         target_table = KEY_TABLE_AID_KIT_EXPIRED
+        drug_record_maker = make_expired_drug_info_page
+
     user_id = int(drug_data[KEY_USER_ID])
     record_id = await sql_add_drug(user_id, drug_data, target_table)
     drug_data[KEY_ID] = record_id
-    drug_record = await make_drug_record(drug_data)
+    drug_record = await make_drug_info_record(drug_data, drug_record_maker)
     drug_record[KEY_TARGET_TABLE] = target_table
     return Response(json.dumps(drug_record), mimetype='application/json')
 
@@ -172,12 +183,22 @@ async def del_expired_drug():
     return Response()
 
 
+def drug_obj_from_tuple(drug_tuple: Tuple) -> dict:
+    return {
+        KEY_ID: drug_tuple[0],
+        KEY_USER_ID: drug_tuple[1],
+        KEY_NAME: drug_tuple[2],
+        KEY_DATE: drug_tuple[3],
+        KEY_DRUG_ID: drug_tuple[4]
+    }
+
+
 @app.get(rule='/non_expired_drugs')
 async def non_expired_drugs():
     usr_id = int(request.args['usr_id'])
     drugs = []
     for drug in await sql_get_drugs(usr_id):
-        drug_record = await make_drug_record(drug)
+        drug_record = await make_drug_info_record(drug_obj_from_tuple(drug), make_drug_info_page)
         drugs.append(drug_record)
     return Response(json.dumps(drugs), mimetype='application/json')
 
@@ -187,7 +208,7 @@ async def expired_drugs():
     usr_id = int(request.args['usr_id'])
     drugs = []
     for drug in await sql_get_drugs(usr_id, table=KEY_TABLE_AID_KIT_EXPIRED):
-        drug_record = await make_expired_drug_record(drug)
+        drug_record = await make_drug_info_record(drug_obj_from_tuple(drug), make_expired_drug_info_page)
         drugs.append(drug_record)
     return Response(json.dumps(drugs), mimetype='application/json')
 
@@ -207,13 +228,6 @@ async def edit():
                 drug_id = r[1]
                 result[drug_title] = drug_id
     return Response(json.dumps(result), mimetype='application/json')
-
-
-@app.route('/test', methods=['GET', 'POST'])
-async def test():
-    r = request
-    print(request.data)
-    return Response()
 
 
 if __name__ == '__main__':

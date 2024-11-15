@@ -31,6 +31,7 @@ KEY_NAME = 'name'
 KEY_DATE = 'date'
 KEY_LANG = 'lang'
 KEY_DRUG_ID = 'drug_id'
+KEY_DRUG_DESC = 'description'
 
 KEY_TABLE_USERS = 'users'
 KEY_TABLE_AID_KIT = 'non_expired'
