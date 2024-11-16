@@ -40,21 +40,15 @@ function switch_tab(id) {
     switch (id) {
         case NON_EXPIRED:
             $(`#${EXPIRED}`).hide();
-            $("#buy_drug_panel").hide();
 
             $(`#${NON_EXPIRED}`).show();
             $("#add_drug_panel").show();
-            clear_drug_items(NON_EXPIRED);
-            request_drugs(get_non_expired_url, NON_EXPIRED);
             break;
         case EXPIRED:
             $(`#${NON_EXPIRED}`).hide();
             $("#add_drug_panel").hide();
 
             $(`#${EXPIRED}`).show();
-            $("#buy_drug_panel").show();
-            clear_drug_items(EXPIRED);
-            request_drugs(get_expired_url, EXPIRED);
             break;
     }
 }

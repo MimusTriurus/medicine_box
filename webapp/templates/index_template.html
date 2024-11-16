@@ -174,7 +174,8 @@
     }
 
     document.addEventListener('DOMContentLoaded', function () {
-        switch_tab(NON_EXPIRED);
+        request_drugs(get_non_expired_url, NON_EXPIRED);
+        request_drugs(get_expired_url, EXPIRED);
         document.querySelectorAll("[data-i18n-key]").forEach(translateElement);
     });
     close_transition_end();
