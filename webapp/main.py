@@ -115,6 +115,11 @@ async def start():
     return render_template('index_template.html', usr_id='test_user')
 
 
+@app.get(rule='/first_aid_kit_info')
+async def first_aid_kit_info():
+    return render_template('first_aid_med_kit_example.html')
+
+
 async def make_drug_record(drug: dict) -> dict:
     if KEY_DRUG_ID in drug:
         info_data = await sql_get_drug_info_by_id(drug[KEY_DRUG_ID])

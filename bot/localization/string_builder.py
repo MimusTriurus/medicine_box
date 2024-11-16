@@ -11,6 +11,12 @@ def make_start_message(lang_code: str) -> str:
     return hello_message
 
 
+def make_first_aid_kit_examble_btn_title(lang_code: str) -> str:
+    localizer = localizers.get(lang_code, en)
+    btn_title = localizer.gettext(FAK_BTN_TITLE)
+    return btn_title
+
+
 def make_month_title(month_number: int, lang_code: str):
     loc = localizers.get(lang_code, en)
     months = {

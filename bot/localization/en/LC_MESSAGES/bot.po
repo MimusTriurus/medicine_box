@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-02-05 21:15+0300\n"
+"POT-Creation-Date: 2024-11-16 19:09+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,70 +17,74 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../../localization_keys.py:21
+#: localization_keys.py:21
 msgid "START"
 msgstr "The bot is meant to <b>keep records of medications</b> in the medicine box, to <b>notify the user of expiration of the medications</b>, to depict the list of expired medications"
 
-#: ../../localization_keys.py:22
+#: localization_keys.py:22
 msgid "PRESS_ADD_BTN"
 msgstr "Press the button "
 
-#: ../../localization_keys.py:23
+#: localization_keys.py:23
 msgid "TO_ADD_DRUG"
 msgstr " to add a medication to the medicine box"
 
-#: ../../localization_keys.py:59
+#: localization_keys.py:25
 msgid "January"
 msgstr "January"
 
-#: ../../localization_keys.py:60
+#: localization_keys.py:26
 msgid "February"
 msgstr "February"
 
-#: ../../localization_keys.py:61
+#: localization_keys.py:27
 msgid "March"
 msgstr "March"
 
-#: ../../localization_keys.py:62
+#: localization_keys.py:28
 msgid "April"
 msgstr "April"
 
-#: ../../localization_keys.py:63
+#: localization_keys.py:29
 msgid "May"
 msgstr "May"
 
-#: ../../localization_keys.py:64
+#: localization_keys.py:30
 msgid "June"
 msgstr "June"
 
-#: ../../localization_keys.py:65
+#: localization_keys.py:31
 msgid "July"
 msgstr "July"
 
-#: ../../localization_keys.py:66
+#: localization_keys.py:32
 msgid "August"
 msgstr "August"
 
-#: ../../localization_keys.py:67
+#: localization_keys.py:33
 msgid "September"
 msgstr "September"
 
-#: ../../localization_keys.py:68
+#: localization_keys.py:34
 msgid "October"
 msgstr "October"
 
-#: ../../localization_keys.py:69
+#: localization_keys.py:35
 msgid "November"
 msgstr "November"
 
-#: ../../localization_keys.py:70
+#: localization_keys.py:36
 msgid "December"
 msgstr "December"
 
-#: ../../localization_keys.py:72
+#: localization_keys.py:38
 msgid "The medication"
 msgstr "The medication"
 
-#: ../../localization_keys.py:73
+#: localization_keys.py:39
 msgid "expired in"
 msgstr "expired in"
+
+#: localization_keys.py:41
+msgid "FAK_BTN_TITLE"
+msgstr "What should be in your medicine cabinet"

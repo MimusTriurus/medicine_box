@@ -37,3 +37,5 @@ ID_TXT_DECEMBER = _('December')
 
 ID_MEDICATION = _('The medication')
 ID_EXPIRED_IN = _('expired in')
+
+FAK_BTN_TITLE = _('FAK_BTN_TITLE')

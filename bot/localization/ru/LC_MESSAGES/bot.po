@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-02-05 21:10+0300\n"
+"POT-Creation-Date: 2024-11-16 19:09+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,74 +17,74 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../../localization_keys.py:21
+#: localization_keys.py:21
 msgid "START"
 msgstr "Бот предназначен для <b>ведения учета лекарств</b> в аптечке, <b>уведомления об истечении срока годности лекарств</b>, отображения списка лекарств с истекшим сроком годности"
 
-#: ../../localization_keys.py:22
+#: localization_keys.py:22
 msgid "PRESS_ADD_BTN"
 msgstr "Нажмите кнопку "
 
-#: ../../localization_keys.py:23
+#: localization_keys.py:23
 msgid "TO_ADD_DRUG"
 msgstr " для того, чтобы добавить лекарство в аптечку"
 
-#: ../../localization_keys.py:57
-msgid "Year"
-msgstr "Год"
-
-#: ../../localization_keys.py:59
+#: localization_keys.py:25
 msgid "January"
 msgstr "Январь"
 
-#: ../../localization_keys.py:60
+#: localization_keys.py:26
 msgid "February"
 msgstr "Февраль"
 
-#: ../../localization_keys.py:61
+#: localization_keys.py:27
 msgid "March"
 msgstr "Март"
 
-#: ../../localization_keys.py:62
+#: localization_keys.py:28
 msgid "April"
 msgstr "Апрель"
 
-#: ../../localization_keys.py:63
+#: localization_keys.py:29
 msgid "May"
 msgstr "Май"
 
-#: ../../localization_keys.py:64
+#: localization_keys.py:30
 msgid "June"
 msgstr "Июнь"
 
-#: ../../localization_keys.py:65
+#: localization_keys.py:31
 msgid "July"
 msgstr "Июль"
 
-#: ../../localization_keys.py:66
+#: localization_keys.py:32
 msgid "August"
 msgstr "Август"
 
-#: ../../localization_keys.py:67
+#: localization_keys.py:33
 msgid "September"
 msgstr "Сентябрь"
 
-#: ../../localization_keys.py:68
+#: localization_keys.py:34
 msgid "October"
 msgstr "Октябрь"
 
-#: ../../localization_keys.py:69
+#: localization_keys.py:35
 msgid "November"
 msgstr "Ноябрь"
 
-#: ../../localization_keys.py:70
+#: localization_keys.py:36
 msgid "December"
 msgstr "Декабрь"
 
-#: ../../localization_keys.py:72
+#: localization_keys.py:38
 msgid "The medication"
 msgstr "Срок годности лекарства"
 
-#: ../../localization_keys.py:73
+#: localization_keys.py:39
 msgid "expired in"
 msgstr "истек в"
+
+#: localization_keys.py:41
+msgid "FAK_BTN_TITLE"
+msgstr "Что должно быть в вашей аптечке"
