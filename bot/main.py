@@ -1,4 +1,3 @@
-import asyncio
 import logging
 import os
 
@@ -6,12 +5,11 @@ import pika
 
 from aiogram import Dispatcher
 from aiogram.utils.executor import start_polling
-from aiogram_dialog import DialogRegistry
 from pika import BlockingConnection
 from pika.adapters.asyncio_connection import AsyncioConnection
 
 from db_management import sql_start, sql_stop
-from expired_drugs_checker import scheduler, check_every_day, check_expired_drugs_queue
+from expired_drugs_checker import scheduler, check_expired_drugs_queue
 from handlers import *
 
 logging.basicConfig(level=logging.INFO)

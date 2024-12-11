@@ -20,8 +20,8 @@ from drugs_db_management import (
     sql_get_drug_info_by_id,
     sql_get_drug_info_candidates,
 )
-from webapp.localization.localization_keys import *
-from webapp.queue_publisher import QueuePublisher
+from localization.localization_keys import *
+from queue_publisher import QueuePublisher
 
 log = logging.getLogger()
 app = Flask(import_name=__name__)
