@@ -2,6 +2,7 @@
 services:
   rabbitmq:
     image: rabbitmq:3.10.7-management
+    container_name: rabbitmq
     hostname: rabbitmq
     restart: always
     env_file:
@@ -14,6 +15,7 @@ services:
 
   noip_duc:
     image: 'ghcr.io/noipcom/noip-duc:latest'
+    container_name: noip
     restart: unless-stopped
     env_file:
       - ../secrets/no_ip_vault.env
@@ -21,6 +23,7 @@ services:
   nginx_proxy:
     image: 'jc21/nginx-proxy-manager:latest'
     restart: unless-stopped
+    container_name: nginx
     depends_on:
       - webapp
     ports:

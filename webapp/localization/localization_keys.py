@@ -1,6 +1,6 @@
 import gettext
 
-from webapp.constants import (
+from constants import (
     EN,
     RU,
     KEY_JAN,
