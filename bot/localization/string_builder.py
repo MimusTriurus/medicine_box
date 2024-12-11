@@ -1,5 +1,5 @@
-from bot.constants import *
-from bot.localization.localization_keys import *
+from constants import *
+from localization.localization_keys import *
 
 
 def make_start_message(lang_code: str) -> str:
