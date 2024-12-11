@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js"
+            integrity="sha512-57oZ/vW8ANMjR/KQ6Be9v/+/h6bq9/l3f0Oc7vn6qMqyhvPd1cvKBRWWpzu0QoneImqr2SkmO4MSqU+RpHom3Q=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer">
+    </script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+    <script src="{{ url_for('static', filename='js/constants.js')}}"></script>
+    <script src="{{ url_for('static', filename='js/index.js')}}"></script>
+
+    <script>
+        window.translations = {};
+        window.translations_count = 0;
+
+        document.addEventListener('DOMContentLoaded', function () {
+            window.translations = JSON.parse('{{ localization|safe }}')[userLanguage]
+            window.translations_count = Object.keys(window.translations).length;
+            document.querySelectorAll("[data-i18n-key]").forEach(translateElement);
+        });
+    </script>
+
+
+</head>
+<style>
+    html {
+        min-height: 100%;
+        position: relative;
+        background: white;
+    }
+
+    body {
+        height: 100%;
+    }
+
+    #back {
+        position: absolute;
+        top: 20px;
+        bottom: 0;
+        left: 10px;
+        right: 10px;
+        overflow: hidden;
+    }
+</style>
+<body>
+<div id="back">
+    {% include 'expired_drug_info.html' %}
+</div>
+</body>
+
+<script>
+
+</script>

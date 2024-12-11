@@ -120,63 +120,14 @@
     set_add_drug_url('{{ url_for("add_drug") }}');
     set_del_drug_url('{{ url_for("del_non_expired_drug") }}');
     set_del_expired_drug_url('{{ url_for("del_expired_drug") }}');
-    set_get_non_expired_url("{{ url_for('non_expired_drugs') }}");
-    set_get_expired_url("{{ url_for('expired_drugs') }}");
-
-    const translations = {
-        "en": {
-            "non_expired": "Non-expired",
-            "expired": "Expired",
-            "name_of_drug": "Name of the medicine",
-            'January': 'January',
-            'February': 'February',
-            'March': 'March',
-            'April': 'April',
-            'May': 'May',
-            'June': 'June',
-            'July': 'July',
-            'August': 'August',
-            'September': 'September',
-            'October': 'October',
-            'November': 'November',
-            'December': 'December',
-        },
-        "ru": {
-            "non_expired": "Лекарства",
-            "expired": "Просроченные",
-            "name_of_drug": "Название лекарства",
-            'January': 'Январь',
-            'February': 'Февраль',
-            'March': 'Март',
-            'April': 'Апрель',
-            'May': 'Май',
-            'June': 'Июнь',
-            'July': 'Июль',
-            'August': 'Август',
-            'September': 'Сентябрь',
-            'October': 'Октябрь',
-            'November': 'Ноябрь',
-            'December': 'Декабрь',
-        },
-    };
-
-    function translateElement(element) {
-        const key = element.getAttribute("data-i18n-key");
-        const translation = translations[userLanguage][key];
-        if (translation === undefined) {
-            return;
-        }
-        if (element.placeholder) {
-            element.placeholder = translation;
-        } else {
-            element.innerText = translation;
-        }
-    }
+    set_get_non_expired_url('{{ url_for("non_expired_drugs") }}');
+    set_get_expired_url('{{ url_for("expired_drugs") }}');
 
     document.addEventListener('DOMContentLoaded', function () {
+        window.translations = JSON.parse('{{ localization|safe }}')[userLanguage];
+        window.translations_count = Object.keys(window.translations).length;
         request_drugs(get_non_expired_url, NON_EXPIRED);
         request_drugs(get_expired_url, EXPIRED);
-        document.querySelectorAll("[data-i18n-key]").forEach(translateElement);
     });
     close_transition_end();
 </script>

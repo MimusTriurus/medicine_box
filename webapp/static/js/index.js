@@ -1,8 +1,7 @@
 let tg = window.Telegram.WebApp;
 tg.expand();
 let tuser_id = tg.initData ? tg.initDataUnsafe.user.id : 486190703;
-let userLanguage = tg.initData ? tg.initDataUnsafe.user.language_code : 'ru';
-console.log(userLanguage);
+let userLanguage = tg.initData ? tg.initDataUnsafe.user.language_code : 'en';
 
 let get_non_expired_url = NaN;
 
@@ -19,13 +18,12 @@ function set_get_expired_url(url) {
 function request_drugs(url, target_table) {
     $.ajax({
         url: url,
-        type: "GET",
-        data: {usr_id: tuser_id},
+        type: 'GET',
+        data: {user_id: tuser_id},
         dataType: 'html',
         success: function (response) {
             let drugs = JSON.parse(response);
             drugs.forEach(drug => {
-                //drug['title'] = 'аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин аспирин '
                 add_drug_item(drug, target_table);
                 document.querySelectorAll("[data-i18n-key]").forEach(translateElement);
             });
@@ -36,8 +34,11 @@ function request_drugs(url, target_table) {
     });
 }
 
+let current_tab = NON_EXPIRED;
+
 function switch_tab(id) {
-    switch (id) {
+    current_tab = id;
+    switch (current_tab) {
         case NON_EXPIRED:
             $(`#${EXPIRED}`).hide();
 
@@ -50,5 +51,29 @@ function switch_tab(id) {
 
             $(`#${EXPIRED}`).show();
             break;
+    }
+    while (drugs_local.length !== 0) {
+        const data = drugs_local[drugs_local.length - 1];
+        add_drug_item(data, data['target_table']);
+        drugs_local.pop();
+    }
+}
+
+window.translations = {};
+window.translations_count = 0;
+
+function translateElement(element) {
+    if (window.translations_count === 0) {
+        return;
+    }
+    const key = element.getAttribute('data-i18n-key');
+    const translation = window.translations[key];
+    if (translation === undefined) {
+        return;
+    }
+    if (element.placeholder) {
+        element.placeholder = translation;
+    } else {
+        element.innerText = translation;
     }
 }

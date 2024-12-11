@@ -1,0 +1,82 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-12-08 15:13+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: localization_keys.py:21
+msgid "January"
+msgstr "Январь"
+
+#: localization_keys.py:22
+msgid "February"
+msgstr "Февраль"
+
+#: localization_keys.py:23
+msgid "March"
+msgstr "Март"
+
+#: localization_keys.py:24
+msgid "April"
+msgstr "Апрель"
+
+#: localization_keys.py:25
+msgid "May"
+msgstr "Май"
+
+#: localization_keys.py:26
+msgid "June"
+msgstr "Июнь"
+
+#: localization_keys.py:27
+msgid "July"
+msgstr "Июль"
+
+#: localization_keys.py:28
+msgid "August"
+msgstr "Август"
+
+#: localization_keys.py:29
+msgid "September"
+msgstr "Сентябрь"
+
+#: localization_keys.py:30
+msgid "October"
+msgstr "Октябрь"
+
+#: localization_keys.py:31
+msgid "November"
+msgstr "Ноябрь"
+
+#: localization_keys.py:32
+msgid "December"
+msgstr "Декабрь"
+
+#: localization_keys.py:34
+msgid "name_of_drug"
+msgstr "Название лекарства"
+
+#: localization_keys.py:35
+msgid "non_expired"
+msgstr "Лекарства"
+
+#: localization_keys.py:36
+msgid "expired"
+msgstr "Просроченные"
+
+#: localization_keys.py:37
+msgid "drug_not_available_for_purchase"
+msgstr "Лекарство не доступно для заказа в интернет аптеках."

@@ -1,15 +1,28 @@
 ---
 services:
+  rabbitmq:
+    image: rabbitmq:3.10.7-management
+    hostname: rabbitmq
+    restart: always
+    env_file:
+      - ../secrets/rabbitmq_vault.env
+    ports:
+      - '15672:15672'
+      - '5672:5672'
+    volumes:
+      - ./rabbitmq:/var/lib/rabbitmq
+
   noip_duc:
     image: 'ghcr.io/noipcom/noip-duc:latest'
     restart: unless-stopped
-    network_mode: host
     env_file:
       - ../secrets/no_ip_vault.env
 
   nginx_proxy:
     image: 'jc21/nginx-proxy-manager:latest'
     restart: unless-stopped
+    depends_on:
+      - webapp
     ports:
       - '80:80'
       - '81:81'
@@ -17,24 +30,27 @@ services:
     volumes:
       - ./data:/data
       - ./letsencrypt:/etc/letsencrypt
-    network_mode: host
 
   webapp:
     container_name: webapp
     build: ../webapp
+    depends_on:
+      - rabbitmq
     volumes:
       - ./../db/:/app/db
+    ports:
+      - '8000:8000'
     environment:
       WEBAPP_PORT: 8000
     env_file:
       - ../secrets/webapp_vault.env
-    network_mode: host
 
   bot:
     container_name: bot
     build: ../bot
+    depends_on:
+      - rabbitmq
     volumes:
       - ./../db/:/app/db
     env_file:
       - ../secrets/bot_vault.env
-    network_mode: host

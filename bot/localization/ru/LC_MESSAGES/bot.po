@@ -88,3 +88,7 @@ msgstr "истек в"
 #: localization_keys.py:41
 msgid "FAK_BTN_TITLE"
 msgstr "Что должно быть в вашей аптечке"
+
+#: localization_keys.py:43
+msgid "BUY_BTN_TITLE"
+msgstr "Купить"

@@ -112,7 +112,7 @@ async def sql_add_drug(user_id: int, data: dict, table: str = KEY_TABLE_AID_KIT)
     return record_id
 
 
-async def sql_get_drugs(user_id: int, table: str = KEY_TABLE_AID_KIT) -> list:
+async def sql_get_drugs(user_id: str, table: str = KEY_TABLE_AID_KIT) -> list:
     if not database.is_connected:
         await sql_start()
 
@@ -122,7 +122,7 @@ async def sql_get_drugs(user_id: int, table: str = KEY_TABLE_AID_KIT) -> list:
     return result
 
 
-async def sql_del_drugs(drug_id: int, table: str = KEY_TABLE_AID_KIT) -> Optional[Tuple[str, str]]:
+async def sql_del_drugs(drug_id: str, table: str = KEY_TABLE_AID_KIT) -> Optional[Tuple[str, str]]:
     if not database.is_connected:
         await sql_start()
 
@@ -133,7 +133,7 @@ async def sql_del_drugs(drug_id: int, table: str = KEY_TABLE_AID_KIT) -> Optiona
     return None
 
 
-async def sql_clear_expired_drugs(user_id: int):
+async def sql_clear_expired_drugs(user_id: str):
     if not database.is_connected:
         await sql_start()
 

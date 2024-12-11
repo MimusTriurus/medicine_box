@@ -1,5 +1,5 @@
-from constants import *
-from localization.localization_keys import *
+from bot.constants import *
+from bot.localization.localization_keys import *
 
 
 def make_start_message(lang_code: str) -> str:
@@ -46,8 +46,10 @@ def make_expired_drug_message(lang_code: str, drug_name: str, drug_expired_date:
         month_num = int(date_parts[1])
         month = make_month_title(month_num, lang_code)
 
-    return f'{ICON_EXCLAMATION}{ICON_SPACER}' \
-           f'{localizers.get(lang_code, en).gettext(ID_MEDICATION)} ' \
-           f'<b>{drug_name}</b> ' \
-           f'{localizers.get(lang_code, en).gettext(ID_EXPIRED_IN)} ' \
-           f'<b>{month} {year}</b>'
+    return (
+        f'{ICON_EXCLAMATION}{ICON_SPACER}'
+        f'{localizers.get(lang_code, en).gettext(ID_MEDICATION)} '
+        f'<b>{drug_name}</b> '
+        f'{localizers.get(lang_code, en).gettext(ID_EXPIRED_IN)} '
+        f'<b>{month} {year}</b>'
+    )

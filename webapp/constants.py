@@ -1,3 +1,5 @@
+import re
+
 DATE_FORMAT = '%Y-%m'
 
 LANG = 'lang'
@@ -47,3 +49,33 @@ IDX_DATE = 3
 TABLE_HEIGHT = 6
 
 MSG_NO_INFO = 'No info. Sorry.'
+
+KEY_PRICES = 'prices'
+KEY_ORDERS = 'orders'
+KEY_IMAGES = 'images'
+KEY_STORES = 'stores'
+
+pattern_price = re.compile(r'<div class="buy-table__price">(.*?)</div>')
+pattern_order = re.compile(r'.+ href="(.*?)" target="_blank".+')
+pattern_store = re.compile(r'<span class="buy-header__pharmacy-name">(.*?)</span>')
+
+pattern_price_html = re.compile(r'<div class="buy-table__price">.*?</div>')
+pattern_order_html = re.compile(r'<div class="buy-table__order">.*?</div>')
+pattern_img_html = re.compile(r'<img src="/upload.*?/>')
+
+KEY_JAN = 'January'
+KEY_FEB = 'February'
+KEY_MAR = 'March'
+KEY_APR = 'April'
+KEY_MAY = 'May'
+KEY_JUN = 'June'
+KEY_JUL = 'July'
+KEY_AUG = 'August'
+KEY_SEP = 'September'
+KEY_OCT = 'October'
+KEY_NOV = 'November'
+KEY_DEC = 'December'
+KEY_NAME_OF_DRUG = 'name_of_drug'
+KEY_NON_EXPIRED = 'non_expired'
+KEY_EXPIRED = 'expired'
+KEY_DRUG_NOT_AVAILABLE_4_BUY = 'drug_not_available_for_purchase'

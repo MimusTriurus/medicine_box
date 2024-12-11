@@ -137,8 +137,8 @@ function add_drug_item(drug, target) {
         </div>
     `;
     document.getElementById(target).appendChild(swipeBox);
-
     swipe_box_initialization(swipeBox);
+    document.querySelectorAll('[data-i18n-key]').forEach(translateElement);
 }
 
 function clear_drug_items(target) {
@@ -149,6 +149,8 @@ function clear_drug_items(target) {
     drug_items.innerHTML = `<input type="radio" name="accordion" id="acc_close_${target}"/>`;
 }
 
+let drugs_local = []
+
 function add_drug() {
     let drug_element = document.getElementById('medicine_name')
     const drug_name = drug_element.value;
@@ -156,7 +158,7 @@ function add_drug() {
         drug_element.classList.add('error');
         setTimeout(function () {
             drug_element.classList.remove('error');
-        }, 300);
+        }, 1);
         return;
     }
     drug_element.value = '';
@@ -173,7 +175,12 @@ function add_drug() {
         url: add_drug_url,
         data: drug_data
     }).done(function (data) {
-        add_drug_item(data, data['target_table']);
+        if (data['target_table'] === current_tab) {
+            add_drug_item(data, data['target_table']);
+        }
+        else {
+            drugs_local.push(data);
+        }
     });
     close_drug_window();
 }
@@ -209,6 +216,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    const input = document.getElementById("medicine_name");
-    input.addEventListener("input", updateDrugsCandidates);
+    const input = document.getElementById('medicine_name');
+    input.addEventListener('input', updateDrugsCandidates);
 });

@@ -88,3 +88,7 @@ msgstr "expired in"
 #: localization_keys.py:41
 msgid "FAK_BTN_TITLE"
 msgstr "What should be in your medicine cabinet"
+
+#: localization_keys.py:43
+msgid "BUY_BTN_TITLE"
+msgstr "Buy"

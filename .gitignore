@@ -80,3 +80,6 @@ db/drugs.db
 # deploy
 deploy/data/
 deploy/letsencrypt/
+
+# rabbitmq tmp queue
+deploy/rabbitmq
