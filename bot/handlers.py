@@ -3,7 +3,7 @@ from aiogram.dispatcher.filters import Text
 from aiogram.dispatcher.filters.state import StatesGroup, State
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup, WebAppInfo
 
-from bot.config import WEBAPP_DOMAIN
+from config import WEBAPP_DOMAIN
 from components import dp
 from db_management import sql_add_user
 from localization.string_builder import *
