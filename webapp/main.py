@@ -226,7 +226,7 @@ async def add_drug():
 
 @app.delete(rule='/del_non_expired_drug')
 async def del_non_expired_drug():
-    drug_id = int(request.form[KEY_DRUG_ID])
+    drug_id = request.form[KEY_DRUG_ID]
     await sql_del_drugs(drug_id)
     return Response()
 
@@ -234,14 +234,18 @@ async def del_non_expired_drug():
 @app.get(rule='/get_drug_stores')
 async def get_drug_stores():
     drug_id = request.args.get(KEY_DRUG_ID)
+    drug_info = await sql_get_drug_info_by_id(drug_id)
+    title = ''
+    if drug_info:
+        title = drug_info[KEY_TITLE]
     prices, orders, images, stores = get_drugstores(drug_id)
-    drug_data = {'drug_group': '', KEY_PRICES: prices, KEY_ORDERS: orders, KEY_IMAGES: images, KEY_STORES: stores}
+    drug_data = {KEY_GROUP: title, KEY_PRICES: prices, KEY_ORDERS: orders, KEY_IMAGES: images, KEY_STORES: stores}
     return make_expired_drug_info_page(drug_data, 'templates/drug_stores_info.html')
 
 
 @app.delete(rule='/del_expired_drug')
 async def del_expired_drug():
-    drug_id = int(request.form[KEY_DRUG_ID])
+    drug_id = request.form[KEY_DRUG_ID]
     await sql_del_drugs(drug_id, KEY_TABLE_AID_KIT_EXPIRED)
     return Response()
 
