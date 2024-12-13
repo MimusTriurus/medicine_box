@@ -17,6 +17,12 @@ def make_first_aid_kit_examble_btn_title(lang_code: str) -> str:
     return btn_title
 
 
+def make_buy_drug_btn_title(lang_code: str) -> str:
+    localizer = localizers.get(lang_code, en)
+    btn_title = localizer.gettext(BUY_BTN_TITLE)
+    return btn_title
+
+
 def make_month_title(month_number: int, lang_code: str):
     loc = localizers.get(lang_code, en)
     months = {

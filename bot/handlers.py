@@ -5,7 +5,6 @@ from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup, WebAppInfo
 
 from config import WEBAPP_DOMAIN
 from components import dp
-from db_management import sql_add_user
 from localization.string_builder import *
 
 
@@ -23,7 +22,6 @@ async def request_start_handler(message: types.Message):
         web_app=WebAppInfo(url=f'https://{WEBAPP_DOMAIN}/first_aid_kit_info')
     )
     inline_kb = InlineKeyboardMarkup().add(inline_btn_info)
-    await sql_add_user(message.from_user.id, lang)
     photo = open('resources/images/botLogo.png', 'rb')
     await message.answer_photo(
         photo,
