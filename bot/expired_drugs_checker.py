@@ -6,8 +6,16 @@ from aiogram import types, Dispatcher
 from aiogram.types import InlineKeyboardButton, WebAppInfo, InlineKeyboardMarkup
 from pika.adapters.blocking_connection import BlockingChannel
 
-from bot.constants import KEY_LANG, RU, KEY_USER_ID, KEY_NAME, KEY_DATE, KEY_DRUG_ID, KEY_TABLE_AID_KIT_EXPIRED, \
+from constants import (
+    KEY_LANG,
+    RU,
+    KEY_USER_ID,
+    KEY_NAME,
+    KEY_DATE,
+    KEY_DRUG_ID,
+    KEY_TABLE_AID_KIT_EXPIRED,
     EMPTY_DRUG_ID
+)
 from config import WEBAPP_DOMAIN
 
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
