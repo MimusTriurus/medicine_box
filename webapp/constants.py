@@ -79,3 +79,5 @@ KEY_NAME_OF_DRUG = 'name_of_drug'
 KEY_NON_EXPIRED = 'non_expired'
 KEY_EXPIRED = 'expired'
 KEY_DRUG_NOT_AVAILABLE_4_BUY = 'drug_not_available_for_purchase'
+
+EMPTY_DRUG_ID = -1

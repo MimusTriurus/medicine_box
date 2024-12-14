@@ -51,8 +51,8 @@ async def sql_get_drug_info_by_id(drug_id: str):
     if not drugs_db.is_connected:
         await drugs_db.connect()
 
-    record = {KEY_ID: drug_id}
-    result = await drugs_db.fetch_all(f'SELECT * FROM {TABLE_NAME} WHERE {KEY_ID}=:{KEY_ID}', record)
+    record = {KEY_DRUG_ID: drug_id}
+    result = await drugs_db.fetch_all(f'SELECT * FROM {TABLE_NAME} WHERE {KEY_DRUG_ID}=:{KEY_DRUG_ID}', record)
     result = sorted(result, key=lambda r: r[IDX_NAME], reverse=False)
     if result:
         return result[0]

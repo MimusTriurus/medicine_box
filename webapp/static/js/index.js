@@ -1,7 +1,8 @@
 let tg = window.Telegram.WebApp;
 tg.expand();
 let tuser_id = tg.initData ? tg.initDataUnsafe.user.id : 486190703;
-let userLanguage = tg.initData ? tg.initDataUnsafe.user.language_code : 'en';
+//let userLanguage = tg.initData ? tg.initDataUnsafe.user.language_code : 'ru';
+let userLanguage = 'ru';
 
 let get_non_expired_url = NaN;
 

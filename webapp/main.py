@@ -1,14 +1,16 @@
 import datetime
 import json
 import logging
-from typing import Tuple, Any, Optional
+from typing import Tuple, Optional
 
 from flask import Flask, request, render_template, Response, url_for
+from apscheduler.schedulers.background import BackgroundScheduler
+from asyncio import run
 from jinja2 import Template, Environment, FileSystemLoader
 
 from config import WEBAPP_PORT, VIDAL_LINK
 from constants import *
-from db_management import sql_add_drug, sql_get_drugs, sql_del_drugs
+from db_management import sql_add_drug, sql_get_drugs, sql_del_drugs, sql_check_expired_drugs
 from drugs_db_management import (
     KEY_GROUP,
     KEY_DESC,
@@ -25,6 +27,35 @@ from queue_publisher import QueuePublisher
 
 log = logging.getLogger()
 app = Flask(import_name=__name__)
+scheduler = BackgroundScheduler()
+
+
+def drug_obj_from_tuple(drug_tuple: Tuple) -> dict:
+    return {
+        KEY_ID: drug_tuple[0],
+        KEY_USER_ID: drug_tuple[1],
+        KEY_NAME: drug_tuple[2],
+        KEY_DATE: drug_tuple[3],
+        KEY_DRUG_ID: drug_tuple[4]
+    }
+
+
+async def check_expired_drugs():
+    expired_drugs_tuples = await sql_check_expired_drugs()
+    if expired_drugs_tuples:
+        expired_drugs_lst = list()
+        for drug_tuple in expired_drugs_tuples:
+            drug_obj = drug_obj_from_tuple(drug_tuple)
+            expired_drugs_lst.append(drug_obj)
+
+        make_expired_drug_record_4_bot(
+            {
+                KEY_EXPIRED: expired_drugs_lst
+            }
+        )
+
+
+job = scheduler.add_job(lambda: run(check_expired_drugs()), 'interval', minutes=1)
 
 
 def get_localization_data(lang: str) -> Optional[dict]:
@@ -69,16 +100,6 @@ def rus_match(text, alphabet=set('абвгдеёжзийклмнопрстуфх
     return not alphabet.isdisjoint(text.lower())
 
 
-def drug_obj_from_tuple(drug_tuple: Tuple) -> dict:
-    return {
-        KEY_ID: drug_tuple[0],
-        KEY_USER_ID: drug_tuple[1],
-        KEY_NAME: drug_tuple[2],
-        KEY_DATE: drug_tuple[3],
-        KEY_DRUG_ID: drug_tuple[4]
-    }
-
-
 def make_not_expired_drug_info_page(drug_data: dict) -> str:
     if not drug_data:
         return MSG_NO_INFO
@@ -97,7 +118,7 @@ def make_not_expired_drug_info_page(drug_data: dict) -> str:
         print(e)
 
 
-def get_drugstores(drug_id: str) -> Tuple[Any, Any, Any, Any]:
+def get_drugstores(drug_id: str) -> Tuple[list, list, list, list]:
     import requests
     url = f'{VIDAL_LINK}/protec/{drug_id}'
     response = requests.get(url)
@@ -115,7 +136,7 @@ def get_drugstores(drug_id: str) -> Tuple[Any, Any, Any, Any]:
         images = pattern_img_html.findall(content)
         stores = pattern_store.findall(content)
         return prices, orders, images, stores
-    return None, None, None, None
+    return [], [], [], []
 
 
 def make_expired_drug_info_page(drug_data: dict, template_file='templates/expired_drug_info.html') -> str:
@@ -161,11 +182,12 @@ def make_expired_drug_info_page(drug_data: dict, template_file='templates/expire
 
 
 async def make_drug_info_record(drug: dict, desc_maker=make_not_expired_drug_info_page) -> dict:
+    drug_info = None
     if KEY_DRUG_ID in drug:
-        drug_info = dict(await sql_get_drug_info_by_id(drug[KEY_DRUG_ID]))
-        drug_info.update(drug)
-    else:
-        drug_info = None
+        drug_info = await sql_get_drug_info_by_id(drug[KEY_DRUG_ID])
+        if drug_info:
+            drug_info = dict(drug_info)
+            drug_info.update(drug)
     return {
         KEY_ID: drug[KEY_ID],
         KEY_TITLE: drug[KEY_NAME],
@@ -178,7 +200,7 @@ def make_expired_drug_record_4_bot(drug_data: dict):
     try:
         qp = QueuePublisher()
         qp.qp_put_2_queue(drug_data)
-        del qp
+        # del qp
     except Exception as e:
         print(f'Error on putting drug data to the queue: {e}')
 
@@ -202,16 +224,28 @@ async def add_drug():
     date = datetime.datetime.strptime(drug_data[KEY_DATE], DATE_FORMAT).date()
     target_table = KEY_TABLE_AID_KIT
     drug_record_maker = make_not_expired_drug_info_page
-    if date < datetime.datetime.now().date():
-        drug_id = drug_data[KEY_DRUG_ID]
-        prices, orders, images, stores = get_drugstores(drug_id)
 
-        drug_data[KEY_PRICES] = prices
-        drug_data[KEY_ORDERS] = orders
-        drug_data[KEY_IMAGES] = images
-        drug_data[KEY_STORES] = stores
+    if date < datetime.datetime.now().date(): 
+        drug_data[KEY_PRICES] = []
+        drug_data[KEY_ORDERS] = []
+        drug_data[KEY_IMAGES] = []
+        drug_data[KEY_STORES] = []
 
-        make_expired_drug_record_4_bot(drug_data)
+        if KEY_DRUG_ID in drug_data:
+            drug_id = drug_data[KEY_DRUG_ID]
+            prices, orders, images, stores = get_drugstores(drug_id)
+            drug_data[KEY_PRICES] = prices
+            drug_data[KEY_ORDERS] = orders
+            drug_data[KEY_IMAGES] = images
+            drug_data[KEY_STORES] = stores
+        
+        expired_drug = {
+            KEY_EXPIRED: [
+                drug_data
+            ]
+        }
+
+        make_expired_drug_record_4_bot(expired_drug)
 
         target_table = KEY_TABLE_AID_KIT_EXPIRED
         drug_record_maker = make_expired_drug_info_page
@@ -296,5 +330,6 @@ async def edit():
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO)
+    scheduler.start()
     HOST = '0.0.0.0'
     app.run(host=HOST, port=WEBAPP_PORT)

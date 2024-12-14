@@ -123,9 +123,11 @@
     set_get_non_expired_url('{{ url_for("non_expired_drugs") }}');
     set_get_expired_url('{{ url_for("expired_drugs") }}');
 
+    window.translations = JSON.parse('{{ localization|safe }}')[userLanguage];
+    window.translations_count = Object.keys(window.translations).length;
+    document.querySelectorAll("[data-i18n-key]").forEach(translateElement);
+
     document.addEventListener('DOMContentLoaded', function () {
-        window.translations = JSON.parse('{{ localization|safe }}')[userLanguage];
-        window.translations_count = Object.keys(window.translations).length;
         request_drugs(get_non_expired_url, NON_EXPIRED);
         request_drugs(get_expired_url, EXPIRED);
     });

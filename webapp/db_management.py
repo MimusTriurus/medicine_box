@@ -1,3 +1,4 @@
+import asyncio
 from datetime import datetime
 from typing import Optional, Tuple
 
@@ -152,35 +153,31 @@ def time_is_over(date_str: str) -> bool:
 
 async def sql_check_expired_drugs():
     result = list()
-    expired_candidates = await database.fetch_all(f'SELECT * FROM {KEY_TABLE_USERS}')
-    for ret in expired_candidates:
-        usr_id = ret[IDX_ID]
-        users_drugs = await database.fetch_all(
-            f'''SELECT * FROM {KEY_TABLE_AID_KIT} WHERE {KEY_USER_ID}=:{KEY_USER_ID}''',
-            {KEY_USER_ID: usr_id}
-        )
-        for drug in users_drugs:
-            drug_expiration_date = drug[IDX_DATE]
-            if time_is_over(drug_expiration_date):
-                await database.execute(
-                    f'DELETE FROM {KEY_TABLE_AID_KIT} WHERE {KEY_ID}=:{KEY_ID}', {KEY_ID: drug[IDX_ID]}
-                )
-                record = {
-                    KEY_ID: None,
-                    KEY_USER_ID: drug[IDX_USR_ID],
-                    KEY_NAME: drug[IDX_NAME],
-                    KEY_DATE: drug[IDX_DATE],
-                    KEY_DRUG_ID: drug[KEY_DRUG_ID]
-                }
-                await database.execute(
-                    f'''INSERT INTO {KEY_TABLE_AID_KIT_EXPIRED} VALUES (
-                        :{KEY_ID},
-                        :{KEY_USER_ID},
-                        :{KEY_NAME},
-                        :{KEY_DATE},
-                        :{KEY_DRUG_ID}
-                    )''',
-                    record
-                )
-                result.append(drug)
+    users_drugs = await database.fetch_all(
+        f'''SELECT * FROM {KEY_TABLE_AID_KIT}'''
+    )
+    for drug in users_drugs:
+        drug_expiration_date = drug[IDX_DATE]
+        if time_is_over(drug_expiration_date):
+            await database.execute(
+                f'DELETE FROM {KEY_TABLE_AID_KIT} WHERE {KEY_ID}=:{KEY_ID}', {KEY_ID: drug[IDX_ID]}
+            )
+            record = {
+                KEY_ID: None,
+                KEY_USER_ID: drug[IDX_USR_ID],
+                KEY_NAME: drug[IDX_NAME],
+                KEY_DATE: drug[IDX_DATE],
+                KEY_DRUG_ID: drug[KEY_DRUG_ID]
+            }
+            await database.execute(
+                f'''INSERT INTO {KEY_TABLE_AID_KIT_EXPIRED} VALUES (
+                    :{KEY_ID},
+                    :{KEY_USER_ID},
+                    :{KEY_NAME},
+                    :{KEY_DATE},
+                    :{KEY_DRUG_ID}
+                )''',
+                record
+            )
+            result.append(drug)
     return result
