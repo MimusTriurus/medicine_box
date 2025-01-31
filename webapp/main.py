@@ -10,7 +10,8 @@ from jinja2 import Template, Environment, FileSystemLoader
 
 from config import WEBAPP_PORT, VIDAL_LINK
 from constants import *
-from db_management import sql_add_drug, sql_get_drugs, sql_del_drugs, sql_check_expired_drugs
+from db_management import sql_add_drug, sql_get_drugs, sql_del_drugs, sql_check_expired_drugs, \
+    sql_get_drug_by_datamatrix_code
 from drugs_db_management import (
     KEY_GROUP,
     KEY_DESC,
@@ -24,6 +25,7 @@ from drugs_db_management import (
 )
 from localization.localization_keys import *
 from queue_publisher import QueuePublisher
+from webapp.crpt import Crpt
 
 log = logging.getLogger()
 app = Flask(import_name=__name__)
@@ -258,6 +260,52 @@ async def add_drug():
     return Response(json.dumps(drug_record), mimetype='application/json')
 
 
+@app.post(rule='/add_scanned_drug')
+async def add_scanned_drug():
+    drug_data = dict(request.form)
+    tg_user = drug_data.get('tg_user', '')
+    raw_dm = drug_data.get('dm', '')
+    if tg_user and raw_dm:
+        drug_by_dmcode = await sql_get_drug_by_datamatrix_code(tg_user, raw_dm)
+        if not drug_by_dmcode:
+            drug_by_dmcode = await sql_get_drug_by_datamatrix_code(tg_user, raw_dm, KEY_TABLE_AID_KIT_EXPIRED)
+
+        dm_code = raw_dm.split(' ')
+        if dm_code:
+            crpt = Crpt()
+            drug_data = crpt.info_from_datamatrix(dm_code[0])
+            product_name = drug_data.get('productName', None)
+            exp_date = drug_data.get('expDate', None)
+            drug_info = drug_data.get('drugsData', None)
+            drug_desc: str = ''
+            if drug_info:
+                vidal_data = drug_info.get('vidalData', None)
+                if vidal_data:
+                    drug_desc = vidal_data.get('phKinetics', '')
+                    drug_desc = re.sub(r'<.*?>', '', drug_desc)
+
+            if product_name and exp_date:
+                drug_candidates = await sql_get_drug_info_candidates(product_name)
+                if drug_candidates:
+                    found_drug = drug_candidates[0]
+                    drug_title = found_drug[0]
+                    drug_id = found_drug[1]
+                    date_candidates = re.findall('(\d{4}-\d{2}-\d{2}).+', exp_date)
+                    if date_candidates:
+                        date_object = datetime.datetime.strptime(date_candidates[0], '%Y-%m-%d')
+                        result = {
+                            KEY_DRUG_ID: drug_id,
+                            KEY_NAME: drug_title,
+                            KEY_DATE: date_object.strftime(DATE_FORMAT),
+                            KEY_DRUG_DESC: drug_desc,
+                            KEY_DATAMATRIX: raw_dm,
+                            KEY_EXPIRED: TRUE if datetime.datetime.now() >= date_object else FALSE,
+                            KEY_EXIST: TRUE if drug_by_dmcode else FALSE
+                        }
+                        return Response(json.dumps(result), mimetype='application/json')
+    return Response(json.dumps({}), mimetype='application/json')
+
+
 @app.delete(rule='/del_non_expired_drug')
 async def del_non_expired_drug():
     drug_id = request.form[KEY_DRUG_ID]
@@ -303,6 +351,7 @@ async def expired_drugs():
     if usr_id:
         for drug in await sql_get_drugs(usr_id, table=KEY_TABLE_AID_KIT_EXPIRED):
             drug_id = drug[KEY_DRUG_ID]
+            # оптимизировать!!!
             prices, orders, images, stores = get_drugstores(drug_id)
             drug_data = drug_obj_from_tuple(drug)
             drug_data[KEY_PRICES] = prices
@@ -332,4 +381,4 @@ if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO)
     scheduler.start()
     HOST = '0.0.0.0'
-    app.run(host=HOST, port=WEBAPP_PORT)
+    app.run(host=HOST, port=WEBAPP_PORT, ssl_context='adhoc')

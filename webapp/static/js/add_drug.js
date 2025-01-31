@@ -53,16 +53,17 @@ function add_months() {
 }
 
 function open_transition_end() {
-    console.log('Transition opened ended');
+    //console.log('Transition opened ended');
 }
 
 function close_transition_end() {
+    console.log('$')
     document.getElementById('control_panel').style = 'background: rgba(0, 0, 0, 0%); top: -100%';
 }
 
 function open_drug_window() {
     months.select(start_month);
-    document.getElementById('control_panel').style = 'background: rgba(0, 0, 0, 30%);';
+    document.getElementById('control_panel').style = 'background: rgba(0, 0, 0, 30%); top: 0px';
     document.getElementById('dialogAddDrug').className = 'opened';
 
     const transition_opened = document.querySelector(".opened");
@@ -177,8 +178,7 @@ function add_drug() {
     }).done(function (data) {
         if (data['target_table'] === current_tab) {
             add_drug_item(data, data['target_table']);
-        }
-        else {
+        } else {
             drugs_local.push(data);
         }
     });
@@ -210,12 +210,13 @@ document.addEventListener('DOMContentLoaded', function () {
         accessibility: true,
     });
     years.next();
+    const input = document.getElementById('medicine_name');
+    input.addEventListener('input', updateDrugsCandidates);
+
     $('#control_panel').click(function (e) {
+        console.log(e)
         if (e.target.id === 'control_panel') {
             close_drug_window();
         }
     });
-
-    const input = document.getElementById('medicine_name');
-    input.addEventListener('input', updateDrugsCandidates);
 });

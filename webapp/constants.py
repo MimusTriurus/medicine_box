@@ -34,6 +34,8 @@ KEY_DATE = 'date'
 KEY_LANG = 'lang'
 KEY_DRUG_ID = 'drug_id'
 KEY_DRUG_DESC = 'description'
+KEY_DATAMATRIX = 'dm_code'
+
 
 KEY_TABLE_USERS = 'users'
 KEY_TABLE_AID_KIT = 'non_expired'
@@ -81,3 +83,7 @@ KEY_EXPIRED = 'expired'
 KEY_DRUG_NOT_AVAILABLE_4_BUY = 'drug_not_available_for_purchase'
 
 EMPTY_DRUG_ID = -1
+
+TRUE = 'true'
+FALSE = 'false'
+KEY_EXIST = 'exist'

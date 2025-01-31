@@ -1,0 +1,45 @@
+.modal-footer.text-center {
+    text-align: center;
+}
+
+.modal-button {
+    margin-right: 20px;
+    margin-left: 20px;
+}
+
+#scanned_drug_name {
+    font-weight: bold;
+}
+
+#scanned_drug_exp_date {
+    font-weight: bold;
+}
+
+#scanned_drug_info {
+    font-style: italic;
+}
+
+.child {
+    height: auto;
+    transition: height 0.3s ease;
+}
+
+.child.hidden {
+    height: 0;
+    overflow: hidden;
+}
+
+.modal-header {
+    display: flex;
+    gap: 10px;
+    justify-content: center
+}
+
+#drug_is_expired_title {
+    color: red;
+    font-weight: bold;
+}
+
+.modal-title {
+    font-weight: bold;
+}

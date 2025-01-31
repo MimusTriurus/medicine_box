@@ -45,10 +45,12 @@ function switch_tab(id) {
 
             $(`#${NON_EXPIRED}`).show();
             $("#add_drug_panel").show();
+            $("#scan_drug_panel").show();
             break;
         case EXPIRED:
             $(`#${NON_EXPIRED}`).hide();
             $("#add_drug_panel").hide();
+            $("#scan_drug_panel").hide();
 
             $(`#${EXPIRED}`).show();
             break;

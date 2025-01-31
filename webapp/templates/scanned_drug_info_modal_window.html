@@ -1,0 +1,34 @@
+<div class="modal fade" id="addScannedDrugModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header text-center w-100">
+                <img src="{{ url_for('static', filename='icons/warning.png')}}"
+                     width="25"
+                     height="25"
+                     id="iconWarning"
+                     class="child">
+                <h4 class="modal-title" id="add_scanned_drug_win_title"></h4>
+            </div>
+            <div id="add_scanned_drug_title" class="modal-body text-center">
+                <h4><span id="scanned_drug_name"></span></h4>
+                <h5><span id="scanned_drug_exp_date"></span></h5>
+                <h4><span id="drug_is_expired_title" class="child">Препарат просрочен!</span></h4>
+                <span id="scanned_drug_info"></span>
+            </div>
+            <div class="modal-footer text-center child" id="add_scanned_drug_panel">
+                <img src="{{ url_for('static', filename='icons/accept.png')}}"
+                     width="50"
+                     height="50"
+                     class="modal-button"
+                     onclick="add_scanned_drug()"
+                     data-dismiss="modal">
+
+                <img src="{{ url_for('static', filename='icons/close.png')}}"
+                     width="50"
+                     height="50"
+                     class="modal-button"
+                     data-dismiss="modal">
+            </div>
+        </div>
+    </div>
+</div>

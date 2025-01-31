@@ -1,5 +1,8 @@
 import re
 import json
+from datetime import datetime
+
+import requests
 
 
 def re_test():
@@ -96,7 +99,23 @@ def extract_price_and_link():
     print(match)
 
 
+def send_scanned_drug_data():
+    dm = '010460180801341221myAUS4C56j9RU 91EE08 929NdpsBmbv+9t9+9E/TDNJHm9flmGrIe8AbZ6DYA3SQU='
+    #dm = raw_data.split(' ')[0]
+    endpoint = 'https://192.168.0.203:8000/add_scanned_drug'
+    response = requests.post(f'{endpoint}?dm={dm}', verify=False).json()
+    print(response)
+
+
+def extract_date(date_str: str):
+    r = re.findall('(\d{4}-\d{2}-\d{2}).+', date_str)
+    if r:
+        date_object = datetime.strptime(r[0], "%Y-%m-%d")
+        print(r)
+
 if __name__ == '__main__':
+    # extract_date('2024-08-01T00:00:00.000Z')
     # mq_test()
     # mq_test_receiver()
-    extract_price_and_link()
+    #extract_price_and_link()
+    send_scanned_drug_data()

@@ -39,6 +39,15 @@ async def sql_start():
             {KEY_DRUG_ID} INTEGER
         )
     ''')
+    try:
+        await database.execute(f'ALTER TABLE {KEY_TABLE_AID_KIT} ADD COLUMN {KEY_DATAMATRIX} TEXT;')
+    except Exception as e:
+        print(e)
+
+    try:
+        await database.execute(f'ALTER TABLE {KEY_TABLE_AID_KIT_EXPIRED} ADD COLUMN {KEY_DATAMATRIX} TEXT;')
+    except Exception as e:
+        print(e)
 
 
 async def sql_stop():
@@ -99,7 +108,8 @@ async def sql_add_drug(user_id: int, data: dict, table: str = KEY_TABLE_AID_KIT)
         KEY_USER_ID: user_id,
         KEY_NAME: data[KEY_NAME],
         KEY_DATE: data[KEY_DATE],
-        KEY_DRUG_ID: data.get(KEY_DRUG_ID, -1)
+        KEY_DRUG_ID: data.get(KEY_DRUG_ID, -1),
+        KEY_DATAMATRIX: data.get(KEY_DATAMATRIX, None)
     }
     record_id = await database.execute(
         f'''INSERT INTO {table} VALUES (
@@ -107,11 +117,26 @@ async def sql_add_drug(user_id: int, data: dict, table: str = KEY_TABLE_AID_KIT)
             :{KEY_USER_ID},
             :{KEY_NAME},
             :{KEY_DATE},
-            :{KEY_DRUG_ID}
+            :{KEY_DRUG_ID},
+            :{KEY_DATAMATRIX}
         )''',
         record
     )
     return record_id
+
+
+async def sql_get_drug_by_datamatrix_code(user_id: int, dm_code: str, table: str = KEY_TABLE_AID_KIT):
+    if not database.is_connected:
+        await sql_start()
+    record = {
+        KEY_USER_ID: user_id,
+        KEY_DATAMATRIX: dm_code
+    }
+    result = await database.fetch_all(
+        f'SELECT * FROM {table} WHERE {KEY_USER_ID}=:{KEY_USER_ID} AND {KEY_DATAMATRIX}=:{KEY_DATAMATRIX}',
+        record
+    )
+    return result
 
 
 async def sql_get_drugs(user_id: str, table: str = KEY_TABLE_AID_KIT) -> list:
