@@ -5,6 +5,7 @@ let context = null;
 let cameras = [];
 let data_matrix_code = null;
 let cameraEnhancer = null;
+let cameraView = null;
 
 const defaultZoom = 3;
 
@@ -12,9 +13,9 @@ function drawTarget() {
     const canvasWidth = canvas.width;
     const canvasHeight = canvas.height;
 
-    const squareSize = 120; // Размер прицела
+    const squareSize = 230; // Размер прицела
     const lineLength = 20;  // Длина линий на углах
-    const lineWidth = 4;    // Толщина линий
+    const lineWidth = 6;    // Толщина линий
     const color = "rgb(97, 218, 157)"; // Цвет прицела
 
     // Центрируем квадрат
@@ -95,38 +96,46 @@ async function detectAndDecode() {
                     data_matrix_code = res[0]['rawValue'];
                     close_scan_drug_window();
                 }
+                decoding = false;
             });
         });
     } catch (error) {
         console.error(error);
     }
-    decoding = false;
 }
 
 async function startCamera() {
-    let cameraView = await Dynamsoft.DCE.CameraView.createInstance();
-    cameraEnhancer = await Dynamsoft.DCE.CameraEnhancer.createInstance(cameraView);
-    cameraEnhancer.setImageFetchInterval(1000 / 30);
+    if (cameraEnhancer === null) {
+        cameraView = await Dynamsoft.DCE.CameraView.createInstance();
+        cameraEnhancer = await Dynamsoft.DCE.CameraEnhancer.createInstance(cameraView);
+        cameraEnhancer.setImageFetchInterval(1000 / 30);
 
-    cameraEnhancer.on('frameAddedToBuffer', () => {
-        let img = cameraEnhancer.getImage();
-        let mat = cv.matFromArray(img.height, img.width, cv.CV_8UC4, img.bytes);
-        cv.imshow('scanner_canvas', mat);
-        detectAndDecode();
-        drawTarget();
-        mat.delete();
-    });
+        let sharpKernel = cv.matFromArray(3, 3, cv.CV_32F, [
+            0, -1, 0,
+            -1, 5, -1,
+            0, -1, 0
+        ]);
+        let dstImage = new cv.Mat();
+        cameraEnhancer.on('frameAddedToBuffer', () => {
+            let img = cameraEnhancer.getImage();
+            let srcImage = cv.matFromArray(img.height, img.width, cv.CV_8UC4, img.bytes);
+            cv.filter2D(srcImage, dstImage, cv.CV_8U, sharpKernel);
+            cv.imshow('scanner_canvas', dstImage);
+            detectAndDecode();
+            drawTarget();
+            srcImage.delete();
+        });
+        cameras = await cameraEnhancer.getAllCameras();
+
+        let selectedCamera = cameras[cameras.length - 1];
+        const width = 640;
+        const height = 480;
+
+        await cameraEnhancer.selectCamera(selectedCamera);
+        await cameraEnhancer.setResolution({width: width, height: height});
+    }
+    await cameraEnhancer.open(true);
     cameraEnhancer.startFetching();
-
-    cameras = await cameraEnhancer.getAllCameras();
-
-    let selectedCamera = cameras[cameras.length - 1];
-    const width = 320;
-    const height = 240;
-    await cameraEnhancer.selectCamera(selectedCamera);
-    await cameraEnhancer.setResolution({width: width, height: height});
-    await cameraEnhancer.open();
-
     cameraEnhancer.setZoom({factor: parseFloat(defaultZoom)});
 }
 
@@ -137,8 +146,8 @@ async function scanner_open_transition_end() {
 function scanner_close_transition_end() {
     if (cameraEnhancer) {
         cameraEnhancer.stopFetching();
-        cameraEnhancer.dispose();
-        cameraEnhancer = null;
+        //topic for discussion
+        //cameraEnhancer.close();
     }
     if (data_matrix_code) {
         get_scanned_drug_data(data_matrix_code);
@@ -168,6 +177,6 @@ function close_scan_drug_window() {
 }
 
 document.addEventListener('DOMContentLoaded', function () {
-    canvas = document.getElementById("scanner_canvas");
-    context = canvas.getContext("2d");
+    canvas = document.getElementById('scanner_canvas');
+    context = canvas.getContext('2d');
 });
