@@ -1,0 +1,88 @@
+@import url("https://fonts.googleapis.com/css?family=Raleway:400,400i,700");
+
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+body {
+	font-family: Raleway, sans-serif;
+	display: grid;
+	place-items: center;
+	background-color: #eee;
+	color: #246;
+	padding: 3em 1em;
+}
+
+.todo {
+	width: 100%;
+	max-width: 420px;
+	background-color: #ddd;
+	padding: 2em;
+	box-shadow: 1px 2px 4px #0003;
+}
+
+h1 {
+	margin: 0 auto;
+}
+
+ul {
+	padding-inline-start: 1.5em;
+	font-weight: 400;
+
+	::marker {
+		content: ">";
+		color: #48b;
+	}
+
+	ul ::marker {
+		content: ">>";
+	}
+}
+
+li {
+	position: relative;
+	padding-inline-start: 0.5em;
+	padding-top: 1.5em;
+	border-bottom: 1px solid #48b2;
+	cursor: default;
+	transition: color 0.4s;
+
+	&::after {
+		content: attr(theLittleDetails);
+		position: absolute;
+		left: 15%; bottom: calc(100% - 1.5em);
+		background-image: conic-gradient(from 10deg at 1em 100%, #fff 30deg, #fff0 30deg),
+			linear-gradient(0deg, #fff0 1.5em, #fff 1.5em);
+		color: #246;
+		font-weight: 700;
+		padding: 1em 2em 2.5em;
+		pointer-events: none;
+		opacity: 0;
+		filter: drop-shadow(1px 2px 4px #0003);
+		transition: opacity 0.4s;
+	}
+
+	&:hover {
+		color: #48b;
+
+		&::marker {
+			font-weight: 700;
+		}
+		&::after {
+			opacity: 1;
+			transition-delay: 0.2s;
+		}
+	}
+}
+
+html {
+    min-height: 100%;
+    position: relative;
+    background: white;
+}
+
+body {
+    height: 100%;
+}

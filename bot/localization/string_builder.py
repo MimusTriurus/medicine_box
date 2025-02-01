@@ -3,11 +3,13 @@ from localization.localization_keys import *
 
 
 def make_start_message(lang_code: str) -> str:
+    email = 'stendhal.syndrome.studio@gmail.com'
     localizer = localizers.get(lang_code, en)
     hello_message = localizer.gettext(ID_START) + '\n\n'
     hello_message += f'{localizer.gettext(ID_PRESS_ADD_BTN)} ' \
                      f'<b>•••</b> ' \
-                     f'{localizer.gettext(ID_TO_ADD_DRUG)}'
+                     f'{localizer.gettext(ID_TO_ADD_DRUG)}' + '\n\n' \
+                     f'{email}'
     return hello_message
 
 
