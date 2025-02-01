@@ -381,4 +381,4 @@ if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO)
     scheduler.start()
     HOST = '0.0.0.0'
-    app.run(host=HOST, port=WEBAPP_PORT, ssl_context='adhoc')
+    app.run(host=HOST, port=WEBAPP_PORT)
