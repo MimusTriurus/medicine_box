@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Camera Zoom Demo</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" />
+  <script src="https://cdn.jsdelivr.net/npm/dynamsoft-core@3.2.10/dist/core.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dynamsoft-camera-enhancer@4.0.2/dist/dce.js"></script>
+  <style>
+    #enhancerUIContainer {
+      height: 480px;
+      max-width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <h2>Camera Zoom Demo</h2>
+  <label>
+    Camera:
+    <select id="select-camera"></select>
+  </label>
+  <label>
+    Resolution:
+    <select id="select-resolution">
+      <option value="640x480">640x480</option>
+      <option value="1280x720">1280x720</option>
+      <option value="1920x1080" selected>1920x1080</option>
+      <option value="3840x2160">3840x2160</option>
+    </select>
+  </label>
+  <label>
+    Zoom Factor:
+    <input type="number" min="0" max="2" id="zoomInput" value="0" onchange="setZoom();">
+  </label>
+  <button onclick="startCamera();">Start Camera</button>
+  <br/>
+  <div id="enhancerUIContainer"></div>
+  <script type="text/javascript">
+    let cameras = [];
+    let track;
+    let cameraEnhancer;
+    window.onload = async function(){
+      await initDCE();
+      await listCameras();
+    }
+
+    async function initDCE(){
+      let cameraView = await Dynamsoft.DCE.CameraView.createInstance();
+      cameraEnhancer = await Dynamsoft.DCE.CameraEnhancer.createInstance(cameraView);
+      document.querySelector("#enhancerUIContainer").append(cameraView.getUIElement());
+    }
+
+    async function listCameras(){
+      let cameraSelect = document.getElementById("select-camera");
+      cameras = await cameraEnhancer.getAllCameras();
+      for (let i = 0; i < cameras.length; i++){
+        let camera = cameras[i];
+        cameraSelect.appendChild(new Option(camera.label,camera.deviceId));
+      }
+    }
+    
+    async function startCamera(){
+      let selectedCamera = cameras[document.getElementById("select-camera").selectedIndex];
+      let selectedResolution = document.getElementById("select-resolution").selectedOptions[0].value;
+      let width = parseInt(selectedResolution.split("x")[0]);
+      let height = parseInt(selectedResolution.split("x")[1]);
+      await cameraEnhancer.selectCamera(selectedCamera);
+      await cameraEnhancer.setResolution({width:width, height:height});
+      await cameraEnhancer.open();
+      loadZoomRange();
+    }
+
+    function loadZoomRange(){
+      let zoomRange = cameraEnhancer.getAutoZoomRange();
+      console.log(zoomRange);
+      let min = zoomRange["min"];
+      let max = zoomRange["max"];
+      document.getElementById("zoomInput").setAttribute("min",min);
+      document.getElementById("zoomInput").setAttribute("max",max);
+      document.getElementById("zoomInput").value  = 0;
+    }
+
+    async function setZoom(){
+      let expectedZoom = document.getElementById("zoomInput").value;
+      cameraEnhancer.setZoom({factor: parseFloat(expectedZoom)});
+    }
+  </script>
+</body>
+</html>

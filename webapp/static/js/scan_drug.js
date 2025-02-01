@@ -1,14 +1,12 @@
 let detector = new window.BarcodeDetectionAPI.BarcodeDetector();
-let interval;
 let decoding = false;
-let video = null;
 let canvas = null;
 let context = null;
 let cameras = [];
-let track;
 let data_matrix_code = null;
+let cameraEnhancer = null;
 
-const defaultZoom = 2;
+const defaultZoom = 3;
 
 function drawTarget() {
     const canvasWidth = canvas.width;
@@ -100,94 +98,36 @@ async function detectAndDecode() {
             });
         });
     } catch (error) {
-        console.log(error);
+        console.error(error);
     }
-    decoding = false;
-}
-
-async function setZoom(value) {
-    const constraints = {advanced: [{zoom: value}]};
-    await track.applyConstraints(constraints);
-}
-
-async function listCameras() {
-    let allDevices = await navigator.mediaDevices.enumerateDevices();
-    cameras = [];
-    for (let i = 0; i < allDevices.length; i++) {
-        let device = allDevices[i];
-        if (device.kind == 'videoinput') {
-            cameras.push(device);
-        }
-    }
-}
-
-async function requestCameraPermission() {
-    try {
-        const constraints = {video: true, audio: false};
-        const stream = await navigator.mediaDevices.getUserMedia(constraints);
-        closeStream(stream);
-    } catch (error) {
-        console.log(error);
-        throw error;
-    }
-}
-
-function closeStream(stream) {
-    if (stream) {
-        const tracks = stream.getTracks();
-        for (let i = 0; i < tracks.length; i++) {
-            const track = tracks[i];
-            track.stop();  // stop the opened tracks
-        }
-    }
-    clearInterval(interval);
     decoding = false;
 }
 
 async function startCamera() {
-    let selectedCamera = cameras[cameras.length - 1];
-    const videoConstraints = {
-        video: {
-            deviceId: selectedCamera.deviceId,
-            zoom: true
-        },
-        audio: false
-    };
-    try {
-        const cameraStream = await navigator.mediaDevices.getUserMedia(videoConstraints);
+    let cameraView = await Dynamsoft.DCE.CameraView.createInstance();
+    cameraEnhancer = await Dynamsoft.DCE.CameraEnhancer.createInstance(cameraView);
+    cameraEnhancer.setImageFetchInterval(1000 / 30);
 
-        if (!video) {
-            video = document.createElement('video');
-            video.addEventListener('loadeddata', function () {
-                video.play();
-                setTimeout(videoLoop, 1000 / 30);
-            });
-        }
-        video.srcObject = cameraStream;
-        const videoTracks = video.srcObject.getVideoTracks();
-        track = videoTracks[0];
-        await setZoom(defaultZoom);
-
-    } catch (error) {
-        alert(error);
-    }
-}
-
-async function videoLoop() {
-    if (video && !video.paused && !video.ended) {
-        let w = video.videoWidth;
-        let h = video.videoHeight;
-
-        const aspectRatio = w / h;
-        const newHeight = canvas.width / aspectRatio;
-        canvas.height = newHeight;
-
-        context.drawImage(video, 0, 0, video.videoWidth, video.videoHeight, 0, 0, canvas.width, canvas.height);
+    cameraEnhancer.on('frameAddedToBuffer', () => {
+        let img = cameraEnhancer.getImage();
+        let mat = cv.matFromArray(img.height, img.width, cv.CV_8UC4, img.bytes);
+        cv.imshow('scanner_canvas', mat);
+        detectAndDecode();
         drawTarget();
-        await detectAndDecode();
+        mat.delete();
+    });
+    cameraEnhancer.startFetching();
 
-        setTimeout(videoLoop, 1000 / 30);
-    }
+    cameras = await cameraEnhancer.getAllCameras();
+
+    let selectedCamera = cameras[cameras.length - 1];
+    const width = 320;
+    const height = 240;
+    await cameraEnhancer.selectCamera(selectedCamera);
+    await cameraEnhancer.setResolution({width: width, height: height});
+    await cameraEnhancer.open();
+
+    cameraEnhancer.setZoom({factor: parseFloat(defaultZoom)});
 }
 
 async function scanner_open_transition_end() {
@@ -195,21 +135,20 @@ async function scanner_open_transition_end() {
 }
 
 function scanner_close_transition_end() {
-    if (video) {
-        video.pause();
-        closeStream(video.srcObject);
-        video = null;
+    if (cameraEnhancer) {
+        cameraEnhancer.stopFetching();
+        cameraEnhancer.dispose();
+        cameraEnhancer = null;
     }
     if (data_matrix_code) {
         get_scanned_drug_data(data_matrix_code);
         data_matrix_code = null;
     }
+    decoding = false;
     document.getElementById('control_scan_panel').style = 'background: rgba(0, 0, 0, 0%); top: -100%';
 }
 
 async function open_scan_drug_window() {
-    await requestCameraPermission();
-    await listCameras();
     await startCamera();
 
     document.getElementById('control_scan_panel').style = 'background: rgba(0, 0, 0, 30%); top: 0px';
@@ -231,5 +170,4 @@ function close_scan_drug_window() {
 document.addEventListener('DOMContentLoaded', function () {
     canvas = document.getElementById("scanner_canvas");
     context = canvas.getContext("2d");
-    video = document.getElementById("video");
 });

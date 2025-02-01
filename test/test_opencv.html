@@ -1,0 +1,52 @@
+<html>
+
+<head>
+    <meta charSet="utf-8">
+    <title>Introduction to OpenCV JavaScript</title>
+</head>
+
+<body>
+<h2>Introduction to OpenCV JavaScript</h2>
+<div>
+    <div className="inputoutputDiv">
+        <img id="SourceImage" alt=""/>
+        <div className="caption">imagesrc <input type="file" id="InputfileName" name="file"/></div>
+    </div>
+    <div className="inputoutputDiv">
+        <canvas id="canvasOutputContainer"></canvas>
+        <div className="caption">canvasOutputContainer</div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    let imgElement = document.getElementById('SourceImage');
+    let inputElement = document.getElementById('InputfileName');
+    inputElement.addEventListener('change', (e) => {
+        imgElement.src = URL.createObjectURL(e.target.files[0]);
+    }, false);
+    imgElement.onload = function () {
+        let srcImage = cv.imread(imgElement);
+        let dstImage = new cv.Mat();
+
+        let rect = new cv.Rect(50, 50, 200, 200); // Обрезаем область (x=50, y=50, width=200, height=200)
+        let roi = srcImage;//.roi(rect);
+
+        let sharpKernel = cv.matFromArray(3, 3, cv.CV_32F, [
+            0, -1, 0,
+            -1, 5, -1,
+            0, -1, 0
+        ]);
+
+        // Применяем фильтр
+        cv.filter2D(srcImage, dstImage, cv.CV_8U, sharpKernel);
+
+        //cv.cvtColor(srcImage, dstImage, cv.COLOR_RGBA2GRAY);
+        cv.imshow('canvasOutputContainer', dstImage);
+        srcImage.delete();
+        dstImage.delete();
+    };
+</script>
+<script async src="https://docs.opencv.org/4.5.0/opencv.js" type="text/javascript"></script>
+</body>
+
+</html>
