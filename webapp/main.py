@@ -25,7 +25,7 @@ from drugs_db_management import (
 )
 from localization.localization_keys import *
 from queue_publisher import QueuePublisher
-from webapp.crpt import Crpt
+from crpt import Crpt
 
 log = logging.getLogger()
 app = Flask(import_name=__name__)
