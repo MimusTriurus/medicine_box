@@ -110,16 +110,17 @@ async function startCamera() {
         cameraEnhancer = await Dynamsoft.DCE.CameraEnhancer.createInstance(cameraView);
         cameraEnhancer.setImageFetchInterval(1000 / 30);
 
-        let sharpKernel = cv.matFromArray(3, 3, cv.CV_32F, [
-            0, -1, 0,
-            -1, 5, -1,
-            0, -1, 0
+        let strongKernel = cv.matFromArray(3, 3, cv.CV_32F, [
+            -1, -1, -1,
+            -1, 9, -1,
+            -1, -1, -1
         ]);
+
         let dstImage = new cv.Mat();
         cameraEnhancer.on('frameAddedToBuffer', () => {
             let img = cameraEnhancer.getImage();
             let srcImage = cv.matFromArray(img.height, img.width, cv.CV_8UC4, img.bytes);
-            cv.filter2D(srcImage, dstImage, cv.CV_8U, sharpKernel);
+            cv.filter2D(srcImage, dstImage, cv.CV_8U, strongKernel);
             cv.imshow('scanner_canvas', dstImage);
             detectAndDecode();
             drawTarget();
