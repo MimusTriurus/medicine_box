@@ -32,6 +32,7 @@ services:
       - '443:443'
     volumes:
       - ./data:/data
+      - ./letsencrypt:/etc/letsencrypt
 
   webapp:
     container_name: webapp
