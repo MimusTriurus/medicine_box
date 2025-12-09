@@ -56,9 +56,12 @@ async def check_expired_drugs():
             }
         )
 
-
-job = scheduler.add_job(lambda: run(check_expired_drugs()), 'interval', minutes=1)
-
+job = scheduler.add_job(
+    lambda: run(check_expired_drugs()),
+    "cron",
+    hour=23,
+    minute=00
+)
 
 def get_localization_data(lang: str) -> Optional[dict]:
     loc = localizers.get(lang, None)

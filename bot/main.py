@@ -27,7 +27,13 @@ async def on_startup(dispatcher: Dispatcher):
         )
     )
     connection = BlockingConnection(connection_params)
-    scheduler.add_job(check_expired_drugs_queue, 'interval', seconds=60, args=(dispatcher, connection.channel(), ))
+    scheduler.add_job(
+        check_expired_drugs_queue,
+        'interval',
+        hour=23,
+        minute=30,
+        args=(dispatcher, connection.channel(), )
+    )
     scheduler.start()
 
     dispatcher.register_message_handler(request_start_handler)
